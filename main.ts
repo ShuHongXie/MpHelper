@@ -1,11 +1,24 @@
 // 控制应用生命周期和创建原生浏览器窗口的模组
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
+// 自动刷新
 try {
   require('electron-reloader')(module, {})
 } catch (e) {
   throw e
 }
+
+ipcMain.on('open', (event, arg) => {
+  // console.log(event, arg, '1')
+  dialog
+    .showOpenDialog({
+      title: '选择文件夹',
+      properties: ['openDirectory'],
+    })
+    .then((res) => {
+      console.log(res)
+    })
+})
 
 function createWindow() {
   // 创建浏览器窗口
@@ -13,7 +26,10 @@ function createWindow() {
     width: 1400,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.ts'),
+      // /nodeIntegration: true,
+      nodeIntegration: true,
+      contextIsolation: false, //  把这一项加上错误就会消失
     },
   })
 

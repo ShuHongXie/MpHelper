@@ -1,32 +1,22 @@
 <template>
-  <div class="home">
-    主页234222233行行行22221收到仨撒多撒撒
-    <input class="test" type="file" webkitdirectory directory @input="upload" />
-    12322
-  </div>
+  <div class="test" @click="clickon">1232</div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue'
+import useGlobalProperties from '@/hooks/useGlobalProperties'
 export default defineComponent({
   name: 'HomePage',
   setup(props, ctx) {
-    function padLeft(padding: number | string, input: string) {
-      if (typeof padding === 'number') {
-        return ' '.repeat(padding) + input
-      }
-      return padding + input
-    }
+    const { global } = useGlobalProperties()
+    const clickon = () => {
+      console.log(global)
 
-    const upload = (e: Event) => {
-      console.log(e)
+      global.ipcRenderer.send('open')
     }
-
-    onMounted(() => {
-      padLeft('xxx', 'xxx')
-    })
+    onMounted(() => {})
     return {
-      upload,
+      clickon,
     }
   },
 })

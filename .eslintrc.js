@@ -38,6 +38,8 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'no-var': 'error',
     'prettier/prettier': 'error',
+    'no-useless-catch': 'off',
+    /**
     // 禁止出现console
     // 'no-console': 'warn',
     // 禁用debugger
@@ -147,6 +149,7 @@ module.exports = {
     'no-extra-boolean-cast': 'warn',
     'no-case-declarations': 'warn',
     'no-async-promise-executor': 'warn',
+     */
   },
   globals: {
     defineProps: 'readonly',

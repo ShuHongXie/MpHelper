@@ -1,9 +1,5 @@
 <template>
-  <div class="home">
-    主页234222233行行行22221收到仨撒多撒撒
-    <input class="test" type="file" @input="upload" webkitdirectory directory />
-    12322
-  </div>
+  <div class="home">1232</div>
 </template>
 
 <script lang="ts">

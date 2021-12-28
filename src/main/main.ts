@@ -1,22 +1,22 @@
 // 控制应用生命周期和创建原生浏览器窗口的模组
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
-// 自动刷新
-try {
-  require('electron-reloader')(module, {})
-} catch (e) {
-  throw e
-}
+const ci = require('miniprogram-ci')
+console.log(ci)
 
-ipcMain.on('open', (event, arg) => {
+// 打开文件夹
+ipcMain.on('openFolder', (event, arg) => {
   // console.log(event, arg, '1')
   dialog
     .showOpenDialog({
       title: '选择文件夹',
-      properties: ['openDirectory'],
+      properties: ['openDirectory']
     })
-    .then((res) => {
-      console.log(res)
+    .then((fileObject) => {
+      const pathList = fileObject.filePaths
+      if (pathList.length) {
+        event.reply('openFolderReply', pathList[0])
+      }
     })
 })
 
@@ -29,8 +29,8 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.ts'),
       // /nodeIntegration: true,
       nodeIntegration: true,
-      contextIsolation: false, //  把这一项加上错误就会消失
-    },
+      contextIsolation: false //  把这一项加上错误就会消失
+    }
   })
 
   const loadURL =
@@ -44,6 +44,7 @@ function createWindow() {
 
   // 打开开发工具
   mainWindow.webContents.openDevTools()
+  console.log('窗口开启')
 }
 
 // 这段程序将会在 Electron 结束初始化
@@ -51,7 +52,6 @@ function createWindow() {
 // 部分 API 在 ready 事件触发后才能使用。
 app.whenReady().then(() => {
   createWindow()
-  console.log('456')
   app.on('activate', function () {
     // 通常在 macOS 上，当点击 dock 中的应用程序图标时，如果没有其他
     // 打开的窗口，那么程序会重新创建一个窗口。

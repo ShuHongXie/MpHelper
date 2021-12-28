@@ -10,11 +10,13 @@
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "electron": "cross-env NODE_ENV=development electron .",
-    "start": "concurrently -k \"npm run dev\" \"npm run electron\""
+    "start": "electron-dev-runner src/main/main.ts --vite"
   },
   "dependencies": {
+    "electron-dev-runner": "^1.0.2",
     "element-plus": "^1.2.0-beta.6",
     "lowdb": "^3.0.0",
+    "miniprogram-ci": "^1.6.10",
     "vue": "^3.2.25",
     "vue-router": "4"
   },

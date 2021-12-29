@@ -2,7 +2,8 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
 const ci = require('miniprogram-ci')
-console.log(ci)
+const git = require('nodegit')
+console.log(git)
 
 // 打开文件夹
 ipcMain.on('openFolder', (event, arg) => {

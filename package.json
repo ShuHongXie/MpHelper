@@ -13,7 +13,9 @@
     "start": "electron-dev-runner src/main/main.ts --vite"
   },
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.8",
     "electron-dev-runner": "^1.0.2",
+    "electron-rebuild": "^3.2.5",
     "element-plus": "^1.2.0-beta.6",
     "lowdb": "^3.0.0",
     "miniprogram-ci": "^1.6.10",

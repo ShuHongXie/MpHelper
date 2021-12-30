@@ -1,9 +1,10 @@
 // 控制应用生命周期和创建原生浏览器窗口的模组
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
+const fs = require('fs')
 const ci = require('miniprogram-ci')
-const git = require('nodegit')
-console.log(git)
+const git = require('isomorphic-git')
+import db from '../db/db'
 
 // 打开文件夹
 ipcMain.on('openFolder', (event, arg) => {
@@ -13,10 +14,15 @@ ipcMain.on('openFolder', (event, arg) => {
       title: '选择文件夹',
       properties: ['openDirectory']
     })
-    .then((fileObject) => {
+    .then(async (fileObject) => {
       const pathList = fileObject.filePaths
       if (pathList.length) {
-        event.reply('openFolderReply', pathList[0])
+        const gitDirPath = path.join(pathList[0], '/.git/HEAD')
+        const existGitDir = fs.existsSync(gitDirPath)
+        let branches = await git.listBranches({ fs, dir: pathList[0] })
+        console.log(branches)
+
+        // event.reply('openFolderReply', existGitDir ? pathList[0] : '')
       }
     })
 })

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="home-list">
-      <project></project>
+      <project @upload="upload"></project>
     </div>
   </div>
 </template>
@@ -11,6 +11,11 @@ import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch } fr
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { IpcMainEvent } from 'electron'
 import project from './modules/project.vue'
+import { listBranches } from 'isomorphic-git'
+import FS from '@isomorphic-git/lightning-fs'
+import path from 'path/posix'
+const fs = new FS('fs')
+
 export default defineComponent({
   name: 'HomePage',
   components: {
@@ -19,17 +24,21 @@ export default defineComponent({
   setup(props, ctx) {
     const { global } = useGlobalProperties()
 
-    const clickon = () => {
+    const upload = () => {
       console.log('点击了')
       global.ipcRenderer.send('openFolder')
     }
     onMounted(() => {
-      global.ipcRenderer.on('openFolderReply', (event: IpcMainEvent, arg: any) => {
-        console.log(event, arg)
+      global.ipcRenderer.on('openFolderReply', async (event: IpcMainEvent, dir: string) => {
+        if (dir) {
+          // console.log(fs, dir)
+          // let branches = await listBranches({ fs, dir, gitdir: path.join(dir, '.git') })
+          // console.log(branches)
+        }
       })
     })
     return {
-      clickon
+      upload
     }
   }
 })

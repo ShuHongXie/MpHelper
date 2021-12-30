@@ -8,8 +8,15 @@
   </head>
   <body>
     <div id="app"></div>
+    <!-- <script src="https://unpkg.com/@isomorphic-git/lightning-fs"></script>
+    <script src="https://unpkg.com/isomorphic-git"></script>-->
+    <!-- <script type="module">
+      import http from 'https://unpkg.com/isomorphic-git@beta/http/web/index.js'
+      const fs = new LightningFS('fs')
+    </script> -->
     <script>
       this.globalThis || (this.globalThis = this)
+      // this.globalThis.fs = fs
     </script>
     <script type="module" src="/src/main.ts"></script>
   </body>

@@ -8,3 +8,5 @@ declare module '*.vue' {
 }
 
 declare module 'electron'
+declare module 'isomorphic-git'
+declare module '@isomorphic-git/lightning-fs'

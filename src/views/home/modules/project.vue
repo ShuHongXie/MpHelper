@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="project-bottom">
-      <el-button type="primary">上传</el-button>
+      <el-button type="primary" @click="$emit('upload')">上传</el-button>
       <el-button type="success">编辑</el-button>
     </div>
   </div>

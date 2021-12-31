@@ -1,5 +1,8 @@
 import { Low, JSONFile } from 'lowdb'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
 import { chain } from 'lodash'
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 interface Adapter<T> {
   read: () => Promise<T | null>
@@ -17,7 +20,9 @@ export declare class LowDB<T = unknown> {
 type Data = {
   data: string[] // Expect posts to be an array of strings
 }
-const adapter = new JSONFile<Data>('db.json')
+console.log(join(__dirname, 'db.json'))
+
+const adapter = new JSONFile<Data>(join(__dirname, 'db.json'))
 const db = new Low<Data>(adapter) as LowDB
 db.chain = chain(db.data) as any
 

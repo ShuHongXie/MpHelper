@@ -21,7 +21,7 @@ ipcMain.on('openFolder', (event, arg) => {
         const existGitDir = fs.existsSync(gitDirPath)
         let branches = await git.listBranches({ fs, dir: pathList[0] })
         console.log(branches)
-
+        // db.data.data.push()
         // event.reply('openFolderReply', existGitDir ? pathList[0] : '')
       }
     })

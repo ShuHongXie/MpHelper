@@ -3,12 +3,12 @@
     <div class="project-top">
       <!-- <mp-image style="height: 100%" :src="url"></mp-image> -->
       <div class="project-top__add">
-        <mp-icon icon="add" color="#409EFC" :size="40" />
+        <mp-icon icon="add" color="#4965d2" :size="40" />
       </div>
     </div>
     <div class="project-bottom">
-      <el-button type="primary" @click="$emit('upload')">上传</el-button>
-      <el-button type="success">编辑</el-button>
+      <el-button type="primary" size="small" @click="$emit('upload')">上传/预览</el-button>
+      <el-button type="success" size="small">修改</el-button>
     </div>
   </div>
 </template>
@@ -29,10 +29,15 @@ export default defineComponent({
 <style lang="scss" scoped>
 .project {
   width: 200px;
-  height: 260px;
+  height: 246px;
   // border: 1px solid red;
-  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 2px 0px 10px 0px rgba(96, 125, 238, 0.35);
+  border-radius: 6px;
   overflow: hidden;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
   &-top {
     width: 200px;
     height: 200px;
@@ -42,8 +47,16 @@ export default defineComponent({
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 1px dashed red;
       box-sizing: border-box;
+    }
+  }
+  &-bottom {
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    .el-button {
+      flex: 1;
     }
   }
 }

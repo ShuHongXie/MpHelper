@@ -2,6 +2,7 @@
   <div class="home">
     <div class="home-list">
       <project @upload="upload"></project>
+      <el-button type="primary">Primary</el-button>
     </div>
   </div>
 </template>

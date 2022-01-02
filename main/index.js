@@ -4,7 +4,8 @@ const path = require('path')
 const fs = require('fs')
 const ci = require('miniprogram-ci')
 const git = require('isomorphic-git')
-import db from '../db/db'
+const db = require('../db/db-cjs.js')
+console.log('xx123')
 
 // 打开文件夹
 ipcMain.on('openFolder', (event, arg) => {
@@ -15,6 +16,8 @@ ipcMain.on('openFolder', (event, arg) => {
       properties: ['openDirectory']
     })
     .then(async (fileObject) => {
+      console.log('测试')
+
       const pathList = fileObject.filePaths
       if (pathList.length) {
         const gitDirPath = path.join(pathList[0], '/.git/HEAD')
@@ -33,7 +36,7 @@ function createWindow() {
     width: 1400,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.ts'),
+      // preload: path.join(__dirname, 'preload.ts'),
       // /nodeIntegration: true,
       nodeIntegration: true,
       contextIsolation: false //  把这一项加上错误就会消失

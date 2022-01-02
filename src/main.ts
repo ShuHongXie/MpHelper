@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import { ElButton, ElImage, ElIcon } from 'element-plus'
 import * as Components from './components'
-import 'element-plus/dist/index.css'
+// import 'element-plus/dist/index.css'
 import './assets/scss/index.scss'
 const electron = require('electron')
 

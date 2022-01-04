@@ -1,21 +1,18 @@
 {
   "list": [
     {
-      "name": "nuxt_share_mobile",
-      "path": "/Users/xiexiaoxie/wanbiao/nuxt_share_mobile",
+      "name": "ip-nis-frontend",
+      "path": "D:\\workspace\\ip-nis-frontend",
       "branches": [
-        "bugfix/merchantSettle",
-        "feature/appraisal",
-        "feature/brand",
-        "feature/brandNew",
-        "feature/identityManage",
-        "feature/jianzhen",
-        "feature/newAppraisal",
-        "feature/word",
+        "bugfix/chl/IP-NIS-1459",
+        "develop",
+        "feature/chl/IP-NIS-636",
+        "feature/chl/IP-NIS-668",
+        "feature/chl/IP-NIS-986",
         "master",
-        "test"
+        "release/chl/execte"
       ],
-      "id": "38822b9c-bb20-423f-88d6-302716c8b591"
+      "id": "7d1531b9-995a-4641-b43f-0629097be062"
     }
   ]
 }

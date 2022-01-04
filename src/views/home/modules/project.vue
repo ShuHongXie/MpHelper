@@ -15,7 +15,7 @@
       </el-row>
       <el-row>
         <el-col>
-          <el-select v-model="value" class="m-2" placeholder="Select" size="small">
+          <el-select v-model="value" placeholder="请选择当前分支" size="small">
             <el-option
               v-for="item in options"
               :key="item.value"

@@ -6,7 +6,7 @@ const ci = require('miniprogram-ci')
 const git = require('isomorphic-git')
 const db = require('../db/db-cjs.js')
 const Response = require('../utils/response')
-console.log('---')
+console.log('---1')
 console.log(db.get('list').value())
 
 try {

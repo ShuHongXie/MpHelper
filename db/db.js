@@ -1,12 +1,14 @@
-import { Low, JSONFile } from 'lowdb'
-import { join, dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { chain } from 'lodash'
+import Low from 'lowdb'
+const FileSync = require('lowdb/adapters/FileSync')
+const path = require('path')
+import LodashId from 'lodash-id'
 
-console.log(join(__dirname, 'db.json'))
+const adapter = new FileSync('./db.json')
+const db = Low(adapter)
+db._.mixin(LodashId)
 
-const adapter = new JSONFile(join(__dirname, 'db.json'))
-const db = new Low(adapter)
-db.chain = chain(db.data)
-
+if (!db.has('list').value()) {
+  db.set('list', []).write()
+}
+// 设置默认值
 export default db

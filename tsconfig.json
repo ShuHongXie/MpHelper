@@ -15,7 +15,8 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["element-plus/global", "node", "vite/client", "lowdb"]
+    "types": ["element-plus/global", "node", "vite/client", "lowdb"],
+    "typeRoots": ["./db"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

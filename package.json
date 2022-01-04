@@ -8,8 +8,9 @@
     "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "electron": "cross-env NODE_ENV=development electron --inspect ./main",
-    "start": "electron-dev-runner -o dist main/index.js --vite"
+    "electron": "cross-env NODE_ENV=development electron ./main",
+    "start": "electron-dev-runner -o dist main/index.js --vite",
+    "rollup": "rollup --config db/db.rollup.config.js"
   },
   "dependencies": {
     "@isomorphic-git/lightning-fs": "^4.4.1",
@@ -21,6 +22,7 @@
     "lodash-id": "^0.14.1",
     "lowdb": "1.0.0",
     "miniprogram-ci": "^1.6.10",
+    "path-browserify": "^1.0.1",
     "vue": "^3.2.25",
     "vue-router": "4"
   },

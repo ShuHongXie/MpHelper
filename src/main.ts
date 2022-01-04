@@ -6,6 +6,8 @@ import * as Components from './components'
 // import 'element-plus/dist/index.css'
 import './assets/scss/index.scss'
 const electron = require('electron')
+import db from '../db/db.js'
+console.log(db)
 
 const app = createApp(App).use(router).use(ElButton).use(ElImage).use(ElIcon)
 // electron方法挂载

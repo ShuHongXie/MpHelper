@@ -17,6 +17,5 @@
     },
     "types": ["element-plus/global", "node", "vite/client", "lowdb"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "db/**/*.ts"],
-  "exclude": ["src/main/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

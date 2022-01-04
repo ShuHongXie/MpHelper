@@ -7,8 +7,25 @@
       </div>
     </div>
     <div class="project-bottom">
-      <el-button type="primary" size="small" @click="$emit('upload')">上传/预览</el-button>
-      <el-button type="success" size="small">修改</el-button>
+      <el-row class="project-bottom__wrapper">
+        <el-col>
+          <el-button type="primary" size="small" @click="$emit('upload')">上传/预览</el-button>
+          <el-button type="success" size="small">修改</el-button>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
+          <el-select v-model="value" class="m-2" placeholder="Select" size="small">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -18,9 +35,35 @@ import { defineComponent, onMounted, ref } from 'vue'
 export default defineComponent({
   setup(props, ctx) {
     const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
+    const value = ref('')
+
+    const options = [
+      {
+        value: 'Option1',
+        label: 'Option1'
+      },
+      {
+        value: 'Option2',
+        label: 'Option2'
+      },
+      {
+        value: 'Option3',
+        label: 'Option3'
+      },
+      {
+        value: 'Option4',
+        label: 'Option4'
+      },
+      {
+        value: 'Option5',
+        label: 'Option5'
+      }
+    ]
     onMounted(() => {})
     return {
-      url
+      url,
+      value,
+      options
     }
   }
 })
@@ -29,7 +72,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .project {
   width: 200px;
-  height: 246px;
+  height: 286px;
   // border: 1px solid red;
   background: #ffffff;
   box-shadow: 2px 0px 10px 0px rgba(96, 125, 238, 0.35);
@@ -52,11 +95,17 @@ export default defineComponent({
   }
   &-bottom {
     padding: 0 10px;
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
     flex: 1;
+    .el-col {
+      display: flex;
+    }
     .el-button {
       flex: 1;
+    }
+    &__wrapper {
+      padding: 6px 0;
     }
   }
 }

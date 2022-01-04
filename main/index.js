@@ -5,7 +5,15 @@ const fs = require('fs')
 const ci = require('miniprogram-ci')
 const git = require('isomorphic-git')
 const db = require('../db/db-cjs.js')
-console.log('xx123')
+const Response = require('../utils/response')
+console.log('---')
+console.log(db.get('list').value())
+
+try {
+  require('electron-reloader')(module)
+} catch (_) {
+  console.log(_)
+}
 
 // 打开文件夹
 ipcMain.on('openFolder', (event, arg) => {
@@ -13,19 +21,30 @@ ipcMain.on('openFolder', (event, arg) => {
   dialog
     .showOpenDialog({
       title: '选择文件夹',
+      buttonLabel: '选择',
       properties: ['openDirectory']
     })
     .then(async (fileObject) => {
-      console.log('测试')
+      console.log('测试', fileObject)
 
       const pathList = fileObject.filePaths
       if (pathList.length) {
         const gitDirPath = path.join(pathList[0], '/.git/HEAD')
         const existGitDir = fs.existsSync(gitDirPath)
+        const projectName = path.basename(pathList[0])
         let branches = await git.listBranches({ fs, dir: pathList[0] })
         console.log(branches)
+        if (existGitDir) {
+          db.get('list')
+            .insert({
+              name: projectName,
+              path: pathList[0],
+              branches
+            })
+            .write()
+        }
         // db.data.data.push()
-        // event.reply('openFolderReply', existGitDir ? pathList[0] : '')
+        event.reply('openFolderReply', new Response(existGitDir, { message: '' }))
       }
     })
 })

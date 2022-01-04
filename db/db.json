@@ -1,0 +1,21 @@
+{
+  "list": [
+    {
+      "name": "nuxt_share_mobile",
+      "path": "/Users/xiexiaoxie/wanbiao/nuxt_share_mobile",
+      "branches": [
+        "bugfix/merchantSettle",
+        "feature/appraisal",
+        "feature/brand",
+        "feature/brandNew",
+        "feature/identityManage",
+        "feature/jianzhen",
+        "feature/newAppraisal",
+        "feature/word",
+        "master",
+        "test"
+      ],
+      "id": "38822b9c-bb20-423f-88d6-302716c8b591"
+    }
+  ]
+}

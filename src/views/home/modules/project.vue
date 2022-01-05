@@ -1,21 +1,24 @@
 <template>
   <div class="project">
-    <div class="project-top">
+    <div class="project-name" v-if="data">{{ data.name }}</div>
+    <div class="project-qrcode">
       <!-- <mp-image style="height: 100%" :src="url"></mp-image> -->
-      <div class="project-top__add">
-        <mp-icon icon="add" color="#4965d2" :size="40" />
+      <div class="project-qrcode__add" @click="$emit('add')">
+        <mp-icon icon="add" color="#6489ff" :size="40" />
       </div>
     </div>
-    <div class="project-bottom">
-      <el-row class="project-bottom__wrapper">
+    <div class="project-operation" v-if="data">
+      <el-row class="project-operation__wrapper">
         <el-col>
-          <el-button type="primary" size="small" @click="$emit('upload')">上传/预览</el-button>
-          <el-button type="success" size="small">修改</el-button>
+          <el-button type="primary" plain size="small" @click="$emit('upload')"
+            >上传/预览</el-button
+          >
+          <el-button type="success" size="small"><mp-icon icon="setting"></mp-icon> 修改</el-button>
         </el-col>
       </el-row>
       <el-row>
         <el-col>
-          <el-select v-model="value" placeholder="请选择当前分支" size="small">
+          <el-select v-model="data.currentBranch" placeholder="请选择当前分支" size="small">
             <el-option
               v-for="(item, index) in data.branches"
               :key="index"
@@ -36,62 +39,48 @@ import { defineComponent, onMounted, ref, PropType } from 'vue'
 export default defineComponent({
   props: {
     data: {
-      type: Array as PropType<List>,
-      default: () => []
+      type: (Array as PropType<List>) || undefined,
+      default: () => undefined
     }
   },
   setup(props, ctx) {
     const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
     const value = ref('')
 
-    const options = [
-      {
-        value: 'Option1',
-        label: 'Option1'
-      },
-      {
-        value: 'Option2',
-        label: 'Option2'
-      },
-      {
-        value: 'Option3',
-        label: 'Option3'
-      },
-      {
-        value: 'Option4',
-        label: 'Option4'
-      },
-      {
-        value: 'Option5',
-        label: 'Option5'
-      }
-    ]
     onMounted(() => {})
     return {
       url,
-      value,
-      options
+      value
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/constarnt.scss';
 .project {
   width: 200px;
-  height: 286px;
+  height: 322px;
   // border: 1px solid red;
   background: #ffffff;
   box-shadow: 2px 0px 10px 0px rgba(96, 125, 238, 0.35);
   border-radius: 6px;
   overflow: hidden;
-  margin: 10px;
+  margin: 10px 0 10px 10px;
   display: flex;
   flex-direction: column;
-  &-top {
+  &-name {
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    color: $primary;
+    // background-color: $primary;
+    // border-bottom: 1px solid $primary;
+  }
+  &-qrcode {
     width: 200px;
-    height: 200px;
     border-radius: 8px;
+    flex: 1;
     &__add {
       height: 100%;
       display: flex;
@@ -100,19 +89,21 @@ export default defineComponent({
       box-sizing: border-box;
     }
   }
-  &-bottom {
-    padding: 0 10px;
-    // display: flex;
-    // align-items: center;
-    flex: 1;
+  &-operation {
+    padding: 6px 10px;
     .el-col {
       display: flex;
     }
     .el-button {
       flex: 1;
+      // :deep(span) {
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: space-around;
+      // }
     }
     &__wrapper {
-      padding: 6px 0;
+      margin-bottom: 6px;
     }
   }
 }

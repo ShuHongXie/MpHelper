@@ -30,14 +30,21 @@ ipcMain.on('openFolder', (event, arg) => {
         const gitDirPath = path.join(pathList[0], '/.git/HEAD')
         const existGitDir = fs.existsSync(gitDirPath)
         const projectName = path.basename(pathList[0])
-        let branches = await git.listBranches({ fs, dir: pathList[0] })
-        console.log(branches)
         if (existGitDir) {
+          // 获取当前项目下的所有分支
+          const branches = await git.listBranches({ fs, dir: pathList[0] })
+          // 获取当前项目下的当前分支
+          const currentBranch = await git.currentBranch({
+            fs,
+            dir: pathList[0],
+            fullname: false
+          })
           db.get('list')
             .insert({
               name: projectName,
               path: pathList[0],
-              branches
+              branches,
+              currentBranch
             })
             .write()
         }
@@ -53,6 +60,7 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1400,
     height: 800,
+    frame: process.env.NODE_ENV !== 'development',
     webPreferences: {
       // preload: path.join(__dirname, 'preload.ts'),
       // /nodeIntegration: true,

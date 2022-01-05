@@ -1,38 +1,19 @@
 {
   "list": [
     {
-      "name": "nuxt_share_mobile",
-      "path": "/Users/xiexiaoxie/wanbiao/nuxt_share_mobile",
+      "name": "ip-nis-frontend",
+      "path": "D:\\workspace\\ip-nis-frontend",
       "branches": [
-        "bugfix/merchantSettle",
-        "feature/appraisal",
-        "feature/brand",
-        "feature/brandNew",
-        "feature/identityManage",
-        "feature/jianzhen",
-        "feature/newAppraisal",
-        "feature/word",
+        "bugfix/chl/IP-NIS-1459",
+        "develop",
+        "feature/chl/IP-NIS-636",
+        "feature/chl/IP-NIS-668",
+        "feature/chl/IP-NIS-986",
         "master",
-        "test"
+        "release/chl/execte"
       ],
-      "id": "1728fcc4-3111-48d8-9cc9-637440f78293"
-    },
-    {
-      "name": "nuxt_share_mobile",
-      "path": "/Users/xiexiaoxie/wanbiao/nuxt_share_mobile",
-      "branches": [
-        "bugfix/merchantSettle",
-        "feature/appraisal",
-        "feature/brand",
-        "feature/brandNew",
-        "feature/identityManage",
-        "feature/jianzhen",
-        "feature/newAppraisal",
-        "feature/word",
-        "master",
-        "test"
-      ],
-      "id": "6bf826db-ff1b-4dd8-b7b2-72e59b373a14"
+      "currentBranch": "bugfix/chl/IP-NIS-1459",
+      "id": "b20a08b7-ddc1-423d-b7de-0d35671bb5a9"
     }
   ]
 }

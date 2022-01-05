@@ -3,4 +3,5 @@ export interface List {
   path?: string
   branches?: string[]
   id?: string
+  currentBranch?: string
 }

@@ -8,14 +8,13 @@
     "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "electron": "cross-env NODE_ENV=development electron ./main",
+    "electron": "cross-env NODE_ENV=development electron --inspect ./main",
     "start": "electron-dev-runner -o dist main/index.js --vite",
     "rollup": "node db/rollup.excute.js"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
     "@isomorphic-git/lightning-fs": "^4.4.1",
-    "@mapbox/node-pre-gyp": "^1.0.8",
     "electron": "16.0.5",
     "element-plus": "^1.2.0-beta.6",
     "isomorphic-git": "^1.10.3",
@@ -37,7 +36,6 @@
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
     "@vitejs/plugin-vue": "^2.0.0",
-    "concurrently": "^6.5.1",
     "cross-env": "^7.0.3",
     "dart-sass": "^1.25.0",
     "electron-builder": "^22.14.5",

@@ -2,6 +2,7 @@
   <div class="home">
     <div class="home-list">
       <project @upload="upload" :data="item" v-for="item in list" :key="item.id"></project>
+      <project @add="upload" :data="undefined"></project>
     </div>
   </div>
 </template>
@@ -24,13 +25,13 @@ export default defineComponent({
   setup(props, ctx) {
     const { global } = useGlobalProperties()
     const list = ref<List[]>([])
+    // ipc通信打开文件夹
     const upload = () => {
       console.log('点击了')
       global.ipcRenderer.send('openFolder')
     }
     onMounted(() => {
       list.value = global.db.read().get('list').value()
-      console.log(list.value)
       global.ipcRenderer.on('openFolderReply', async (event: IpcMainEvent, dir: string) => {
         if (dir) {
           // console.log(fs, dir)
@@ -47,11 +48,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped="scss">
-.test {
-  display: block;
-  width: 100px;
-  height: 100px;
-  background-color: red;
+<style lang="scss" scoped>
+.home {
+  &-list {
+    display: flex;
+  }
 }
 </style>

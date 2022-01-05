@@ -6,8 +6,6 @@ const ci = require('miniprogram-ci')
 const git = require('isomorphic-git')
 const db = require('../db/db-cjs.js')
 const Response = require('../utils/response')
-console.log('---1')
-console.log(db.get('list').value())
 
 try {
   require('electron-reloader')(module)
@@ -50,6 +48,7 @@ ipcMain.on('openFolder', (event, arg) => {
 })
 
 function createWindow() {
+  const remote = require('@electron/remote/main')
   // 创建浏览器窗口
   const mainWindow = new BrowserWindow({
     width: 1400,
@@ -73,6 +72,8 @@ function createWindow() {
 
   // 打开开发工具
   mainWindow.webContents.openDevTools()
+  remote.initialize()
+  remote.enable(mainWindow.webContents)
   console.log('窗口开启')
 }
 

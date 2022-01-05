@@ -17,10 +17,10 @@
         <el-col>
           <el-select v-model="value" placeholder="请选择当前分支" size="small">
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="(item, index) in data.branches"
+              :key="index"
+              :label="item"
+              :value="item"
             >
             </el-option>
           </el-select>
@@ -31,8 +31,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { List } from '@/entity/Db'
+import { defineComponent, onMounted, ref, PropType } from 'vue'
 export default defineComponent({
+  props: {
+    data: {
+      type: Array as PropType<List>,
+      default: () => []
+    }
+  },
   setup(props, ctx) {
     const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
     const value = ref('')

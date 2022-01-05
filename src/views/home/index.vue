@@ -1,8 +1,7 @@
 <template>
   <div class="home">
     <div class="home-list">
-      <project @upload="upload"></project>
-      <el-button type="primary">Primary</el-button>
+      <project @upload="upload" :data="item" v-for="item in list" :key="item.id"></project>
     </div>
   </div>
 </template>
@@ -14,7 +13,7 @@ import { IpcMainEvent } from 'electron'
 import project from './modules/project.vue'
 import { listBranches } from 'isomorphic-git'
 import FS from '@isomorphic-git/lightning-fs'
-import path from 'path/posix'
+import { List } from '@/entity/Db'
 const fs = new FS('fs')
 
 export default defineComponent({
@@ -24,12 +23,14 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const { global } = useGlobalProperties()
-
+    const list = ref<List[]>([])
     const upload = () => {
       console.log('点击了')
       global.ipcRenderer.send('openFolder')
     }
     onMounted(() => {
+      list.value = global.db.read().get('list').value()
+      console.log(list.value)
       global.ipcRenderer.on('openFolderReply', async (event: IpcMainEvent, dir: string) => {
         if (dir) {
           // console.log(fs, dir)
@@ -39,7 +40,8 @@ export default defineComponent({
       })
     })
     return {
-      upload
+      upload,
+      list
     }
   }
 })

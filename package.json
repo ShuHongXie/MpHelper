@@ -10,9 +10,10 @@
     "prepare": "husky install",
     "electron": "cross-env NODE_ENV=development electron ./main",
     "start": "electron-dev-runner -o dist main/index.js --vite",
-    "rollup": "rollup --config db/db.rollup.config.js"
+    "rollup": "node db/rollup.excute.js"
   },
   "dependencies": {
+    "@electron/remote": "^2.0.1",
     "@isomorphic-git/lightning-fs": "^4.4.1",
     "@mapbox/node-pre-gyp": "^1.0.8",
     "electron": "16.0.5",

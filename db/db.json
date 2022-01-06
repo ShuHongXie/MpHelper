@@ -1,18 +1,10 @@
 {
   "list": [
     {
-      "name": "uni-ugc",
-      "path": "/Users/xiexiaoxie/wanbiao/uni-ugc",
+      "name": "uni_ugc",
+      "path": "D:\\workspace\\uni_ugc",
       "branches": [
-        "bugfix/home",
-        "bugfix/swiper",
-        "feature/eslint",
-        "feature/identifyImage",
-        "feature/mergeEslint",
-        "feature/newVersion",
-        "feature/video",
-        "master",
-        "test"
+        "master"
       ],
       "currentBranch": "master",
       "appid": "",
@@ -20,7 +12,7 @@
       "privatePath": "",
       "robot": 1,
       "done": false,
-      "id": "84c64b3e-eb04-46a0-97b9-e796265bec20"
+      "id": "1f8d502f-ff00-4bed-98cb-f9a7063c7df0"
     }
   ]
 }

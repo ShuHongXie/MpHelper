@@ -58,6 +58,23 @@ ipcMain.on('openFolder', (event, arg) => {
       }
     })
 })
+// 打开文件
+ipcMain.on('selectFile', (event, arg) => {
+  console.log(event, typeof arg.index)
+  dialog
+    .showOpenDialog({
+      title: '选择文件',
+      buttonLabel: '选择',
+      properties: ['openFile'],
+      ...arg.params
+    })
+    .then(async (fileObject) => {
+      console.log(fileObject)
+      switch (arg.type) {
+        case 'selectKeyFile':
+      }
+    })
+})
 
 function createWindow() {
   const remote = require('@electron/remote/main')

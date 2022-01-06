@@ -80,7 +80,11 @@ export default defineComponent({
       })
     }
     const back = () => router.back()
-    const selectPath = () => global.ipcRenderer.send('selectFile')
+    const selectPath = () =>
+      global.ipcRenderer.send('selectFile', {
+        index: index.value,
+        params: { filters: [{ name: 'Custom File Type', extensions: ['key'] }] }
+      })
     onMounted(() => {
       index.value = parseInt(route.query.index as string)
       formData.value = global.db.read().get('list').value()[index.value]

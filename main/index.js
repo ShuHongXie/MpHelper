@@ -5,7 +5,8 @@ const fs = require('fs')
 const ci = require('miniprogram-ci')
 const git = require('isomorphic-git')
 const db = require('../db/db-cjs.js')
-const Response = require('../utils/response')
+const Response = require('./utils/response')
+const { SUCCESS, FAIL } = require('./constrant.js')
 
 try {
   require('electron-reloader')(module)
@@ -24,7 +25,6 @@ ipcMain.on('openFolder', (event, arg) => {
     })
     .then(async (fileObject) => {
       console.log('测试', fileObject)
-
       const pathList = fileObject.filePaths
       if (pathList.length) {
         const gitDirPath = path.join(pathList[0], '/.git/HEAD')
@@ -39,6 +39,7 @@ ipcMain.on('openFolder', (event, arg) => {
             dir: pathList[0],
             fullname: false
           })
+          // 插入数据
           db.get('list')
             .insert({
               name: projectName,
@@ -48,12 +49,12 @@ ipcMain.on('openFolder', (event, arg) => {
               appid: '',
               outputPath: '',
               privatePath: '',
-              robot: 1
+              robot: 1,
+              done: false
             })
             .write()
         }
-        // db.data.data.push()
-        event.reply('openFolderReply', new Response(existGitDir, { message: '' }))
+        event.reply('openFolderReply', new Response(SUCCESS, { message: '添加成功' }))
       }
     })
 })

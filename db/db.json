@@ -1,28 +1,6 @@
 {
   "list": [
     {
-      "name": "nuxt_share_mobile",
-      "path": "/Users/xiexiaoxie/wanbiao/nuxt_share_mobile",
-      "branches": [
-        "bugfix/merchantSettle",
-        "feature/appraisal",
-        "feature/brand",
-        "feature/brandNew",
-        "feature/identityManage",
-        "feature/jianzhen",
-        "feature/newAppraisal",
-        "feature/word",
-        "master",
-        "test"
-      ],
-      "currentBranch": "test",
-      "appid": "",
-      "outputPath": "",
-      "privatePath": "",
-      "robot": 1,
-      "id": "bd7ff105-17c1-4774-ac18-1ec78578d783"
-    },
-    {
       "name": "uni-ugc",
       "path": "/Users/xiexiaoxie/wanbiao/uni-ugc",
       "branches": [
@@ -41,7 +19,8 @@
       "outputPath": "",
       "privatePath": "",
       "robot": 1,
-      "id": "a67a25e5-c6c2-4c47-9c0e-1ed1359dccf3"
+      "done": false,
+      "id": "84c64b3e-eb04-46a0-97b9-e796265bec20"
     }
   ]
 }

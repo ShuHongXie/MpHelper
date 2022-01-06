@@ -8,4 +8,5 @@ export interface List {
   outputPath?: string
   privatePath?: string
   robot?: number
+  done?: boolean
 }

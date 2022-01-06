@@ -32,10 +32,7 @@ export default defineComponent({
     const { global, router } = useGlobalProperties()
     const list = ref<List[]>([])
     // ipc通信打开文件夹
-    const upload = () => {
-      console.log('点击了')
-      global.ipcRenderer.send('openFolder')
-    }
+    const upload = () => global.ipcRenderer.send('openFolder')
     const edit = (index: number) => {
       router.push({
         path: '/edit',

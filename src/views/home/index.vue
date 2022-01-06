@@ -1,21 +1,27 @@
 <template>
   <div class="home">
     <div class="home-list">
-      <project @upload="upload" :data="item" v-for="item in list" :key="item.id"></project>
+      <project
+        @upload="upload"
+        @edit="edit(index)"
+        :data="item"
+        v-for="(item, index) in list"
+        :key="item.id"
+      ></project>
       <project @add="upload" :data="undefined"></project>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { IpcMainEvent } from 'electron'
 import project from './modules/project.vue'
-import { listBranches } from 'isomorphic-git'
-import FS from '@isomorphic-git/lightning-fs'
+// import { listBranches } from 'isomorphic-git'
+// import FS from '@isomorphic-git/lightning-fs'
+// const fs = new FS('fs')
 import { List } from '@/entity/Db'
-const fs = new FS('fs')
 
 export default defineComponent({
   name: 'HomePage',
@@ -23,12 +29,20 @@ export default defineComponent({
     project
   },
   setup(props, ctx) {
-    const { global } = useGlobalProperties()
+    const { global, router } = useGlobalProperties()
     const list = ref<List[]>([])
     // ipc通信打开文件夹
     const upload = () => {
       console.log('点击了')
       global.ipcRenderer.send('openFolder')
+    }
+    const edit = (index: number) => {
+      router.push({
+        path: '/edit',
+        query: {
+          index
+        }
+      })
     }
     onMounted(() => {
       list.value = global.db.read().get('list').value()
@@ -42,7 +56,8 @@ export default defineComponent({
     })
     return {
       upload,
-      list
+      list,
+      edit
     }
   }
 })

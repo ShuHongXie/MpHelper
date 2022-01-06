@@ -1,14 +1,22 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { ElButton, ElImage, ElIcon } from 'element-plus'
+import { ElButton, ElImage, ElIcon, ElForm, ElRow, ElCol, ElInput } from 'element-plus'
 import * as Components from './components'
 // import 'element-plus/dist/index.css'
 import './assets/scss/index.scss'
 const electron = require('electron')
 import db from '../db/db.js'
 
-const app = createApp(App).use(router).use(ElButton).use(ElImage).use(ElIcon)
+const app = createApp(App)
+  .use(router)
+  .use(ElButton)
+  .use(ElImage)
+  .use(ElIcon)
+  .use(ElForm)
+  .use(ElRow)
+  .use(ElCol)
+  .use(ElInput)
 // electron方法挂载
 for (const key in electron) {
   console.log(key)

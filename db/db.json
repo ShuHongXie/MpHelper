@@ -1,19 +1,47 @@
 {
   "list": [
     {
-      "name": "ip-nis-frontend",
-      "path": "D:\\workspace\\ip-nis-frontend",
+      "name": "nuxt_share_mobile",
+      "path": "/Users/xiexiaoxie/wanbiao/nuxt_share_mobile",
       "branches": [
-        "bugfix/chl/IP-NIS-1459",
-        "develop",
-        "feature/chl/IP-NIS-636",
-        "feature/chl/IP-NIS-668",
-        "feature/chl/IP-NIS-986",
+        "bugfix/merchantSettle",
+        "feature/appraisal",
+        "feature/brand",
+        "feature/brandNew",
+        "feature/identityManage",
+        "feature/jianzhen",
+        "feature/newAppraisal",
+        "feature/word",
         "master",
-        "release/chl/execte"
+        "test"
       ],
-      "currentBranch": "bugfix/chl/IP-NIS-1459",
-      "id": "b20a08b7-ddc1-423d-b7de-0d35671bb5a9"
+      "currentBranch": "test",
+      "appid": "",
+      "outputPath": "",
+      "privatePath": "",
+      "robot": 1,
+      "id": "bd7ff105-17c1-4774-ac18-1ec78578d783"
+    },
+    {
+      "name": "uni-ugc",
+      "path": "/Users/xiexiaoxie/wanbiao/uni-ugc",
+      "branches": [
+        "bugfix/home",
+        "bugfix/swiper",
+        "feature/eslint",
+        "feature/identifyImage",
+        "feature/mergeEslint",
+        "feature/newVersion",
+        "feature/video",
+        "master",
+        "test"
+      ],
+      "currentBranch": "master",
+      "appid": "",
+      "outputPath": "",
+      "privatePath": "",
+      "robot": 1,
+      "id": "a67a25e5-c6c2-4c47-9c0e-1ed1359dccf3"
     }
   ]
 }

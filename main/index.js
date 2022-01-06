@@ -44,7 +44,11 @@ ipcMain.on('openFolder', (event, arg) => {
               name: projectName,
               path: pathList[0],
               branches,
-              currentBranch
+              currentBranch,
+              appid: '',
+              outputPath: '',
+              privatePath: '',
+              robot: 1
             })
             .write()
         }
@@ -60,7 +64,7 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1400,
     height: 800,
-    frame: process.env.NODE_ENV !== 'development',
+    // frame: process.env.NODE_ENV == 'development',
     webPreferences: {
       // preload: path.join(__dirname, 'preload.ts'),
       // /nodeIntegration: true,

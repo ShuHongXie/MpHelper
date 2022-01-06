@@ -4,4 +4,8 @@ export interface List {
   branches?: string[]
   id?: string
   currentBranch?: string
+  appid?: string
+  outputPath?: string
+  privatePath?: string
+  robot?: number
 }

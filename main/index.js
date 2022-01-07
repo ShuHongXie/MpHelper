@@ -1,12 +1,8 @@
 // 控制应用生命周期和创建原生浏览器窗口的模组
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
-const path = require('path')
-const fs = require('fs')
-const ci = require('miniprogram-ci')
-const git = require('isomorphic-git')
-const db = require('../db/db-cjs.js')
-const Response = require('./utils/response')
-const { SUCCESS, FAIL } = require('./constrant.js')
+// 逻辑处理层
+const excuteSelectFolder = require('./business/selectFolder.js')
+const excuteSelectFile = require('./business/selectFile.js')
 
 try {
   require('electron-reloader')(module)
@@ -23,44 +19,11 @@ ipcMain.on('openFolder', (event, arg) => {
       buttonLabel: '选择',
       properties: ['openDirectory']
     })
-    .then(async (fileObject) => {
-      console.log('测试', fileObject)
-      const pathList = fileObject.filePaths
-      if (pathList.length) {
-        const gitDirPath = path.join(pathList[0], '/.git/HEAD')
-        const existGitDir = fs.existsSync(gitDirPath)
-        const projectName = path.basename(pathList[0])
-        if (existGitDir) {
-          // 获取当前项目下的所有分支
-          const branches = await git.listBranches({ fs, dir: pathList[0] })
-          // 获取当前项目下的当前分支
-          const currentBranch = await git.currentBranch({
-            fs,
-            dir: pathList[0],
-            fullname: false
-          })
-          // 插入数据
-          db.get('list')
-            .insert({
-              name: projectName,
-              path: pathList[0],
-              branches,
-              currentBranch,
-              appid: '',
-              outputPath: '',
-              privatePath: '',
-              robot: 1,
-              done: false
-            })
-            .write()
-        }
-        event.reply('openFolderReply', new Response(SUCCESS, { message: '添加成功' }))
-      }
-    })
+    .then(async (fileObject) => excuteSelectFolder(event, arg, fileObject))
 })
 // 打开文件
 ipcMain.on('selectFile', (event, arg) => {
-  console.log(event, typeof arg.index)
+  console.log(event, arg)
   dialog
     .showOpenDialog({
       title: '选择文件',
@@ -68,12 +31,7 @@ ipcMain.on('selectFile', (event, arg) => {
       properties: ['openFile'],
       ...arg.params
     })
-    .then(async (fileObject) => {
-      console.log(fileObject)
-      switch (arg.type) {
-        case 'selectKeyFile':
-      }
-    })
+    .then(async (fileObject) => excuteSelectFile(event, arg, fileObject))
 })
 
 function createWindow() {

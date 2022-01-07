@@ -15,13 +15,17 @@
         <el-col :span="12">
           <el-form-item label="项目配置路径:" prop="outputPath">
             <el-input v-model="formData.outputPath" disabled></el-input>
-            <div class="upload" @click="selectPath('outputPath')">上传</div>
+            <div class="upload" @click="selectPath('outputPath')">
+              {{ formData.outputPath ? '重新上传' : '上传' }}
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="私钥路径:" prop="privatePath">
             <el-input v-model="formData.privatePath" disabled></el-input>
-            <div class="upload" @click="selectPath('privatePath')">上传</div>
+            <div class="upload" @click="selectPath('privatePath')">
+              {{ formData.privatePath ? '重新上传' : '上传' }}
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -79,12 +83,30 @@ export default defineComponent({
         }
       })
     }
+    // 返回
     const back = () => router.back()
-    const selectPath = () =>
-      global.ipcRenderer.send('selectFile', {
-        index: index.value,
-        params: { filters: [{ name: 'Custom File Type', extensions: ['key'] }] }
+    // 路径选择
+    const selectPath = (key: string) => {
+      if (key === 'privatePath') {
+        global.ipcRenderer.send('selectFile', {
+          id: formData.value.id,
+          params: {
+            filters: [
+              {
+                name: '*.key',
+                extensions: ['key']
+              }
+            ]
+          },
+          type: key
+        })
+        return
+      }
+      global.ipcRenderer.send('selectFolder', {
+        id: formData.value.id,
+        type: key
       })
+    }
     onMounted(() => {
       index.value = parseInt(route.query.index as string)
       formData.value = global.db.read().get('list').value()[index.value]
@@ -111,7 +133,7 @@ export default defineComponent({
   :deep(.el-form-item__content) {
     display: flex;
     .upload {
-      width: 60px;
+      min-width: 60px;
       text-align: center;
       color: $primary;
       font-weight: bold;

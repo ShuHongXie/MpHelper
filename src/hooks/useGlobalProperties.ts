@@ -5,6 +5,8 @@ import { useRouter, useRoute } from 'vue-router'
 export default () => {
   const { appContext } = getCurrentInstance() as ComponentInternalInstance
   const globalProperties = appContext.config.globalProperties
+  console.log(globalProperties)
+
   return {
     global: globalProperties,
     router: useRouter(),

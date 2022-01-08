@@ -1,10 +1,22 @@
 <template>
   <div class="edit">
-    <el-form ref="form" size="small" :model="formData" label-width="110px" label-position="right">
+    <el-form
+      ref="ruleFormRef"
+      size="small"
+      :model="formData"
+      :rules="rules"
+      label-width="110px"
+      label-position="right"
+    >
       <el-row>
         <el-col :span="12">
           <el-form-item label="项目名称:" prop="name">
-            <el-input v-model="formData.name" disabled></el-input>
+            <el-input v-model="formData.name"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="文件夹名称:" prop="projectName">
+            <el-input v-model="formData.projectName" disabled></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -32,7 +44,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="机器人编号:" prop="robot">
-            <el-input v-model="formData.robot"></el-input>
+            <el-input v-model.number="formData.robot"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -57,28 +69,72 @@ import { defineComponent, onMounted, ref, reactive } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { List } from '@/entity/Db'
 import type { ElForm } from 'element-plus'
+import { IpcMainEvent } from 'electron'
 export default defineComponent({
   setup(props, ctx) {
     const { global, route, router } = useGlobalProperties()
     const formData = ref<List>({})
     const index = ref<number>(-1)
+    // 机器人编号校验
+    const validateRobot = (rule: any, value: any, callback: any) => {
+      console.log(typeof value, value)
+      if (value >= 0 && value <= 30) {
+        callback()
+      } else {
+        callback(new Error('机器人编号必须在1-30之间'))
+      }
+    }
     const rules = reactive({
-      // name: [
-      //   {
-      //     required: true,
-      //     message: 'Please input Activity name',
-      //     trigger: 'blur'
-      //   }
-      // ]
+      projectName: [
+        {
+          required: true,
+          message: '请输入您的项目名称',
+          trigger: 'blur'
+        }
+      ],
+      appid: [
+        {
+          required: true,
+          message: '请输入appid',
+          trigger: 'blur'
+        }
+      ],
+      outputPath: [
+        {
+          required: true,
+          message: '请选择项目配置路径',
+          trigger: 'blur'
+        }
+      ],
+      privatePath: [
+        {
+          required: true,
+          message: '请选择私钥地址',
+          trigger: 'blur'
+        }
+      ],
+      robot: [
+        {
+          trigger: 'blur',
+          validator: validateRobot
+        }
+      ]
     })
     const ruleFormRef = ref<InstanceType<typeof ElForm>>()
+    // 保存当前项目配置
     const save = (formEl: InstanceType<typeof ElForm> | undefined) => {
+      console.log(formData.value)
+
       if (!formEl) return
       formEl.validate((valid) => {
         if (valid) {
-          console.log('submit!')
+          global.db.get('list').find({ id: formData.value.id }).assign(formData.value).write()
+          global.$message({
+            message: '保存成功',
+            type: 'success'
+          })
+          back()
         } else {
-          console.log('error submit!')
           return false
         }
       })
@@ -87,29 +143,51 @@ export default defineComponent({
     const back = () => router.back()
     // 路径选择
     const selectPath = (key: string) => {
-      if (key === 'privatePath') {
-        global.ipcRenderer.send('selectFile', {
-          id: formData.value.id,
-          params: {
-            filters: [
-              {
-                name: '*.key',
-                extensions: ['key']
-              }
-            ]
-          },
-          type: key
-        })
-        return
-      }
-      global.ipcRenderer.send('selectFolder', {
+      global.ipcRenderer.send('select', {
         id: formData.value.id,
+        params:
+          key === 'privatePath'
+            ? {
+                title: '选择文件',
+                filters: [
+                  {
+                    name: '*.key',
+                    extensions: ['key']
+                  }
+                ]
+              }
+            : {
+                title: '选择文件夹',
+                properties: ['openDirectory']
+              },
         type: key
       })
     }
     onMounted(() => {
       index.value = parseInt(route.query.index as string)
       formData.value = global.db.read().get('list').value()[index.value]
+      global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, response: any) => {
+        const { status, data } = response
+        if (status === 'success') {
+          formData.value[data.type as keyof List] = data.path
+          global.$message({
+            showClose: true,
+            message: '添加成功',
+            type: 'success',
+            duration: 1000
+          })
+        }
+      })
+      global.ipcRenderer.on('selectFileReply', async (event: IpcMainEvent, response: any) => {
+        const { status, data } = response
+        if (status === 'success') {
+          formData.value[data.type as keyof List] = data.path
+          global.$message({
+            message: '添加成功',
+            type: 'success'
+          })
+        }
+      })
     })
     return {
       formData,

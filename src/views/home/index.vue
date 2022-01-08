@@ -2,7 +2,8 @@
   <div class="home">
     <div class="home-list">
       <project
-        @upload="upload"
+        @add="upload"
+        @preview="preview(index)"
         @edit="edit(index)"
         :data="item"
         v-for="(item, index) in list"
@@ -18,6 +19,8 @@ import { defineComponent, onMounted, ref } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { IpcMainEvent } from 'electron'
 import project from './modules/project.vue'
+import { cloneDeep } from 'lodash'
+
 // import { listBranches } from 'isomorphic-git'
 // import FS from '@isomorphic-git/lightning-fs'
 // const fs = new FS('fs')
@@ -33,8 +36,12 @@ export default defineComponent({
     const list = ref<List[]>([])
     // ipc通信打开文件夹
     const upload = () =>
-      global.ipcRenderer.send('openFolder', {
-        type: 'export'
+      global.ipcRenderer.send('select', {
+        type: 'export',
+        params: {
+          title: '选择文件夹',
+          properties: ['openDirectory']
+        }
       })
     const edit = (index: number) => {
       router.push({
@@ -44,9 +51,13 @@ export default defineComponent({
         }
       })
     }
+    // 图片预览
+    const preview = (index: number) => {
+      global.ipcRenderer.send('previewQrCode', cloneDeep(list.value[index]))
+    }
     onMounted(() => {
       list.value = global.db.read().get('list').value()
-      global.ipcRenderer.on('openFolderReply', async (event: IpcMainEvent, dir: string) => {
+      global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, dir: string) => {
         if (dir) {
           // console.log(fs, dir)
           // let branches = await listBranches({ fs, dir, gitdir: path.join(dir, '.git') })
@@ -57,7 +68,8 @@ export default defineComponent({
     return {
       upload,
       list,
-      edit
+      edit,
+      preview
     }
   }
 })

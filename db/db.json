@@ -1,18 +1,19 @@
 {
   "list": [
     {
+      "projectName": "uni_ugc",
       "name": "uni_ugc",
       "path": "D:\\workspace\\uni_ugc",
       "branches": [
         "master"
       ],
       "currentBranch": "master",
-      "appid": "",
-      "outputPath": "",
+      "appid": "wx971ea39ef2a2c9a4",
+      "outputPath": "D:\\workspace\\uni_ugc\\dist\\dev\\mp-weixin",
       "privatePath": "D:\\workspace\\uni_ugc\\private.wx971ea39ef2a2c9a4.key",
       "robot": 1,
       "done": false,
-      "id": "1f8d502f-ff00-4bed-98cb-f9a7063c7df0"
+      "id": "e913292e-817a-4198-b273-bd429354180b"
     }
   ]
 }

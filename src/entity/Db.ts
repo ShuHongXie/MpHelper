@@ -1,4 +1,5 @@
 export interface List {
+  projectName?: string
   name?: string
   path?: string
   branches?: string[]

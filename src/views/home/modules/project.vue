@@ -1,23 +1,23 @@
 <template>
   <div class="project">
     <div class="project-name" v-if="data">
-      {{ data.name }}
+      {{ data.projectName }}
       <!-- <mp-icon custom-class="delete" icon="round_close_light" color="red" :size="16"></mp-icon> -->
       <el-checkbox class="delete" />
     </div>
     <div class="project-qrcode">
       <!-- <mp-image style="height: 100%" :src="url"></mp-image> -->
-      <div class="project-qrcode__add" @click="$emit('add')">
+      <div class="project-qrcode__add" @click.stop="$emit('add')">
         <mp-icon icon="add" color="#6489ff" :size="40" />
       </div>
     </div>
     <div class="project-operation" v-if="data">
       <el-row class="project-operation__wrapper">
         <el-col>
-          <el-button type="primary" plain size="small" @click="$emit('upload')"
+          <el-button type="primary" plain size="small" @click.stop="$emit('preview')"
             >上传/预览</el-button
           >
-          <el-button type="success" size="small" @click="$emit('edit')"
+          <el-button type="success" size="small" @click.stop="$emit('edit')"
             ><mp-icon icon="setting"></mp-icon> 修改</el-button
           >
         </el-col>

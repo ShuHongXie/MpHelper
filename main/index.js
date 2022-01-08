@@ -1,38 +1,11 @@
 // 控制应用生命周期和创建原生浏览器窗口的模组
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
-// 逻辑处理层
-const excuteSelectFolder = require('./business/selectFolder.js')
-const excuteSelectFile = require('./business/selectFile.js')
-
+const { app, BrowserWindow } = require('electron')
+require('./excute.js')
 try {
   require('electron-reloader')(module)
 } catch (_) {
   console.log(_)
 }
-
-// 打开文件夹
-ipcMain.on('openFolder', (event, arg) => {
-  // console.log(event, arg, '1')
-  dialog
-    .showOpenDialog({
-      title: '选择文件夹',
-      buttonLabel: '选择',
-      properties: ['openDirectory']
-    })
-    .then(async (fileObject) => excuteSelectFolder(event, arg, fileObject))
-})
-// 打开文件
-ipcMain.on('selectFile', (event, arg) => {
-  console.log(event, arg)
-  dialog
-    .showOpenDialog({
-      title: '选择文件',
-      buttonLabel: '选择',
-      properties: ['openFile'],
-      ...arg.params
-    })
-    .then(async (fileObject) => excuteSelectFile(event, arg, fileObject))
-})
 
 function createWindow() {
   const remote = require('@electron/remote/main')

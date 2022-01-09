@@ -1,9 +1,18 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { ElButton, ElImage, ElIcon, ElForm, ElRow, ElCol, ElInput, ElMessage } from 'element-plus'
+import {
+  ElButton,
+  ElImage,
+  ElIcon,
+  ElForm,
+  ElRow,
+  ElCol,
+  ElInput,
+  ElMessage,
+  ElMessageBox
+} from 'element-plus'
 import * as Components from './components'
-import 'element-plus/dist/index.css'
 import './assets/scss/index.scss'
 const electron = require('electron')
 import db from '../db/db.js'
@@ -19,6 +28,7 @@ const app = createApp(App)
   .use(ElInput)
 // element方法挂载
 app.config.globalProperties.$message = ElMessage
+app.config.globalProperties.$messageBox = ElMessageBox
 // electron方法挂载
 for (const key in electron) {
   console.log(key)

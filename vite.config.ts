@@ -4,11 +4,13 @@ import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+// 不限制监听数量
+process.setMaxListeners(0)
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue(), // ...
+    vue(),
     AutoImport({
       resolvers: [ElementPlusResolver()]
     }),

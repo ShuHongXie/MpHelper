@@ -1,7 +1,7 @@
 {
   "list": [
     {
-      "projectName": "uni_ugc",
+      "projectName": "懂表弟开发版",
       "name": "uni_ugc",
       "path": "D:\\workspace\\uni_ugc",
       "branches": [
@@ -14,6 +14,46 @@
       "robot": 1,
       "done": false,
       "id": "e913292e-817a-4198-b273-bd429354180b"
+    },
+    {
+      "projectName": "egg_blog_server",
+      "name": "egg_blog_server",
+      "path": "D:\\workspace\\egg_blog_server",
+      "branches": [
+        "develop"
+      ],
+      "currentBranch": "develop",
+      "appid": "",
+      "outputPath": "",
+      "privatePath": "",
+      "robot": 1,
+      "done": false,
+      "id": "c1e832f3-b196-433b-bcfc-35ce1b83f815"
+    },
+    {
+      "projectName": "emr-cpoe-fe",
+      "name": "emr-cpoe-fe",
+      "path": "D:\\workspace\\emr-cpoe-fe",
+      "branches": [
+        "bugfix/chl-huizhen",
+        "bugfix/chl/IP-EMR-1617-1618-1620-1625-1614-1627-1631",
+        "bugfix/chl/IP-EMR-1639-1638-1636-1635-1629-1633",
+        "chl/EMR-2946",
+        "dev_chl",
+        "develop",
+        "feature/chl/IP-EMR-2042",
+        "feature/v3.4.0.hotfix",
+        "feature/v3.7.0.hotfix",
+        "master",
+        "v3.4.0.hotfix/chl"
+      ],
+      "currentBranch": "bugfix/chl-huizhen",
+      "appid": "",
+      "outputPath": "",
+      "privatePath": "",
+      "robot": 1,
+      "done": false,
+      "id": "95efa695-ed45-4f2a-ad47-6108dd574293"
     }
   ]
 }

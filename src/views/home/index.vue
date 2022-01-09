@@ -5,6 +5,8 @@
         @add="upload"
         @preview="preview(index)"
         @edit="edit(index)"
+        @remove="remove(index)"
+        @refresh="refresh"
         :data="item"
         v-for="(item, index) in list"
         :key="item.id"
@@ -43,6 +45,7 @@ export default defineComponent({
           properties: ['openDirectory']
         }
       })
+    // 编辑
     const edit = (index: number) => {
       router.push({
         path: '/edit',
@@ -55,6 +58,27 @@ export default defineComponent({
     const preview = (index: number) => {
       global.ipcRenderer.send('previewQrCode', cloneDeep(list.value[index]))
     }
+    // 删除项目
+    const remove = (index: number) => {
+      console.log('ccc', index)
+
+      global.$messageBox
+        .confirm(`确认删除${list.value[index].projectName}?`, 'Warning', {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        .then(() => {
+          list.value.splice(index, 1)
+          global.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+        })
+    }
+    // 更新项目
+    const refresh = () => {}
+    // 挂载
     onMounted(() => {
       list.value = global.db.read().get('list').value()
       global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, dir: string) => {
@@ -69,7 +93,9 @@ export default defineComponent({
       upload,
       list,
       edit,
-      preview
+      preview,
+      refresh,
+      remove
     }
   }
 })
@@ -79,6 +105,7 @@ export default defineComponent({
 .home {
   &-list {
     display: flex;
+    flex-wrap: wrap;
   }
 }
 </style>

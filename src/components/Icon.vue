@@ -1,5 +1,5 @@
 <template>
-  <i :class="[`iconfont mp-${icon}`, customClass]" :style="styles" @click="$emit('click')"></i>
+  <i :class="[`iconfont mp-${icon}`, customClass]" :style="styles"></i>
 </template>
 
 <script lang="ts">

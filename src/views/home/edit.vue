@@ -5,25 +5,34 @@
       size="small"
       :model="formData"
       :rules="rules"
-      label-width="110px"
+      label-width="120px"
       label-position="right"
     >
       <el-row>
         <el-col :span="12">
           <el-form-item label="项目名称:" prop="name">
-            <el-input v-model="formData.name"></el-input>
+            <el-input v-model="formData.projectName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="文件夹名称:" prop="projectName">
-            <el-input v-model="formData.projectName" disabled></el-input>
+            <el-input v-model="formData.name" disabled></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
           <el-form-item label="appid:" prop="appid">
             <el-input v-model="formData.appid"></el-input>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="机器人编号:" prop="robot">
+            <el-input v-model.number="formData.robot"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
           <el-form-item label="项目配置路径:" prop="outputPath">
             <el-input v-model="formData.outputPath" disabled></el-input>
@@ -42,14 +51,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
-          <el-form-item label="机器人编号:" prop="robot">
-            <el-input v-model.number="formData.robot"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="3">
+        <el-col :span="2">
           <el-form-item>
             <el-button type="primary" @click="save(ruleFormRef)">保存</el-button>
           </el-form-item>
@@ -116,7 +118,8 @@ export default defineComponent({
       robot: [
         {
           trigger: 'blur',
-          validator: validateRobot
+          validator: validateRobot,
+          required: true
         }
       ]
     })
@@ -128,7 +131,11 @@ export default defineComponent({
       if (!formEl) return
       formEl.validate((valid) => {
         if (valid) {
-          global.db.get('list').find({ id: formData.value.id }).assign(formData.value).write()
+          global.db
+            .get('list')
+            .find({ id: formData.value.id })
+            .assign({ ...formData.value, done: true })
+            .write()
           global.$message({
             message: '保存成功',
             type: 'success'

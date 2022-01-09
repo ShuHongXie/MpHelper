@@ -2,8 +2,20 @@
   <div class="project">
     <div class="project-name" v-if="data">
       {{ data.projectName }}
-      <!-- <mp-icon custom-class="delete" icon="round_close_light" color="red" :size="16"></mp-icon> -->
-      <el-checkbox class="delete" />
+      <mp-icon
+        custom-class="delete"
+        icon="round_close_light"
+        color="red"
+        :size="16"
+        @click.stop="$emit('remove')"
+      ></mp-icon>
+      <mp-icon
+        :custom-class="`refresh ${clickRefresh ? 'active' : ''}`"
+        icon="refresh"
+        :size="16"
+        @click.stop="refresh"
+      ></mp-icon>
+      <!-- <el-checkbox class="delete" /> -->
     </div>
     <div class="project-qrcode">
       <!-- <mp-image style="height: 100%" :src="url"></mp-image> -->
@@ -15,11 +27,17 @@
       <el-row class="project-operation__wrapper">
         <el-col>
           <el-button type="primary" plain size="small" @click.stop="$emit('preview')"
-            >上传/预览</el-button
+            >上传</el-button
           >
+          <el-button type="primary" color="#FFA500" size="small">预览</el-button>
+        </el-col>
+      </el-row>
+      <el-row class="project-operation__wrapper">
+        <el-col :span="24">
           <el-button type="success" size="small" @click.stop="$emit('edit')"
             ><mp-icon icon="setting"></mp-icon> 修改</el-button
           >
+          <el-button type="primary" color="#9370DB" size="small">切换分支</el-button>
         </el-col>
       </el-row>
       <el-row>
@@ -41,7 +59,7 @@
 
 <script lang="ts">
 import { List } from '@/entity/Db'
-import { defineComponent, onMounted, ref, PropType } from 'vue'
+import { defineComponent, onMounted, ref, PropType, reactive } from 'vue'
 export default defineComponent({
   props: {
     data: {
@@ -51,12 +69,20 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
-    const value = ref('')
+    let timer = ref<any>(null)
+    let clickRefresh = ref(false)
 
-    onMounted(() => {})
+    const refresh = () => {
+      clickRefresh.value = true
+      clearTimeout(timer.value)
+      timer.value = setTimeout(() => {
+        clickRefresh.value = false
+      }, 1000)
+    }
     return {
       url,
-      value
+      clickRefresh,
+      refresh
     }
   }
 })
@@ -67,7 +93,6 @@ export default defineComponent({
 .project {
   width: 200px;
   height: 322px;
-  // border: 1px solid red;
   background: #ffffff;
   box-shadow: 2px 0px 10px 0px rgba(96, 125, 238, 0.35);
   border-radius: 6px;
@@ -89,6 +114,24 @@ export default defineComponent({
       top: 0;
       bottom: 0;
       margin: auto 0;
+      cursor: pointer;
+    }
+    .refresh {
+      @extend .delete;
+      right: auto;
+      left: 10px;
+      transition: all 0.3s ease;
+      &.active {
+        animation: live-rotate 1s;
+        @keyframes live-rotate {
+          from {
+            transform: rotate(0);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      }
     }
     // background-color: $primary;
     // border-bottom: 1px solid $primary;

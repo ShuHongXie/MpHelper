@@ -34,10 +34,17 @@
     <div class="project-operation" v-if="data">
       <el-row class="project-operation__wrapper">
         <el-col>
-          <el-button type="primary" plain size="small" @click.stop="$emit('preview')"
+          <el-button
+            type="primary"
+            plain
+            size="small"
+            @click.stop="$emit('preview')"
+            :disabled="data?.loading"
+            >预览</el-button
+          >
+          <el-button type="primary" color="#FFA500" size="small" :disabled="data?.loading"
             >上传</el-button
           >
-          <el-button type="primary" color="#FFA500" size="small">预览</el-button>
         </el-col>
       </el-row>
       <el-row class="project-operation__wrapper">
@@ -93,9 +100,13 @@ export default defineComponent({
     }
     // 图片复制
     const copyImage = () => {
+      console.log(props?.data?.fullQrcodePath)
+
       let qrcode = global.nativeImage.createFromPath(props?.data?.fullQrcodePath)
+      console.log(qrcode, global.clipboard.writeImage)
+
       global.clipboard.writeImage(qrcode)
-      qrcode = null
+      // qrcode = null
       global.$message({
         message: '已复制到剪贴板.',
         type: 'success'

@@ -173,6 +173,7 @@ export default defineComponent({
     onMounted(() => {
       index.value = parseInt(route.query.index as string)
       formData.value = global.db.read().get('list').value()[index.value]
+      // 文件选择回复
       global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, response: any) => {
         const { status, data } = response
         if (status === 'success') {
@@ -185,6 +186,7 @@ export default defineComponent({
           })
         }
       })
+      // 文件夹选择回复
       global.ipcRenderer.on('selectFileReply', async (event: IpcMainEvent, response: any) => {
         const { status, data } = response
         if (status === 'success') {

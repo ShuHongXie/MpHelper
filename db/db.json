@@ -25,6 +25,25 @@
       "id": "4a9e8b45-1f69-4910-b900-204c3cd56784",
       "expireTime": "2022-1-10 17:42",
       "fullQrcodePath": "/Users/xiexiaoxie/test/electron-mp-ci/image/83da7d56-1e30-4ff4-bb7d-81abbce05a14.png"
+    },
+    {
+      "projectName": "uni_ugc宿舍版",
+      "name": "uni_ugc",
+      "path": "D:\\workspace\\uni_ugc",
+      "branches": [
+        "feature/other",
+        "master"
+      ],
+      "currentBranch": "feature/other",
+      "appid": "wx971ea39ef2a2c9a4",
+      "outputPath": "D:\\workspace\\uni_ugc\\dist\\dev\\mp-weixin",
+      "privatePath": "D:\\workspace\\uni_ugc\\private.wx971ea39ef2a2c9a4.key",
+      "robot": 13,
+      "qrcodePath": "/image/83da7d56-1e30-4ff4-bb7d-81abbce05a14.png",
+      "done": true,
+      "expireTime": "2022-1-10 17:42",
+      "id": "b6fa79c9-37d0-414e-b06b-7f846c7471ec",
+      "fullQrcodePath": "D:\\workspace\\electron-mp-ci\\image\\83da7d56-1e30-4ff4-bb7d-81abbce05a14.png"
     }
   ]
 }

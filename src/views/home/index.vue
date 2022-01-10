@@ -71,8 +71,6 @@ export default defineComponent({
     }
     // 删除项目
     const remove = (index: number) => {
-      console.log('ccc', index)
-
       global.$messageBox
         .confirm(`确认删除${list.value[index].projectName}?`, 'Warning', {
           confirmButtonText: '确认',
@@ -105,15 +103,22 @@ export default defineComponent({
       })
       // 预览回复
       global.ipcRenderer.on('previewReply', async (event: IpcMainEvent, response: any) => {
-        console.log(response)
+        const currentPreview = list.value[response.data.index]
         if (response.status === SUCCESS) {
-          const currentPreview = list.value[response.data.index]
           currentPreview.loading = !response.data.done
           currentPreview.loadingText = response.data.message
           if (response.data.done) {
             currentPreview.qrcodePath = response.data.path
             currentPreview.fullQrcodePath = response.data.fullPath
           }
+        } else {
+          global.$message({
+            type: 'error',
+            message: response.data.message
+          })
+          console.log(currentPreview)
+
+          currentPreview.loading = false
         }
       })
     })

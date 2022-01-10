@@ -10,7 +10,8 @@ import {
   ElCol,
   ElInput,
   ElMessage,
-  ElMessageBox
+  ElMessageBox,
+  ElPopconfirm
 } from 'element-plus'
 import * as Components from './components'
 import './assets/scss/index.scss'
@@ -26,6 +27,7 @@ const app = createApp(App)
   .use(ElRow)
   .use(ElCol)
   .use(ElInput)
+  .use(ElPopconfirm)
 // element方法挂载
 app.config.globalProperties.$message = ElMessage
 app.config.globalProperties.$messageBox = ElMessageBox

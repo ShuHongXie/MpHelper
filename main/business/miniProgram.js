@@ -1,10 +1,9 @@
-const { ipcMain } = require('electron')
 const ci = require('miniprogram-ci')
 const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 const db = require('../../db/db-cjs')
 const Response = require('../utils/response')
-const { SUCCESS } = require('../constrant.js')
+const { SUCCESS, FAIL } = require('../constrant.js')
 const { getExpireTime } = require('../utils/tool')
 console.log(getExpireTime)
 
@@ -73,7 +72,22 @@ async function preview(event, arg) {
     })
 
     console.log(previewResult)
-  } catch (e) {}
+  } catch (e) {
+    // 格式化错误捕获信息
+    if (e.message.includes('Error')) {
+      const error = JSON.parse(
+        e.message.substring(e.message.indexOf('{'), e.message.lastIndexOf('}') + 1)
+      )
+      event.reply(
+        'previewReply',
+        new Response(FAIL, {
+          // 返回值往往带有其他信息 这里用正则去掉
+          message: error.errMsg.replace(/(\,\sreference).*/, ''),
+          index: arg.index
+        })
+      )
+    }
+  }
 }
 
 module.exports = createMiniProgramCI

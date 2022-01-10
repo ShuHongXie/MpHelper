@@ -22,6 +22,7 @@ import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { IpcMainEvent } from 'electron'
 import project from './modules/project.vue'
 import { cloneDeep } from 'lodash'
+import { SUCCESS, FAIL } from '@/const'
 
 // import { listBranches } from 'isomorphic-git'
 // import FS from '@isomorphic-git/lightning-fs'
@@ -36,6 +37,14 @@ export default defineComponent({
   setup(props, ctx) {
     const { global, router } = useGlobalProperties()
     const list = ref<List[]>([])
+    // 配置完成校验
+    const filterDone = (index: number, excuteFunc: any) => {
+      if (!list.value[index].done) {
+        global.$message.error('请先完成项目配置.')
+        return
+      }
+      excuteFunc()
+    }
     // ipc通信打开文件夹
     const upload = () =>
       global.ipcRenderer.send('select', {
@@ -56,7 +65,9 @@ export default defineComponent({
     }
     // 图片预览
     const preview = (index: number) => {
-      global.ipcRenderer.send('previewQrCode', cloneDeep(list.value[index]))
+      filterDone(index, () =>
+        global.ipcRenderer.send('previewQrCode', cloneDeep({ ...list.value[index], index }))
+      )
     }
     // 删除项目
     const remove = (index: number) => {
@@ -66,9 +77,10 @@ export default defineComponent({
         .confirm(`确认删除${list.value[index].projectName}?`, 'Warning', {
           confirmButtonText: '确认',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'error'
         })
         .then(() => {
+          global.db.read().get('list').remove({ id: list.value[index].id }).write()
           list.value.splice(index, 1)
           global.$message({
             type: 'success',
@@ -81,11 +93,27 @@ export default defineComponent({
     // 挂载
     onMounted(() => {
       list.value = global.db.read().get('list').value()
+      for (const item of list.value) {
+        Object.assign(item, {}, { loadingText: '', loading: false })
+      }
       global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, dir: string) => {
         if (dir) {
           // console.log(fs, dir)
           // let branches = await listBranches({ fs, dir, gitdir: path.join(dir, '.git') })
           // console.log(branches)
+        }
+      })
+      // 预览回复
+      global.ipcRenderer.on('previewReply', async (event: IpcMainEvent, response: any) => {
+        console.log(response)
+        if (response.status === SUCCESS) {
+          const currentPreview = list.value[response.data.index]
+          currentPreview.loading = !response.data.done
+          currentPreview.loadingText = response.data.message
+          if (response.data.done) {
+            currentPreview.qrcodePath = response.data.path
+            currentPreview.fullQrcodePath = response.data.fullPath
+          }
         }
       })
     })

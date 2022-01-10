@@ -1,59 +1,30 @@
 {
   "list": [
     {
-      "projectName": "懂表弟开发版",
-      "name": "uni_ugc",
-      "path": "D:\\workspace\\uni_ugc",
+      "projectName": "懂表帝开发版",
+      "name": "uni-ugc",
+      "path": "/Users/xiexiaoxie/wanbiao/uni-ugc",
       "branches": [
-        "master"
-      ],
-      "currentBranch": "master",
-      "appid": "wx971ea39ef2a2c9a4",
-      "outputPath": "D:\\workspace\\uni_ugc\\dist\\dev\\mp-weixin",
-      "privatePath": "D:\\workspace\\uni_ugc\\private.wx971ea39ef2a2c9a4.key",
-      "robot": 1,
-      "done": false,
-      "id": "e913292e-817a-4198-b273-bd429354180b"
-    },
-    {
-      "projectName": "egg_blog_server",
-      "name": "egg_blog_server",
-      "path": "D:\\workspace\\egg_blog_server",
-      "branches": [
-        "develop"
-      ],
-      "currentBranch": "develop",
-      "appid": "",
-      "outputPath": "",
-      "privatePath": "",
-      "robot": 1,
-      "done": false,
-      "id": "c1e832f3-b196-433b-bcfc-35ce1b83f815"
-    },
-    {
-      "projectName": "emr-cpoe-fe",
-      "name": "emr-cpoe-fe",
-      "path": "D:\\workspace\\emr-cpoe-fe",
-      "branches": [
-        "bugfix/chl-huizhen",
-        "bugfix/chl/IP-EMR-1617-1618-1620-1625-1614-1627-1631",
-        "bugfix/chl/IP-EMR-1639-1638-1636-1635-1629-1633",
-        "chl/EMR-2946",
-        "dev_chl",
-        "develop",
-        "feature/chl/IP-EMR-2042",
-        "feature/v3.4.0.hotfix",
-        "feature/v3.7.0.hotfix",
+        "bugfix/home",
+        "bugfix/swiper",
+        "feature/eslint",
+        "feature/identifyImage",
+        "feature/mergeEslint",
+        "feature/newVersion",
+        "feature/video",
         "master",
-        "v3.4.0.hotfix/chl"
+        "test"
       ],
-      "currentBranch": "bugfix/chl-huizhen",
-      "appid": "",
-      "outputPath": "",
-      "privatePath": "",
-      "robot": 1,
-      "done": false,
-      "id": "95efa695-ed45-4f2a-ad47-6108dd574293"
+      "currentBranch": "feature/newVersion",
+      "appid": "wx971ea39ef2a2c9a4",
+      "outputPath": "/Users/xiexiaoxie/wanbiao/uni-ugc/dist/dev/mp-weixin",
+      "privatePath": "/Users/xiexiaoxie/Downloads/private.wx971ea39ef2a2c9a4.key",
+      "robot": 3,
+      "done": true,
+      "qrcodePath": "/image/83da7d56-1e30-4ff4-bb7d-81abbce05a14.png",
+      "id": "4a9e8b45-1f69-4910-b900-204c3cd56784",
+      "expireTime": "2022-1-10 17:42",
+      "fullQrcodePath": "/Users/xiexiaoxie/test/electron-mp-ci/image/83da7d56-1e30-4ff4-bb7d-81abbce05a14.png"
     }
   ]
 }

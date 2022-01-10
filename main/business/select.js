@@ -29,7 +29,8 @@ async function executeSelectFile(event, arg, fileObject) {
             fullname: false
           })
           // 插入数据
-          db.get('list')
+          db.read()
+            .get('list')
             .insert({
               projectName: projectName,
               name: projectName,
@@ -40,7 +41,9 @@ async function executeSelectFile(event, arg, fileObject) {
               outputPath: '',
               privatePath: '',
               robot: 1,
-              done: false
+              qrcodePath: '',
+              done: false,
+              expireTime: ''
             })
             .write()
         }

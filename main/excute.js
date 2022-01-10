@@ -16,7 +16,7 @@ function excute() {
       .then(async (fileObject) => excuteSelect(event, arg, fileObject))
   })
   // 微信小程序二维码预览
-  ipcMain.on('previewQrCode', (event, arg) => excuteMiniProgram(arg))
+  ipcMain.on('previewQrCode', (event, arg) => excuteMiniProgram(event, arg))
 }
 
 module.exports = excute()

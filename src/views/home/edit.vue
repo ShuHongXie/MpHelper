@@ -78,7 +78,7 @@ export default defineComponent({
     const formData = ref<List>({})
     const index = ref<number>(-1)
     // 机器人编号校验
-    const validateRobot = (rule: any, value: any, callback: any) => {
+    const validateRobot = (rule: any, value: number, callback: any) => {
       console.log(typeof value, value)
       if (value >= 0 && value <= 30) {
         callback()

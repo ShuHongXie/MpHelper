@@ -9,5 +9,10 @@ export interface List {
   outputPath?: string
   privatePath?: string
   robot?: number
+  qrcodePath?: string
   done?: boolean
+  loading?: boolean
+  loadingText?: string
+  expireTime?: string
+  fullQrcodePath?: string
 }

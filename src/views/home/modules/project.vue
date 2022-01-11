@@ -52,10 +52,12 @@
           <el-button type="success" size="small" @click.stop="$emit('edit')"
             ><mp-icon icon="setting"></mp-icon> 配置</el-button
           >
-          <el-button type="primary" color="#9370DB" size="small">切换分支</el-button>
+          <el-button type="primary" color="#9370DB" size="small" @click.stop="$emit('switch')"
+            >分支切换</el-button
+          >
         </el-col>
       </el-row>
-      <el-row>
+      <!-- <el-row>
         <el-col>
           <el-select v-model="data.currentBranch" placeholder="请选择当前分支" size="small">
             <el-option
@@ -67,14 +69,13 @@
             </el-option>
           </el-select>
         </el-col>
-      </el-row>
+      </el-row> -->
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { List } from '@/entity/Db'
-import { messageEmits } from 'element-plus'
 import { defineComponent, onMounted, ref, PropType, reactive } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { copy } from '@/utils/tool'
@@ -128,7 +129,7 @@ export default defineComponent({
 @import '@/assets/scss/constarnt.scss';
 .project {
   width: 200px;
-  height: 380px;
+  height: 350px;
   background: #ffffff;
   box-shadow: 2px 0px 10px 0px rgba(96, 125, 238, 0.35);
   border-radius: 6px;

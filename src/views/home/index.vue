@@ -7,12 +7,14 @@
         @edit="edit(index)"
         @remove="remove(index)"
         @refresh="refresh"
+        @switch="switchBranch(index)"
         :data="item"
         v-for="(item, index) in list"
         :key="item.id"
       ></project>
       <project @add="upload" :data="undefined"></project>
     </div>
+    <switch-git-dialog ref="switchGitDialog" :data="currentSelectProject" />
   </div>
 </template>
 
@@ -20,23 +22,22 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { IpcMainEvent } from 'electron'
-import project from './modules/project.vue'
 import { cloneDeep } from 'lodash'
 import { SUCCESS, FAIL } from '@/const'
-
-// import { listBranches } from 'isomorphic-git'
-// import FS from '@isomorphic-git/lightning-fs'
-// const fs = new FS('fs')
 import { List } from '@/entity/Db'
-
+import project from './modules/project.vue'
+import switchGitDialog from './modules/switchGitDialog.vue'
 export default defineComponent({
   name: 'HomePage',
   components: {
-    project
+    project,
+    switchGitDialog
   },
   setup(props, ctx) {
     const { global, router } = useGlobalProperties()
     const list = ref<List[]>([])
+    const currentSelectProject = ref<List>({})
+    const switchGitDialog = ref()
     // 配置完成校验
     const filterDone = (index: number, excuteFunc: any) => {
       if (!list.value[index].done) {
@@ -88,19 +89,27 @@ export default defineComponent({
     }
     // 更新项目
     const refresh = () => {}
+    // 分支切换
+    const switchBranch = (index: number) => {
+      if (!list.value[index].branches?.length) {
+        global.$message({
+          type: 'success',
+          message: '当前项目下没有分支'
+        })
+        return
+      }
+      currentSelectProject.value = list.value[index]
+      switchGitDialog.value.open()
+      console.log(switchGitDialog.value)
+    }
     // 挂载
     onMounted(() => {
+      // 从数据库中拿取状态
       list.value = global.db.read().get('list').value()
+      // 增加loading状态的可以key
       for (const item of list.value) {
         Object.assign(item, {}, { loadingText: '', loading: false })
       }
-      global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, dir: string) => {
-        if (dir) {
-          // console.log(fs, dir)
-          // let branches = await listBranches({ fs, dir, gitdir: path.join(dir, '.git') })
-          // console.log(branches)
-        }
-      })
       // 预览回复
       global.ipcRenderer.on('previewReply', async (event: IpcMainEvent, response: any) => {
         const currentPreview = list.value[response.data.index]
@@ -121,6 +130,8 @@ export default defineComponent({
           currentPreview.loading = false
         }
       })
+      currentSelectProject.value = list.value[1]
+      console.log(currentSelectProject.value)
     })
     return {
       upload,
@@ -128,7 +139,10 @@ export default defineComponent({
       edit,
       preview,
       refresh,
-      remove
+      remove,
+      switchBranch,
+      currentSelectProject,
+      switchGitDialog
     }
   }
 })

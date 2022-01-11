@@ -18,16 +18,15 @@ import './assets/scss/index.scss'
 const electron = require('electron')
 import db from '../db/db.js'
 
-const app = createApp(App)
-  .use(router)
-  .use(ElButton)
-  .use(ElImage)
-  .use(ElIcon)
-  .use(ElForm)
-  .use(ElRow)
-  .use(ElCol)
-  .use(ElInput)
-  .use(ElPopconfirm)
+const app = createApp(App).use(router)
+// .use(ElButton)
+// .use(ElImage)
+// .use(ElIcon)
+// .use(ElForm)
+// .use(ElRow)
+// .use(ElCol)
+// .use(ElInput)
+// .use(ElPopconfirm)
 // element方法挂载
 app.config.globalProperties.$message = ElMessage
 app.config.globalProperties.$messageBox = ElMessageBox

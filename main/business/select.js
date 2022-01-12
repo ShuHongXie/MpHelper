@@ -43,7 +43,12 @@ async function executeSelectFile(event, arg, fileObject) {
               robot: 1,
               qrcodePath: '',
               done: false,
-              expireTime: ''
+              expireTime: '',
+              pagePath: '',
+              searchQuery: '',
+              scene: '',
+              threads: 4,
+              setting: {}
             })
             .write()
         }

@@ -10,37 +10,47 @@ console.log(getExpireTime)
 // 实例创建
 function createMiniProgramCI(event, arg) {
   console.log(arg)
+  const { type, params = {} } = arg
   ciInstance = new ci.Project({
-    appid: arg.appid,
+    appid: params.appid,
     type: 'miniProgram',
-    projectPath: arg.outputPath,
-    privateKeyPath: arg.privatePath,
+    projectPath: params.outputPath,
+    privateKeyPath: params.privatePath,
     ignores: ['node_modules/**/*']
   })
-
-  preview(event, arg)
+  switch (type) {
+    case 'preview':
+      preview(event, params)
+      break
+    case 'upload':
+      upload(event, params)
+      break
+  }
 }
-
-async function preview(event, arg) {
+// 上传
+async function upload() {}
+// 预览
+async function preview(event, params) {
   const uuid = uuidv4()
   const qrcodeOutputDest = path.resolve(__dirname, `../../image/${uuid}.png`)
+  console.log('触发预览')
   try {
     const previewResult = await ci.preview({
       project: ciInstance,
       desc: 'hello', // 此备注将显示在“小程序助手”开发版列表中
-      setting: {
-        es6: true,
-        minify: true
-      },
-      robot: arg.robot,
+      setting: params.setting,
+      robot: params.robot,
       qrcodeFormat: 'image',
       qrcodeOutputDest,
+      pagePath: params.pagePath,
+      searchQuery: params.searchQuery,
+      scene: params.scene,
       onProgressUpdate: (res) => {
         console.log(res)
         if (res._msg !== 'upload') {
           event.reply(
             'previewReply',
-            new Response(SUCCESS, { message: `正在编译中`, index: arg.index, done: false })
+            new Response(SUCCESS, { message: `正在编译中`, index: params.index, done: false })
           )
         } else if (res._msg === 'upload' && res._status === 'done') {
           const expireTime = getExpireTime(25)
@@ -48,7 +58,7 @@ async function preview(event, arg) {
             'previewReply',
             new Response(SUCCESS, {
               message: '',
-              index: arg.index,
+              index: params.index,
               done: true,
               path: `/image/${uuid}.png`,
               fullPath: qrcodeOutputDest,
@@ -58,7 +68,7 @@ async function preview(event, arg) {
 
           db.read()
             .get('list')
-            .find({ id: arg.id })
+            .find({ id: params.id })
             .assign({
               qrcodePath: `/image/${uuid}.png`,
               fullQrcodePath: qrcodeOutputDest,
@@ -67,8 +77,6 @@ async function preview(event, arg) {
             .write()
         }
       }
-      // pagePath: 'pages/index/index', // 预览页面
-      // searchQuery: 'a=1&b=2',  // 预览参数 [注意!]这里的`&`字符在命令行中应写成转义字符`\&`
     })
 
     console.log(previewResult)
@@ -83,7 +91,7 @@ async function preview(event, arg) {
         new Response(FAIL, {
           // 返回值往往带有其他信息 这里用正则去掉
           message: error.errMsg.replace(/(\,\sreference).*/, ''),
-          index: arg.index
+          index: params.index
         })
       )
     }

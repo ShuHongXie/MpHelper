@@ -16,8 +16,8 @@ function excute() {
       })
       .then(async (fileObject) => excuteSelect(event, arg, fileObject))
   })
-  // 微信小程序二维码预览
-  ipcMain.on('previewQrCode', (event, arg) => excuteMiniProgram(event, arg))
+  // 微信小程序CI操作
+  ipcMain.on('miniProgram', (event, arg) => excuteMiniProgram(event, arg))
   // git 操作
   ipcMain.on('gitOperate', (event, arg) => excuteGit(event, arg))
 }

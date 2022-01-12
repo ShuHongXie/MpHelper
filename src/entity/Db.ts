@@ -1,3 +1,6 @@
+export interface complieSetting {
+  [key: string]: boolean
+}
 export interface List {
   projectName?: string
   name?: string
@@ -15,4 +18,9 @@ export interface List {
   loadingText?: string
   expireTime?: string
   fullQrcodePath?: string
+  pagePath?: string
+  searchQuery?: string
+  scene?: string
+  threads?: string
+  setting?: complieSetting
 }

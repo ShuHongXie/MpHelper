@@ -8,13 +8,18 @@
         @remove="remove(index)"
         @refresh="refresh"
         @switch="switchBranch(index)"
+        @upload="uploadMp(index)"
         :data="item"
         v-for="(item, index) in list"
         :key="item.id"
       ></project>
       <project @add="upload" :data="undefined"></project>
     </div>
-    <switch-git-dialog ref="switchGitDialog" :data="currentSelectProject" />
+    <switch-git-dialog
+      ref="switchGitDialog"
+      @confirm="confirmSiwthGit"
+      :data="currentSelectProject"
+    />
   </div>
 </template>
 
@@ -22,7 +27,7 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { IpcMainEvent } from 'electron'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, debounce } from 'lodash'
 import { SUCCESS, FAIL } from '@/const'
 import { List } from '@/entity/Db'
 import project from './modules/project.vue'
@@ -65,11 +70,22 @@ export default defineComponent({
       })
     }
     // 图片预览
-    const preview = (index: number) => {
+    const preview = debounce((index: number) => {
       filterDone(index, () =>
-        global.ipcRenderer.send('previewQrCode', cloneDeep({ ...list.value[index], index }))
+        global.ipcRenderer.send('miniProgram', {
+          type: 'preview',
+          params: cloneDeep({ ...list.value[index], index })
+        })
       )
-    }
+    }, 300)
+    const uploadMp = debounce((index: number) => {
+      filterDone(index, () =>
+        global.ipcRenderer.send('miniProgram', {
+          type: 'upload',
+          params: cloneDeep({ ...list.value[index], index })
+        })
+      )
+    }, 300)
     // 删除项目
     const remove = (index: number) => {
       global.$messageBox
@@ -102,6 +118,24 @@ export default defineComponent({
       switchGitDialog.value.open()
       console.log(switchGitDialog.value)
     }
+    // 切换git
+    const confirmSiwthGit = (branch: string) => {
+      if (branch === currentSelectProject.value.currentBranch) {
+        global.$message({
+          type: 'warning',
+          message: '所选分支已经是当前分支'
+        })
+        return
+      }
+      global.ipcRenderer.send('gitOperate', {
+        type: 'checkout',
+        params: {
+          ...cloneDeep(currentSelectProject.value),
+          currentBranch: branch
+        }
+      })
+      // if(list.value)
+    }
     // 挂载
     onMounted(() => {
       // 从数据库中拿取状态
@@ -125,13 +159,10 @@ export default defineComponent({
             type: 'error',
             message: response.data.message
           })
-          console.log(currentPreview)
-
           currentPreview.loading = false
         }
       })
       currentSelectProject.value = list.value[1]
-      console.log(currentSelectProject.value)
     })
     return {
       upload,
@@ -142,7 +173,8 @@ export default defineComponent({
       remove,
       switchBranch,
       currentSelectProject,
-      switchGitDialog
+      switchGitDialog,
+      confirmSiwthGit
     }
   }
 })

@@ -42,7 +42,12 @@
             :disabled="data?.loading"
             >预览</el-button
           >
-          <el-button type="primary" color="#FFA500" size="small" :disabled="data?.loading"
+          <el-button
+            type="primary"
+            color="#FFA500"
+            size="small"
+            :disabled="data?.loading"
+            @click.stop="$emit('upload')"
             >上传</el-button
           >
         </el-col>
@@ -137,6 +142,10 @@ export default defineComponent({
   margin: 10px 0 10px 10px;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s;
+  // &:hover {
+  //   transform: translate3d(2px, 2px, 2px);
+  // }
   &-name {
     height: 36px;
     line-height: 36px;

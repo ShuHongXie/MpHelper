@@ -1,32 +1,6 @@
 {
   "list": [
     {
-      "projectName": "懂表帝开发版",
-      "name": "uni-ugc",
-      "path": "/Users/xiexiaoxie/wanbiao/uni-ugc",
-      "branches": [
-        "bugfix/home",
-        "bugfix/swiper",
-        "feature/eslint",
-        "feature/identifyImage",
-        "feature/mergeEslint",
-        "feature/newVersion",
-        "feature/video",
-        "master",
-        "test"
-      ],
-      "currentBranch": "feature/newVersion",
-      "appid": "wx971ea39ef2a2c9a4",
-      "outputPath": "/Users/xiexiaoxie/wanbiao/uni-ugc/dist/dev/mp-weixin",
-      "privatePath": "/Users/xiexiaoxie/Downloads/private.wx971ea39ef2a2c9a4.key",
-      "robot": 3,
-      "done": true,
-      "qrcodePath": "/image/83da7d56-1e30-4ff4-bb7d-81abbce05a14.png",
-      "id": "4a9e8b45-1f69-4910-b900-204c3cd56784",
-      "expireTime": "2022-1-10 17:42",
-      "fullQrcodePath": "/Users/xiexiaoxie/test/electron-mp-ci/image/83da7d56-1e30-4ff4-bb7d-81abbce05a14.png"
-    },
-    {
       "projectName": "uni_ugc宿舍版",
       "name": "uni_ugc",
       "path": "D:\\workspace\\uni_ugc",
@@ -44,6 +18,38 @@
       "expireTime": "2022-1-10 17:42",
       "id": "b6fa79c9-37d0-414e-b06b-7f846c7471ec",
       "fullQrcodePath": "D:\\workspace\\electron-mp-ci\\image\\83da7d56-1e30-4ff4-bb7d-81abbce05a14.png"
+    },
+    {
+      "projectName": "uni-ugc",
+      "name": "uni-ugc",
+      "path": "/Users/xiexiaoxie/wanbiao/uni-ugc",
+      "branches": [
+        "bugfix/home",
+        "bugfix/swiper",
+        "feature/eslint",
+        "feature/identifyImage",
+        "feature/mergeEslint",
+        "feature/newVersion",
+        "feature/video",
+        "master",
+        "test"
+      ],
+      "currentBranch": "master",
+      "appid": "wx971ea39ef2a2c9a4",
+      "outputPath": "/Users/xiexiaoxie/wanbiao/uni-ugc/dist/dev/mp-weixin",
+      "privatePath": "/Users/xiexiaoxie/Downloads/private.wx971ea39ef2a2c9a4.key",
+      "robot": 2,
+      "qrcodePath": "/image/309e9e89-5d5d-42e7-8cc1-f761fe8fe307.png",
+      "done": true,
+      "expireTime": "2022-1-12 18:21",
+      "id": "01d4a0f0-d2c3-4c60-8380-ab1adac2e9c0",
+      "fullQrcodePath": "/Users/xiexiaoxie/test/electron-mp-ci/image/309e9e89-5d5d-42e7-8cc1-f761fe8fe307.png",
+      "pagePath": "",
+      "searchQuery": "",
+      "setting": {
+        "minifyJS": true,
+        "minifyWXML": true
+      }
     }
   ]
 }

@@ -1,30 +1,13 @@
 <template>
-  <el-dialog v-model="visible" width="50%" custom-class="switch-git">
+  <el-dialog v-model="visible" width="50%" custom-class="upload-mp">
     <template #title>
-      <span class="switch-git__title">请选择要切换的分支</span>
+      <span class="upload-mp__title">请填写上传的必要信息</span>
     </template>
-    <div class="switch-git__content">
-      <div
-        class="git"
-        v-for="(item, index) in data.branches"
-        :key="index"
-        :label="item"
-        :value="item"
-        @click="select(index)"
-      >
-        <span class="git-name">{{ item }}</span>
-        <mp-icon
-          v-if="selectIndex === index"
-          icon="select-bold"
-          :color="data.currentBranch === item ? 'gray' : '#FF8C00'"
-          :size="24"
-        ></mp-icon>
-      </div>
-    </div>
+    <div class="upload-mp__content">21321</div>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="visible = false" size="mini">取消</el-button>
-        <el-button type="primary" @click="confirm" size="mini">确认切换</el-button>
+        <el-button type="primary" @click="confirm" size="mini">确认</el-button>
       </span>
     </template>
   </el-dialog>
@@ -69,7 +52,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import '@/assets/scss/constarnt.scss';
-.switch-git {
+.upload-mp {
   border-radius: 6px;
   overflow: hidden;
   &__title {

@@ -11,6 +11,7 @@ import {
   ElInput,
   ElMessage,
   ElMessageBox,
+  ElLoading,
   ElPopconfirm
 } from 'element-plus'
 import * as Components from './components'
@@ -30,6 +31,7 @@ const app = createApp(App).use(router)
 // element方法挂载
 app.config.globalProperties.$message = ElMessage
 app.config.globalProperties.$messageBox = ElMessageBox
+app.config.globalProperties.$loading = ElLoading
 // electron方法挂载
 for (const key in electron) {
   console.log(key)

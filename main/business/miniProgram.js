@@ -5,10 +5,12 @@ const db = require('../../db/db-cjs')
 const Response = require('../utils/response')
 const { SUCCESS, FAIL } = require('../constrant.js')
 const { getExpireTime } = require('../utils/tool')
+let showIndex
 console.log(getExpireTime)
 
 // CI实例创建
 function createMiniProgramCI(event, arg) {
+  showIndex = 0
   console.log(arg)
   const { type, params = {} } = arg
   ciInstance = new ci.Project({
@@ -42,18 +44,35 @@ async function upload(event, params) {
         autoPrefixWXSS: true
       },
       onProgressUpdate: (res) => {
-        console.log(res)
+        if (res._msg !== 'upload') {
+          !showIndex &&
+            event.reply(
+              'uploadReply',
+              new Response(SUCCESS, { message: `正在上传中`, index: params.index, done: false })
+            )
+          showIndex++
+        } else if (res._msg === 'upload' && res._status === 'done') {
+          showIndex = 0
+          event.reply(
+            'uploadReply',
+            new Response(SUCCESS, {
+              message: '',
+              done: true
+            })
+          )
+        }
       }
     })
     console.log(uploadResult)
   } catch (e) {
+    showIndex = 0
     // 格式化错误捕获信息
     if (e.message.includes('Error')) {
       const error = JSON.parse(
         e.message.substring(e.message.indexOf('{'), e.message.lastIndexOf('}') + 1)
       )
       event.reply(
-        'previewReply',
+        'uploadReply',
         new Response(FAIL, {
           // 返回值往往带有其他信息 这里用正则去掉
           message: error.errMsg.replace(/(\,\sreference).*/, ''),

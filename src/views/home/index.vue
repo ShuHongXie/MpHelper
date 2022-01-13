@@ -184,6 +184,7 @@ export default defineComponent({
     const confirmInput = () => {}
     // 挂载
     onMounted(() => {
+      let loadingInstance: { close: () => void } | null = null
       // 从数据库中拿取状态
       list.value = global.db.read().get('list').value()
       // 增加loading状态的可以key
@@ -201,6 +202,34 @@ export default defineComponent({
             currentPreview.fullQrcodePath = response.data.fullPath
           }
         } else {
+          global.$message({
+            type: 'error',
+            message: response.data.message
+          })
+          currentPreview.loading = false
+        }
+      })
+      // 上传回复
+      global.ipcRenderer.on('uploadReply', async (event: IpcMainEvent, response: any) => {
+        const currentPreview = list.value[response.data.index]
+        if (response.status === SUCCESS) {
+          loadingInstance = global.$loading.service({
+            body: true,
+            lock: true,
+            background: 'rgba(0, 0, 0, 0.7)',
+            text: '正在上传中...'
+          })
+          if (response.data.done) {
+            loadingInstance?.close()
+            loadingInstance = null
+            global.$message({
+              type: 'success',
+              message: '上传成功'
+            })
+          }
+        } else {
+          loadingInstance?.close()
+          loadingInstance = null
           global.$message({
             type: 'error',
             message: response.data.message

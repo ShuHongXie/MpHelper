@@ -7,7 +7,7 @@ const { SUCCESS, FAIL } = require('../constrant.js')
 const { getExpireTime } = require('../utils/tool')
 console.log(getExpireTime)
 
-// 实例创建
+// CI实例创建
 function createMiniProgramCI(event, arg) {
   console.log(arg)
   const { type, params = {} } = arg
@@ -28,7 +28,41 @@ function createMiniProgramCI(event, arg) {
   }
 }
 // 上传
-async function upload() {}
+async function upload(event, params) {
+  console.log('开始上传')
+  try {
+    const uploadResult = await ci.upload({
+      project: ciInstance,
+      version: params.version,
+      desc: params.desc,
+      setting: {
+        minify: true,
+        es6: true,
+        es7: true,
+        autoPrefixWXSS: true
+      },
+      onProgressUpdate: (res) => {
+        console.log(res)
+      }
+    })
+    console.log(uploadResult)
+  } catch (e) {
+    // 格式化错误捕获信息
+    if (e.message.includes('Error')) {
+      const error = JSON.parse(
+        e.message.substring(e.message.indexOf('{'), e.message.lastIndexOf('}') + 1)
+      )
+      event.reply(
+        'previewReply',
+        new Response(FAIL, {
+          // 返回值往往带有其他信息 这里用正则去掉
+          message: error.errMsg.replace(/(\,\sreference).*/, ''),
+          index: params.index
+        })
+      )
+    }
+  }
+}
 // 预览
 async function preview(event, params) {
   const uuid = uuidv4()
@@ -37,8 +71,13 @@ async function preview(event, params) {
   try {
     const previewResult = await ci.preview({
       project: ciInstance,
-      desc: 'hello', // 此备注将显示在“小程序助手”开发版列表中
-      setting: params.setting,
+      desc: params.desc, // 此备注将显示在“小程序助手”开发版列表中
+      setting: {
+        minify: true,
+        es6: true,
+        es7: true,
+        autoPrefixWXSS: true
+      },
       robot: params.robot,
       qrcodeFormat: 'image',
       qrcodeOutputDest,

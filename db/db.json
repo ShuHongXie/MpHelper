@@ -39,16 +39,22 @@
       "outputPath": "/Users/xiexiaoxie/wanbiao/uni-ugc/dist/dev/mp-weixin",
       "privatePath": "/Users/xiexiaoxie/Downloads/private.wx971ea39ef2a2c9a4.key",
       "robot": 2,
-      "qrcodePath": "/image/309e9e89-5d5d-42e7-8cc1-f761fe8fe307.png",
+      "qrcodePath": "/image/6af38105-8313-4195-b6b2-f7d756ffa82e.png",
       "done": true,
-      "expireTime": "2022-1-12 18:21",
+      "expireTime": "2022-1-13 17:8",
       "id": "01d4a0f0-d2c3-4c60-8380-ab1adac2e9c0",
-      "fullQrcodePath": "/Users/xiexiaoxie/test/electron-mp-ci/image/309e9e89-5d5d-42e7-8cc1-f761fe8fe307.png",
+      "fullQrcodePath": "/Users/xiexiaoxie/test/electron-mp-ci/image/6af38105-8313-4195-b6b2-f7d756ffa82e.png",
       "pagePath": "",
       "searchQuery": "",
       "setting": {
         "minifyJS": true,
-        "minifyWXML": true
+        "minifyWXML": true,
+        "minifyWXSS": true,
+        "minify": true,
+        "codeProtect": true,
+        "es7": true,
+        "es6": true,
+        "autoPrefixWXSS": true
       }
     }
   ]

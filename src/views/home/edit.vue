@@ -83,7 +83,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <!-- <el-col :span="12">
           <el-form-item label="编译选项:" prop="pagePath">
             <el-select v-model="currentCompileSettings" multiple placeholder="请选择编译选项">
               <el-option
@@ -95,7 +95,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-        </el-col>
+        </el-col> -->
       </el-row>
       <el-row>
         <el-col :span="2">

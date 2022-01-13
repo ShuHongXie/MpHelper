@@ -4,6 +4,7 @@
       <project
         @add="upload"
         @preview="preview(index)"
+        @previewDesc="previewDesc(index)"
         @edit="edit(index)"
         @remove="remove(index)"
         @refresh="refresh"
@@ -17,9 +18,11 @@
     </div>
     <switch-git-dialog
       ref="switchGitDialog"
-      @confirm="confirmSiwthGit"
+      @confirm="confirmSwitchGit"
       :data="currentSelectProject"
     />
+    <upload-input-dialog ref="uploadInputDialog" @confirm="confirmUploadMp" />
+    <preview-desc-dialog ref="previewDescDialog" @confirm="confirmPreview" />
   </div>
 </template>
 
@@ -30,19 +33,27 @@ import { IpcMainEvent } from 'electron'
 import { cloneDeep, debounce } from 'lodash'
 import { SUCCESS, FAIL } from '@/const'
 import { List } from '@/entity/Db'
+import { Form } from '@/entity/Params'
 import project from './modules/project.vue'
 import switchGitDialog from './modules/switchGitDialog.vue'
+import uploadInputDialog from './modules/uploadInputDialog.vue'
+import previewDescDialog from './modules/previewDescDialog.vue'
 export default defineComponent({
   name: 'HomePage',
   components: {
     project,
-    switchGitDialog
+    switchGitDialog,
+    uploadInputDialog,
+    previewDescDialog
   },
   setup(props, ctx) {
     const { global, router } = useGlobalProperties()
     const list = ref<List[]>([])
     const currentSelectProject = ref<List>({})
+    const currentSelectIndex = ref(0)
     const switchGitDialog = ref()
+    const uploadInputDialog = ref()
+    const previewDescDialog = ref()
     // 配置完成校验
     const filterDone = (index: number, excuteFunc: any) => {
       if (!list.value[index].done) {
@@ -69,7 +80,7 @@ export default defineComponent({
         }
       })
     }
-    // 图片预览
+    // 图片直接预览
     const preview = debounce((index: number) => {
       filterDone(index, () =>
         global.ipcRenderer.send('miniProgram', {
@@ -78,11 +89,44 @@ export default defineComponent({
         })
       )
     }, 300)
+    // 打开预览备注弹框
+    const previewDesc = (index: number) => {
+      console.log('--', previewDescDialog.value)
+
+      currentSelectProject.value = list.value[index]
+      currentSelectIndex.value = index
+      previewDescDialog.value.open()
+    }
+    // 备注后预览
+    const confirmPreview = debounce((desc: string) => {
+      filterDone(currentSelectIndex.value, () =>
+        global.ipcRenderer.send('miniProgram', {
+          type: 'preview',
+          params: cloneDeep({
+            ...list.value[currentSelectIndex.value],
+            index: currentSelectIndex.value,
+            desc
+          })
+        })
+      )
+    })
     const uploadMp = debounce((index: number) => {
-      filterDone(index, () =>
+      currentSelectProject.value = list.value[index]
+      currentSelectIndex.value = index
+      uploadInputDialog.value.open()
+      // filterDone(index, () =>
+      //   global.ipcRenderer.send('miniProgram', {
+      //     type: 'upload',
+      //     params: cloneDeep({ ...list.value[index], index })
+      //   })
+      // )
+    }, 300)
+    const confirmUploadMp = debounce((data: Form) => {
+      console.log(currentSelectIndex.value, { ...list.value[currentSelectIndex.value], ...data })
+      filterDone(currentSelectIndex.value, () =>
         global.ipcRenderer.send('miniProgram', {
           type: 'upload',
-          params: cloneDeep({ ...list.value[index], index })
+          params: cloneDeep({ ...list.value[currentSelectIndex.value], ...data })
         })
       )
     }, 300)
@@ -115,11 +159,12 @@ export default defineComponent({
         return
       }
       currentSelectProject.value = list.value[index]
+      currentSelectIndex.value = index
       switchGitDialog.value.open()
       console.log(switchGitDialog.value)
     }
     // 切换git
-    const confirmSiwthGit = (branch: string) => {
+    const confirmSwitchGit = (branch: string) => {
       if (branch === currentSelectProject.value.currentBranch) {
         global.$message({
           type: 'warning',
@@ -136,6 +181,7 @@ export default defineComponent({
       })
       // if(list.value)
     }
+    const confirmInput = () => {}
     // 挂载
     onMounted(() => {
       // 从数据库中拿取状态
@@ -162,7 +208,6 @@ export default defineComponent({
           currentPreview.loading = false
         }
       })
-      currentSelectProject.value = list.value[1]
     })
     return {
       upload,
@@ -174,8 +219,14 @@ export default defineComponent({
       switchBranch,
       currentSelectProject,
       switchGitDialog,
-      confirmSiwthGit,
-      uploadMp
+      uploadInputDialog,
+      previewDescDialog,
+      confirmSwitchGit,
+      uploadMp,
+      confirmUploadMp,
+      confirmInput,
+      previewDesc,
+      confirmPreview
     }
   }
 })

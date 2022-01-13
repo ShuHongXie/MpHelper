@@ -48,7 +48,9 @@ async function executeSelectFile(event, arg, fileObject) {
               searchQuery: '',
               scene: '',
               threads: 4,
-              setting: {}
+              setting: {},
+              desc: '',
+              version: ''
             })
             .write()
         }

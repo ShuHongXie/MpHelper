@@ -1,11 +1,14 @@
 <template>
   <el-dialog v-model="visible" width="50%" custom-class="upload-mp">
     <template #title>
-      <span class="upload-mp__title">请填写上传的必要信息</span>
+      <p class="upload-mp__title">
+        <span>请填写上传的必要信息</span>&nbsp;
+        <span class="upload-mp__title--notice">注: 本次上传将会覆盖体验版</span>
+      </p>
     </template>
     <div class="upload-mp__content">
-      <el-form ref="formRef" :rules="rules" :model="form" label-width="120px">
-        <el-form-item label="版本号:">
+      <el-form ref="formRef" :rules="rules" size="small" :model="form" label-width="80px">
+        <el-form-item label="版本号:" prop="version">
           <el-input v-model="form.version"></el-input>
         </el-form-item>
         <el-form-item label="备注:">
@@ -16,7 +19,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="visible = false" size="mini">取消</el-button>
-        <el-button type="primary" @click="confirm" size="mini">确认</el-button>
+        <el-button type="primary" @click="save(formRef)" size="mini">确认</el-button>
       </span>
     </template>
   </el-dialog>
@@ -24,12 +27,9 @@
 
 <script lang="ts">
 import { List } from '@/entity/Db'
+import { Form } from '@/entity/Params'
 import { defineComponent, PropType, ref, reactive } from 'vue'
 import type { ElForm } from 'element-plus'
-type Form = {
-  version: string
-  desc?: string
-}
 export default defineComponent({
   props: {
     data: {
@@ -40,22 +40,21 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const visible = ref(false)
-    const selectIndex = ref(0)
     const form = ref<Form>({ version: '', desc: '' })
     const formRef = ref<InstanceType<typeof ElForm>>()
     const validateVersion = (rule: any, value: number, callback: any) => {
       console.log(typeof value, value)
-      if (value >= 0 && value <= 30) {
+      if (/[0-9]+?\.[0-9]+?\.[0-9]+/g.test(value.toString())) {
         callback()
       } else {
-        callback(new Error('机器人编号必须在1-30之间'))
+        callback(new Error('版本号格式不正确, 例：1.0.1'))
       }
     }
     const rules = reactive({
       version: [
         {
           required: true,
-          message: '请输入您的版本号',
+          message: '请输入您本次上传的版本号',
           trigger: 'blur'
         },
         {
@@ -65,23 +64,18 @@ export default defineComponent({
         }
       ]
     })
-    // 选择分支
-    const select = (index: number) => (selectIndex.value = index)
     // 关闭
     const close = () => (visible.value = false)
     // 打开
     const open = () => (visible.value = true)
-    // 确认切换
-    const confirm = () => {
-      emit('confirm', props.data.branches?.[selectIndex.value])
-      close()
-    }
-    // 保存当前项目配置
+    // 保存设置 直接上传
     const save = (formEl: InstanceType<typeof ElForm> | undefined) => {
       if (!formEl) return
       formEl.validate((valid) => {
         if (valid) {
           // back()
+          emit('confirm', form.value)
+          close()
         } else {
           return false
         }
@@ -91,11 +85,11 @@ export default defineComponent({
       visible,
       open,
       close,
-      selectIndex,
-      select,
       confirm,
       form,
-      rules
+      rules,
+      save,
+      formRef
     }
   }
 })
@@ -108,19 +102,21 @@ export default defineComponent({
   overflow: hidden;
   &__title {
     margin-top: 8px;
+    &--notice {
+      color: red;
+      font-size: 12px;
+    }
   }
   &__content {
     font-size: 18px;
     max-height: 200px;
     overflow: auto;
-    padding: 0 10px 0 4px;
     .git {
       display: flex;
       justify-content: space-between;
       align-items: center;
       height: 30px;
       cursor: pointer;
-
       color: #333;
       &:hover {
         background-color: #f6f6f6;
@@ -139,7 +135,7 @@ export default defineComponent({
       padding: 10px;
     }
     &__body {
-      padding: 10px 20px 12px;
+      padding: 10px 20px 0;
     }
   }
 }

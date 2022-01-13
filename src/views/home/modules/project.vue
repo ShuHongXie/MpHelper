@@ -2,19 +2,14 @@
   <div class="project">
     <div class="project-name" v-if="data">
       {{ data.projectName }}
-      <mp-icon
-        custom-class="delete"
-        icon="round_close_light"
-        color="red"
-        :size="16"
-        @click.stop="$emit('remove')"
-      ></mp-icon>
+      <mp-icon :size="14" @click.stop="$emit('remove')"></mp-icon>
       <mp-icon
         :custom-class="`refresh ${clickRefresh ? 'active' : ''}`"
         icon="refresh"
         :size="16"
         @click.stop="refresh"
       ></mp-icon>
+      <!-- <el-progress :percentage="50" /> -->
       <!-- <el-checkbox class="delete" /> -->
     </div>
     <div class="project-qrcode" v-loading="data?.loading" :element-loading-text="data?.loadingText">
@@ -34,14 +29,21 @@
     <div class="project-operation" v-if="data">
       <el-row class="project-operation__wrapper">
         <el-col>
-          <el-button
-            type="primary"
-            plain
-            size="small"
-            @click.stop="$emit('preview')"
-            :disabled="data?.loading"
-            >预览</el-button
+          <el-popconfirm
+            confirm-button-text="直接预览"
+            cancel-button-text="添加备注"
+            cancel-button-type="warning"
+            icon-color="red"
+            title="需要添加备注吗?"
+            @confirm="$emit('preview')"
+            @cancel="$emit('previewDesc')"
           >
+            <template #reference>
+              <el-button type="primary" plain size="small" :disabled="data?.loading"
+                >预览</el-button
+              >
+            </template>
+          </el-popconfirm>
           <el-button
             type="primary"
             color="#FFA500"
@@ -54,10 +56,19 @@
       </el-row>
       <el-row class="project-operation__wrapper">
         <el-col :span="24">
-          <el-button type="success" size="small" @click.stop="$emit('edit')"
+          <el-button
+            type="success"
+            size="small"
+            @click.stop="$emit('edit')"
+            :disabled="data?.loading"
             ><mp-icon icon="setting"></mp-icon> 配置</el-button
           >
-          <el-button type="primary" color="#9370DB" size="small" @click.stop="$emit('switch')"
+          <el-button
+            type="primary"
+            color="#9370DB"
+            size="small"
+            @click.stop="$emit('switch')"
+            :disabled="data?.loading"
             >分支切换</el-button
           >
         </el-col>

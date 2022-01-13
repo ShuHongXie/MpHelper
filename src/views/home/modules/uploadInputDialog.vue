@@ -3,7 +3,16 @@
     <template #title>
       <span class="upload-mp__title">请填写上传的必要信息</span>
     </template>
-    <div class="upload-mp__content">21321</div>
+    <div class="upload-mp__content">
+      <el-form ref="formRef" :rules="rules" :model="form" label-width="120px">
+        <el-form-item label="版本号:">
+          <el-input v-model="form.version"></el-input>
+        </el-form-item>
+        <el-form-item label="备注:">
+          <el-input v-model="form.desc" type="textarea"></el-input>
+        </el-form-item>
+      </el-form>
+    </div>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="visible = false" size="mini">取消</el-button>
@@ -15,7 +24,12 @@
 
 <script lang="ts">
 import { List } from '@/entity/Db'
-import { defineComponent, onMounted, PropType, ref } from 'vue'
+import { defineComponent, PropType, ref, reactive } from 'vue'
+import type { ElForm } from 'element-plus'
+type Form = {
+  version: string
+  desc?: string
+}
 export default defineComponent({
   props: {
     data: {
@@ -27,6 +41,30 @@ export default defineComponent({
   setup(props, { emit }) {
     const visible = ref(false)
     const selectIndex = ref(0)
+    const form = ref<Form>({ version: '', desc: '' })
+    const formRef = ref<InstanceType<typeof ElForm>>()
+    const validateVersion = (rule: any, value: number, callback: any) => {
+      console.log(typeof value, value)
+      if (value >= 0 && value <= 30) {
+        callback()
+      } else {
+        callback(new Error('机器人编号必须在1-30之间'))
+      }
+    }
+    const rules = reactive({
+      version: [
+        {
+          required: true,
+          message: '请输入您的版本号',
+          trigger: 'blur'
+        },
+        {
+          trigger: 'blur',
+          validator: validateVersion,
+          required: true
+        }
+      ]
+    })
     // 选择分支
     const select = (index: number) => (selectIndex.value = index)
     // 关闭
@@ -38,13 +76,26 @@ export default defineComponent({
       emit('confirm', props.data.branches?.[selectIndex.value])
       close()
     }
+    // 保存当前项目配置
+    const save = (formEl: InstanceType<typeof ElForm> | undefined) => {
+      if (!formEl) return
+      formEl.validate((valid) => {
+        if (valid) {
+          // back()
+        } else {
+          return false
+        }
+      })
+    }
     return {
       visible,
       open,
       close,
       selectIndex,
       select,
-      confirm
+      confirm,
+      form,
+      rules
     }
   }
 })

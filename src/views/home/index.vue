@@ -174,7 +174,8 @@ export default defineComponent({
       switchBranch,
       currentSelectProject,
       switchGitDialog,
-      confirmSiwthGit
+      confirmSiwthGit,
+      uploadMp
     }
   }
 })

@@ -34,7 +34,7 @@
         "master",
         "test"
       ],
-      "currentBranch": "master",
+      "currentBranch": "bugfix/swiper",
       "appid": "wx971ea39ef2a2c9a4",
       "outputPath": "/Users/xiexiaoxie/wanbiao/uni-ugc/dist/dev/mp-weixin",
       "privatePath": "/Users/xiexiaoxie/Downloads/private.wx971ea39ef2a2c9a4.key",

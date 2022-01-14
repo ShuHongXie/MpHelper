@@ -7,7 +7,7 @@
         @previewDesc="previewDesc(index)"
         @edit="edit(index)"
         @remove="remove(index)"
-        @refresh="refresh"
+        @refresh="refresh(index)"
         @switch="switchBranch(index)"
         @upload="uploadMp(index)"
         :data="item"
@@ -114,12 +114,6 @@ export default defineComponent({
       currentSelectProject.value = list.value[index]
       currentSelectIndex.value = index
       uploadInputDialog.value.open()
-      // filterDone(index, () =>
-      //   global.ipcRenderer.send('miniProgram', {
-      //     type: 'upload',
-      //     params: cloneDeep({ ...list.value[index], index })
-      //   })
-      // )
     }, 300)
     const confirmUploadMp = debounce((data: Form) => {
       console.log(currentSelectIndex.value, { ...list.value[currentSelectIndex.value], ...data })
@@ -148,7 +142,12 @@ export default defineComponent({
         })
     }
     // 更新项目
-    const refresh = () => {}
+    const refresh = (index: number) => {
+      global.ipcRenderer.send('commonOperate', {
+        type: 'refresh',
+        params: cloneDeep(list.value[index])
+      })
+    }
     // 分支切换
     const switchBranch = (index: number) => {
       if (!list.value[index].branches?.length) {
@@ -235,6 +234,15 @@ export default defineComponent({
             message: response.data.message
           })
           currentPreview.loading = false
+        }
+      })
+      // 刷新回复
+      global.ipcRenderer.on('refreshReply', async (event: IpcMainEvent, response: any) => {
+        if (response.status === SUCCESS) {
+          global.$message({
+            type: 'success',
+            message: response.data.message
+          })
         }
       })
     })

@@ -6,7 +6,6 @@ const Response = require('../utils/response')
 const { SUCCESS, FAIL } = require('../constrant.js')
 const { getExpireTime } = require('../utils/tool')
 let showIndex
-console.log(getExpireTime)
 
 // CI实例创建
 function createMiniProgramCI(event, arg) {
@@ -45,6 +44,7 @@ async function upload(event, params) {
       },
       onProgressUpdate: (res) => {
         if (res._msg !== 'upload') {
+          // 使用showIndex值来防止主进程和渲染进程频繁进行无意义的通信
           !showIndex &&
             event.reply(
               'uploadReply',

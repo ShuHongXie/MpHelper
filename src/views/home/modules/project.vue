@@ -2,7 +2,13 @@
   <div class="project">
     <div class="project-name" v-if="data">
       {{ data.projectName }}
-      <mp-icon :size="14" @click.stop="$emit('remove')"></mp-icon>
+      <mp-icon
+        :size="14"
+        custom-class="delete"
+        icon="round_close_light"
+        color="red"
+        @click.stop="$emit('remove')"
+      ></mp-icon>
       <mp-icon
         :custom-class="`refresh ${clickRefresh ? 'active' : ''}`"
         icon="refresh"
@@ -102,7 +108,7 @@ export default defineComponent({
       default: () => undefined
     }
   },
-  setup(props, ctx) {
+  setup(props, { emit }) {
     const { global } = useGlobalProperties()
     const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
     let timer = ref<any>(null)
@@ -111,6 +117,7 @@ export default defineComponent({
     const refresh = () => {
       clickRefresh.value = true
       clearTimeout(timer.value)
+      emit('refresh')
       timer.value = setTimeout(() => {
         clickRefresh.value = false
       }, 1000)

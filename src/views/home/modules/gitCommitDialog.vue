@@ -1,30 +1,21 @@
+<!--
+ * @Author: 谢树宏
+ * @Date: 2022-01-14 16:59:09
+ * @LastEditors: 谢树宏
+ * @LastEditTime: 2022-01-14 17:33:08
+ * @FilePath: /electron-mp-ci/src/views/home/modules/gitCommitDialog.vue
+-->
 <template>
-  <el-dialog v-model="visible" width="50%" custom-class="switch-git">
-    <template #title>
-      <span class="switch-git__title">请选择要切换的分支</span>
-    </template>
-    <div class="switch-git__content">
-      <div
-        class="git"
-        v-for="(item, index) in branches"
-        :key="index"
-        :label="item"
-        :value="item"
-        @click="select(index)"
-      >
-        <span class="git-name">{{ item }}</span>
-        <mp-icon
-          v-if="selectIndex === index"
-          icon="select-bold"
-          :color="data.currentBranch === item ? 'gray' : '#FF8C00'"
-          :size="24"
-        ></mp-icon>
-      </div>
+  <el-dialog v-model="visible" width="90%" custom-class="git-commit">
+    <div class="git-commit__content">
+      <div class="staged-area"></div>
+      <div class="work-area"></div>
     </div>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="visible = false" size="mini">取消</el-button>
-        <el-button type="primary" @click="confirm" size="mini">确认切换</el-button>
+        <el-button @click="visible = false" size="mini">直接切换</el-button>
+        <el-button type="primary" size="mini">确认切换</el-button>
       </span>
     </template>
   </el-dialog>
@@ -42,30 +33,20 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    const visible = ref(false)
-    const selectIndex = ref(0)
-    const branches = computed(
-      () => props.data.branches?.filter((branch) => branch !== props.data.currentBranch) || []
-    )
-    // 选择分支
-    const select = (index: number) => (selectIndex.value = index)
+    const visible = ref(true)
     // 关闭
     const close = () => (visible.value = false)
     // 打开
     const open = () => (visible.value = true)
     // 确认切换
     const confirm = () => {
-      emit('confirm', branches.value[selectIndex.value])
       close()
     }
     return {
       visible,
       open,
       close,
-      selectIndex,
-      select,
-      confirm,
-      branches
+      confirm
     }
   }
 })
@@ -73,15 +54,21 @@ export default defineComponent({
 
 <style lang="scss">
 @import '@/assets/scss/constarnt.scss';
-.switch-git {
+.git-commit {
   border-radius: 6px;
   overflow: hidden;
-  &__title {
-    margin-top: 8px;
+  .staged-area {
+    height: 250px;
+    border: 1px solid $primary;
+    border-radius: 8px 8px 0 0;
+  }
+  .work-area {
+    @extend .staged-area;
+    border-radius: 0 0 8px 8px;
+    border-top: none;
   }
   &__content {
     font-size: 18px;
-    max-height: 200px;
     overflow: auto;
     padding: 0 10px 0 4px;
     .git {
@@ -109,7 +96,7 @@ export default defineComponent({
       padding: 10px;
     }
     &__body {
-      padding: 10px 20px 12px;
+      padding: 20px 20px 12px;
     }
   }
 }

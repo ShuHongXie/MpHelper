@@ -23,6 +23,7 @@
     />
     <upload-input-dialog ref="uploadInputDialog" @confirm="confirmUploadMp" />
     <preview-desc-dialog ref="previewDescDialog" @confirm="confirmPreview" />
+    <git-operate-dialog ref="gitOperateDialog" />
   </div>
 </template>
 
@@ -38,13 +39,15 @@ import project from './modules/project.vue'
 import switchGitDialog from './modules/switchGitDialog.vue'
 import uploadInputDialog from './modules/uploadInputDialog.vue'
 import previewDescDialog from './modules/previewDescDialog.vue'
+import gitOperateDialog from './modules/gitCommitDialog.vue'
 export default defineComponent({
   name: 'HomePage',
   components: {
     project,
     switchGitDialog,
     uploadInputDialog,
-    previewDescDialog
+    previewDescDialog,
+    gitOperateDialog
   },
   setup(props, ctx) {
     const { global, router } = useGlobalProperties()

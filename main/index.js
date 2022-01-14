@@ -33,8 +33,13 @@ function createWindow() {
 
   // 打开开发工具
   mainWindow.webContents.openDevTools()
+  // remote组件初始化
   remote.initialize()
   remote.enable(mainWindow.webContents)
+  // 聚焦
+  mainWindow.on('focus', () => {
+    console.log('聚焦')
+  })
   console.log('窗口开启')
 }
 

@@ -8,7 +8,16 @@
 <template>
   <el-dialog v-model="visible" width="90%" custom-class="git-commit">
     <div class="git-commit__content">
-      <div class="staged-area"></div>
+      <div class="staged-area">
+        <div class="staged-area__header">
+          <el-checkbox v-model="checked1" label="已暂存文件" size="large"></el-checkbox>
+        </div>
+        <div class="staged-area__content">
+          <div class="list-item">
+            <el-checkbox v-model="checked1" label="已暂存文件" size="large"></el-checkbox>
+          </div>
+        </div>
+      </div>
       <div class="work-area"></div>
     </div>
     <template #footer>
@@ -33,6 +42,7 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
+    const checked1 = ref(true)
     const visible = ref(true)
     // 关闭
     const close = () => (visible.value = false)
@@ -46,7 +56,8 @@ export default defineComponent({
       visible,
       open,
       close,
-      confirm
+      confirm,
+      checked1
     }
   }
 })
@@ -58,13 +69,29 @@ export default defineComponent({
   border-radius: 6px;
   overflow: hidden;
   .staged-area {
-    height: 250px;
+    height: 200px;
     border: 1px solid $primary;
-    border-radius: 8px 8px 0 0;
+    border-radius: 6px 6px 0 0;
+    &__header {
+      height: 26px;
+      border-bottom: 1px solid $primary;
+      display: flex;
+      align-items: center;
+      padding-left: 12px;
+    }
+    &__content {
+      overflow: auto;
+      .list-item {
+        // display: flex;
+        // align-items: center;
+        // height: 26px;
+        padding-left: 34px;
+      }
+    }
   }
   .work-area {
     @extend .staged-area;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 6px 6px;
     border-top: none;
   }
   &__content {

@@ -28,12 +28,12 @@ async function executeGit(event, { type, params = {} }) {
         dir: params.path
       })
       console.log(status)
-      // const data = await await git.checkout({
-      //   fs,
-      //   dir: params.path,
-      //   ref: params.currentBranch
-      // })
-      // console.log(data)
+      const data = await await git.checkout({
+        fs,
+        dir: params.path,
+        ref: params.currentBranch
+      })
+      console.log(data)
       break
   }
 }

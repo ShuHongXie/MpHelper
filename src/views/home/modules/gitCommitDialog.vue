@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-14 16:59:09
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-17 11:42:48
+ * @LastEditTime: 2022-01-17 17:36:00
  * @FilePath: /electron-mp-ci/src/views/home/modules/gitCommitDialog.vue
 -->
 <template>
@@ -10,15 +10,60 @@
     <div class="git-commit__content">
       <div class="staged-area">
         <div class="staged-area__header">
-          <el-checkbox v-model="checked1" label="已暂存文件" size="large"></el-checkbox>
+          <el-checkbox
+            @change="(value) => $emit('change', { value, index: -1, type: 'staged' })"
+            v-model="stagedChecked"
+            label="已暂存文件"
+            size="large"
+          ></el-checkbox>
         </div>
         <div class="staged-area__content">
-          <div class="list-item" v-for="item in 10">
-            <el-checkbox v-model="checked1" label="已暂存文件" size="large"></el-checkbox>
+          <div class="list-item" v-for="(item, index) in data?.stagedData" :key="item.path">
+            <el-checkbox
+              @change="(value) => $emit('change', { value, index, type: 'staged' })"
+              v-model="item.checked"
+              size="large"
+            >
+              <div class="list-item__content">
+                <mp-icon
+                  :icon="filterIcon(item.status)"
+                  :color="filterColor(item.status)"
+                  size="16"
+                ></mp-icon
+                ><span class="list-item__path">{{ item.path }}</span>
+              </div>
+            </el-checkbox>
           </div>
         </div>
       </div>
-      <div class="work-area"></div>
+      <div class="work-area">
+        <div class="work-area__header">
+          <el-checkbox
+            @change="(value) => $emit('change', { value, index: -1, type: 'unstaged' })"
+            v-model="unstagedChecked"
+            label="未暂存文件"
+            size="large"
+          ></el-checkbox>
+        </div>
+        <div class="work-area__content">
+          <div class="list-item" v-for="(item, index) in data?.unstagedData" :key="item.path">
+            <el-checkbox
+              @change="(value) => $emit('change', { value, index, type: 'unstaged' })"
+              v-model="item.checked"
+              size="large"
+            >
+              <div class="list-item__content">
+                <mp-icon
+                  :icon="filterIcon(item.status)"
+                  :color="filterColor(item.status)"
+                  size="16"
+                ></mp-icon
+                ><span class="list-item__path">{{ item.path }}</span>
+              </div>
+            </el-checkbox>
+          </div>
+        </div>
+      </div>
     </div>
     <template #footer>
       <span class="dialog-footer">
@@ -31,19 +76,24 @@
 </template>
 
 <script lang="ts">
-import { List } from '@/entity/Db'
-import { defineComponent, computed, PropType, ref } from 'vue'
+import { FileStatusObject } from '@/entity/Common'
+import { defineComponent, watch, PropType, ref } from 'vue'
 export default defineComponent({
   props: {
     data: {
-      type: (Object as PropType<List>) || [],
-      default: () => []
+      type: (Object as PropType<FileStatusObject>) || {},
+      default: () => {}
     }
   },
 
   setup(props, { emit }) {
-    const checked1 = ref(true)
+    const stagedChecked = ref(true)
+    const unstagedChecked = ref(false)
     const visible = ref(true)
+    // 选中/反选
+    const change = (value: boolean, index: number, type: string) => {
+      console.log(value, index, type)
+    }
     // 关闭
     const close = () => (visible.value = false)
     // 打开
@@ -52,12 +102,51 @@ export default defineComponent({
     const confirm = () => {
       close()
     }
+    watch(props.data, (newValue) => {
+      stagedChecked.value = true
+      unstagedChecked.value = false
+    })
+    // 颜色筛选展示
+    const filterColor = (status: string | undefined) => {
+      if (status === 'added-staged') {
+        return '#00BB00'
+      } else if (status === 'modified-staged' || status === 'modified-unstaged') {
+        return '#FFD306'
+      } else if (status === 'deleted-unstaged' || status === 'deleted') {
+        return '#666'
+      } else if (status === 'new-untracked') {
+        return '#B766AD'
+      } else if (status === 'deleted-staged') {
+        return '#842B00'
+      }
+    }
+    // 图标筛选展示
+    const filterIcon = (status: string | undefined) => {
+      console.log(status)
+      if (status === 'added-staged') {
+        return 'add-circle'
+      } else if (status === 'modified-staged' || status === 'modified-unstaged') {
+        return 'more'
+      } else if (
+        status === 'deleted-staged' ||
+        status === 'deleted-unstaged' ||
+        status === 'deleted'
+      ) {
+        return 'minus-circle'
+      } else if (status === 'new-untracked') {
+        return 'smile'
+      }
+    }
     return {
       visible,
       open,
       close,
       confirm,
-      checked1
+      stagedChecked,
+      unstagedChecked,
+      filterColor,
+      filterIcon,
+      change
     }
   }
 })
@@ -90,6 +179,14 @@ export default defineComponent({
         // align-items: center;
         // height: 26px;
         padding-left: 34px;
+        &__content {
+          display: flex;
+          align-items: center;
+          color: #333;
+        }
+        &__path {
+          padding-left: 4px;
+        }
       }
     }
   }
@@ -97,6 +194,12 @@ export default defineComponent({
     @extend .staged-area;
     border-radius: 0 0 6px 6px;
     border-top: none;
+    &__header {
+      @extend .staged-area__header;
+    }
+    &__content {
+      @extend .staged-area__content;
+    }
   }
   &__content {
     font-size: 18px;
@@ -108,7 +211,6 @@ export default defineComponent({
       align-items: center;
       height: 30px;
       cursor: pointer;
-
       color: #333;
       &:hover {
         background-color: #f6f6f6;

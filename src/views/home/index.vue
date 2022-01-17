@@ -23,7 +23,7 @@
     />
     <upload-input-dialog ref="uploadInputDialog" @confirm="confirmUploadMp" />
     <preview-desc-dialog ref="previewDescDialog" @confirm="confirmPreview" />
-    <git-operate-dialog ref="gitOperateDialog" :data="" />
+    <git-operate-dialog ref="gitOperateDialog" :data="fileStatus" @change="changeGitFile" />
   </div>
 </template>
 
@@ -34,7 +34,8 @@ import { IpcMainEvent } from 'electron'
 import { cloneDeep, debounce } from 'lodash'
 import { SUCCESS, FAIL } from '@/const'
 import { List } from '@/entity/Db'
-import { Form } from '@/entity/Params'
+import { Form, GitFileChangeObject } from '@/entity/Params'
+import { FileStatusObject, FileStatus } from '@/entity/Common'
 import project from './modules/project.vue'
 import switchGitDialog from './modules/switchGitDialog.vue'
 import uploadInputDialog from './modules/uploadInputDialog.vue'
@@ -53,7 +54,7 @@ export default defineComponent({
     const { global, router } = useGlobalProperties()
     const list = ref<List[]>([])
     const currentSelectProject = ref<List>({})
-    const fileStatus = ref({})
+    const fileStatus = ref<FileStatusObject>({})
     const currentSelectIndex = ref(0)
     const switchGitDialog = ref()
     const uploadInputDialog = ref()
@@ -185,11 +186,41 @@ export default defineComponent({
       // if(list.value)
     }
     const confirmInput = () => {}
+    // 文件状态弹框状态修改
+    const changeGitFile = ({ value, index, type }: GitFileChangeObject) => {
+      console.log(fileStatus.value.stagedData)
+      let list
+      if (index === -1) {
+        if (type === 'staged') {
+          list = cloneDeep(fileStatus.value.stagedData)
+          fileStatus.value.stagedData = []
+        } else {
+          list = cloneDeep(fileStatus.value.unstagedData)
+          fileStatus.value.stagedData = []
+        }
+      } else {
+        if (type === 'staged') {
+          list = cloneDeep((fileStatus.value.stagedData as FileStatus[])[index])
+          fileStatus.value.stagedData?.splice(index, 1)
+        } else {
+          list = cloneDeep((fileStatus.value.unstagedData as FileStatus[])[index])
+          fileStatus.value.stagedData?.splice(index, 1)
+        }
+      }
+      global.ipcRenderer.send('gitOperate', {
+        type: type === 'staged' ? 'reset' : 'add',
+        params: {
+          list,
+          project: cloneDeep(currentSelectProject.value)
+        }
+      })
+    }
     // 挂载
     onMounted(() => {
       let loadingInstance: { close: () => void } | null = null
       // 从数据库中拿取状态
       list.value = global.db.read().get('list').value()
+      currentSelectProject.value = list.value[1]
       // 增加loading状态的可以key
       for (const item of list.value) {
         Object.assign(item, {}, { loadingText: '', loading: false })
@@ -257,6 +288,9 @@ export default defineComponent({
       // git状态回复
       global.ipcRenderer.on('gitStatusReply', async (event: IpcMainEvent, response: any) => {
         if (response.status === SUCCESS) {
+          fileStatus.value = response.data
+          fileStatus
+          console.log(fileStatus.value)
         }
       })
     })
@@ -277,7 +311,9 @@ export default defineComponent({
       confirmUploadMp,
       confirmInput,
       previewDesc,
-      confirmPreview
+      confirmPreview,
+      fileStatus,
+      changeGitFile
     }
   }
 })

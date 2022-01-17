@@ -2,11 +2,9 @@
  * @Author: 谢树宏
  * @Date: 2022-01-17 09:16:57
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-17 11:55:43
+ * @LastEditTime: 2022-01-17 17:57:39
  * @FilePath: /electron-mp-ci/main/business/git.js
  */
-const path = require('path')
-const { v4: uuidv4 } = require('uuid')
 const git = require('isomorphic-git')
 const db = require('../../db/db-cjs')
 const Response = require('../utils/response')
@@ -63,57 +61,79 @@ async function executeGit(event, { type, params = {} }) {
           case '020':
             unstagedData.push({
               path,
-              status: 'new-untracked'
+              status: 'new-untracked',
+              checked: false
             })
             break
           case '022':
             stagedData.push({
               path,
-              status: 'added-staged'
+              status: 'added-staged',
+              checked: true
             })
             break
           case '023':
             unstagedData.push({
               path,
-              status: 'new-untracked'
+              status: 'modified-unstaged',
+              checked: false
             })
             stagedData.push({
               path,
-              status: 'modified-unstaged'
-            })
-            break
-          case '122':
-            unstagedData.push({
-              path,
-              status: 'modified-unstaged'
+              status: 'new-untracked',
+              checked: true
             })
             break
           case '121':
+            unstagedData.push({
+              path,
+              status: 'modified-unstaged',
+              checked: false
+            })
+            break
+          case '122':
             stagedData.push({
               path,
-              status: 'modified-staged'
+              status: 'modified-staged',
+              checked: true
             })
             break
           case '123':
             unstagedData.push({
               path,
-              status: 'modified-unstaged'
+              status: 'modified-unstaged',
+              checked: false
             })
             stagedData.push({
               path,
-              status: 'modified-staged'
+              status: 'modified-staged',
+              checked: true
             })
             break
           case '101':
             unstagedData.push({
               path,
-              status: 'deleted-unstaged'
+              status: 'deleted-unstaged',
+              checked: false
             })
             break
           case '100':
             stagedData.push({
               path,
-              status: 'deleted-staged'
+              status: 'deleted-staged',
+              checked: true
+            })
+            break
+          case '003':
+            stagedData.push({
+              path,
+              status: 'added-staged',
+              checked: true
+            })
+            unstagedData.push({
+              path,
+              status: 'deleted',
+              checked: false
             })
             break
         }
@@ -122,12 +142,44 @@ async function executeGit(event, { type, params = {} }) {
       event.reply(
         'gitStatusReply',
         new Response(SUCCESS, {
-          data: {
-            stagedData,
-            unstagedData
-          }
+          stagedData,
+          unstagedData
         })
       )
+      break
+    // 从暂存区撤销回工作区
+    case 'reset':
+      console.log(params)
+      try {
+        for (const item of Array.isArray(params?.list) ? params?.list : [params?.list]) {
+          await git.resetIndex({ fs, dir: params.project.path, filepath: item.path })
+        }
+        executeGit(event, {
+          type: 'status',
+          params: params.project
+        })
+      } catch (e) {
+        console.log(e)
+      }
+      break
+    // 从工作区加入暂存区
+    case 'add':
+      console.log(params)
+      try {
+        for (const item of Array.isArray(params?.list) ? params?.list : [params?.list]) {
+          if (item.status.includes('delete')) {
+            await git.remove({ fs, dir: params.project.path, filepath: item.path })
+          } else {
+            await git.add({ fs, dir: params.project.path, filepath: item.path })
+          }
+        }
+        executeGit(event, {
+          type: 'status',
+          params: params.project
+        })
+      } catch (e) {
+        console.log(e)
+      }
       break
   }
 }

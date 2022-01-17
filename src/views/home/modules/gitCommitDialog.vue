@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-14 16:59:09
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-14 17:33:08
+ * @LastEditTime: 2022-01-17 11:42:48
  * @FilePath: /electron-mp-ci/src/views/home/modules/gitCommitDialog.vue
 -->
 <template>
@@ -13,7 +13,7 @@
           <el-checkbox v-model="checked1" label="已暂存文件" size="large"></el-checkbox>
         </div>
         <div class="staged-area__content">
-          <div class="list-item">
+          <div class="list-item" v-for="item in 10">
             <el-checkbox v-model="checked1" label="已暂存文件" size="large"></el-checkbox>
           </div>
         </div>
@@ -69,11 +69,14 @@ export default defineComponent({
   border-radius: 6px;
   overflow: hidden;
   .staged-area {
-    height: 200px;
+    height: 246px;
     border: 1px solid $primary;
     border-radius: 6px 6px 0 0;
+    .el-checkbox {
+      height: 30px;
+    }
     &__header {
-      height: 26px;
+      height: 30px;
       border-bottom: 1px solid $primary;
       display: flex;
       align-items: center;
@@ -81,6 +84,7 @@ export default defineComponent({
     }
     &__content {
       overflow: auto;
+      height: 214px;
       .list-item {
         // display: flex;
         // align-items: center;

@@ -23,7 +23,7 @@
     />
     <upload-input-dialog ref="uploadInputDialog" @confirm="confirmUploadMp" />
     <preview-desc-dialog ref="previewDescDialog" @confirm="confirmPreview" />
-    <git-operate-dialog ref="gitOperateDialog" />
+    <git-operate-dialog ref="gitOperateDialog" :data="" />
   </div>
 </template>
 
@@ -53,6 +53,7 @@ export default defineComponent({
     const { global, router } = useGlobalProperties()
     const list = ref<List[]>([])
     const currentSelectProject = ref<List>({})
+    const fileStatus = ref({})
     const currentSelectIndex = ref(0)
     const switchGitDialog = ref()
     const uploadInputDialog = ref()
@@ -246,6 +247,16 @@ export default defineComponent({
             type: 'success',
             message: response.data.message
           })
+        }
+      })
+      // 获取当前git状态
+      global.ipcRenderer.send('gitOperate', {
+        type: 'status',
+        params: cloneDeep(list.value[1])
+      })
+      // git状态回复
+      global.ipcRenderer.on('gitStatusReply', async (event: IpcMainEvent, response: any) => {
+        if (response.status === SUCCESS) {
         }
       })
     })

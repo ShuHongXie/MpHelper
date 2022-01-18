@@ -56,6 +56,31 @@
         "es6": true,
         "autoPrefixWXSS": true
       }
+    },
+    {
+      "projectName": "electron-mp-ci",
+      "name": "electron-mp-ci",
+      "path": "/Users/xiexiaoxie/test/electron-mp-ci",
+      "branches": [
+        "main",
+        "test"
+      ],
+      "currentBranch": "main",
+      "appid": "",
+      "outputPath": "",
+      "privatePath": "",
+      "robot": 1,
+      "qrcodePath": "",
+      "done": false,
+      "expireTime": "",
+      "pagePath": "",
+      "searchQuery": "",
+      "scene": "",
+      "threads": 4,
+      "setting": {},
+      "desc": "",
+      "version": "",
+      "id": "8e67ef8e-fe61-4555-9b10-062e8bcf3479"
     }
   ]
 }

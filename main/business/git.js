@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-17 09:16:57
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-18 15:06:40
+ * @LastEditTime: 2022-01-18 15:36:08
  * @FilePath: /electron-mp-ci/main/business/git.js
  */
 const git = require('isomorphic-git')
@@ -16,12 +16,21 @@ async function executeGit(event, { type, params = {} }) {
   switch (type) {
     // 分支切换
     case 'checkout':
-      const data = await await git.checkout({
-        fs,
-        dir: params.path,
-        ref: params.currentBranch
-      })
-      console.log(data)
+      try {
+        const data = await git.checkout({
+          fs,
+          dir: params.path,
+          ref: params.currentBranch
+        })
+      } catch (e) {
+        event.reply(
+          'gitCheckoutReply',
+          new Response(FAIL, {
+            message: e
+          })
+        )
+        console.log(e)
+      }
       break
     // Git状态
     case 'status':
@@ -181,7 +190,7 @@ async function executeGit(event, { type, params = {} }) {
         console.log(e)
       }
       break
-      // 从暂存区加入版本库
+    // 从暂存区加入版本库
     case 'commit':
       try {
         for (const item of Array.isArray(params?.list) ? params?.list : [params?.list]) {

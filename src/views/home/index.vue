@@ -23,7 +23,12 @@
     />
     <upload-input-dialog ref="uploadInputDialog" @confirm="confirmUploadMp" />
     <preview-desc-dialog ref="previewDescDialog" @confirm="confirmPreview" />
-    <git-operate-dialog ref="gitOperateDialog" :data="fileStatus" @change="changeGitFile" @commit-switch="commitSwitch" />
+    <git-operate-dialog
+      ref="gitOperateDialog"
+      :data="fileStatus"
+      @change="changeGitFile"
+      @commit-switch="commitSwitch"
+    />
   </div>
 </template>
 
@@ -165,8 +170,10 @@ export default defineComponent({
       currentSelectProject.value = list.value[index]
       currentSelectIndex.value = index
       switchGitDialog.value.open()
-      console.log(switchGitDialog.value   )
-      const test =
+      console.log(switchGitDialog.value)
+      const test = {
+        xx: 'sd'
+      }
     }
     // 切换git
     const confirmSwitchGit = (branch: string) => {
@@ -218,8 +225,7 @@ export default defineComponent({
     }
     // 提交到版本库并且切换分支
     const commitSwitch = (desc: string) => {
-      console.log(desc);
-
+      console.log(desc)
     }
     // 挂载
     onMounted(() => {
@@ -282,6 +288,22 @@ export default defineComponent({
         if (response.status === SUCCESS) {
           global.$message({
             type: 'success',
+            message: response.data.message
+          })
+        }
+      })
+      // 切换回复
+      global.ipcRenderer.on('gitCheckoutReply', async (event: IpcMainEvent, response: any) => {
+        if (response.status === SUCCESS) {
+          global.$message({
+            type: 'success',
+            message: response.data.message
+          })
+        } else {
+          global.$message({
+            showClose: true,
+            duration: 0,
+            type: 'error',
             message: response.data.message
           })
         }

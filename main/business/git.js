@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-17 09:16:57
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-17 17:57:39
+ * @LastEditTime: 2022-01-18 15:06:40
  * @FilePath: /electron-mp-ci/main/business/git.js
  */
 const git = require('isomorphic-git')
@@ -165,6 +165,24 @@ async function executeGit(event, { type, params = {} }) {
     // 从工作区加入暂存区
     case 'add':
       console.log(params)
+      try {
+        for (const item of Array.isArray(params?.list) ? params?.list : [params?.list]) {
+          if (item.status.includes('delete')) {
+            await git.remove({ fs, dir: params.project.path, filepath: item.path })
+          } else {
+            await git.add({ fs, dir: params.project.path, filepath: item.path })
+          }
+        }
+        executeGit(event, {
+          type: 'status',
+          params: params.project
+        })
+      } catch (e) {
+        console.log(e)
+      }
+      break
+      // 从暂存区加入版本库
+    case 'commit':
       try {
         for (const item of Array.isArray(params?.list) ? params?.list : [params?.list]) {
           if (item.status.includes('delete')) {

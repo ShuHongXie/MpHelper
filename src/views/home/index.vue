@@ -23,7 +23,7 @@
     />
     <upload-input-dialog ref="uploadInputDialog" @confirm="confirmUploadMp" />
     <preview-desc-dialog ref="previewDescDialog" @confirm="confirmPreview" />
-    <git-operate-dialog ref="gitOperateDialog" :data="fileStatus" @change="changeGitFile" />
+    <git-operate-dialog ref="gitOperateDialog" :data="fileStatus" @change="changeGitFile" @commit-switch="commitSwitch" />
   </div>
 </template>
 
@@ -215,6 +215,11 @@ export default defineComponent({
         }
       })
     }
+    // 提交到版本库并且切换分支
+    const commitSwitch = (desc: string) => {
+      console.log(desc);
+
+    }
     // 挂载
     onMounted(() => {
       let loadingInstance: { close: () => void } | null = null
@@ -313,7 +318,8 @@ export default defineComponent({
       previewDesc,
       confirmPreview,
       fileStatus,
-      changeGitFile
+      changeGitFile,
+      commitSwitch
     }
   }
 })

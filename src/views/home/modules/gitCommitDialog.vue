@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-14 16:59:09
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-17 17:36:00
+ * @LastEditTime: 2022-01-18 14:59:47
  * @FilePath: /electron-mp-ci/src/views/home/modules/gitCommitDialog.vue
 -->
 <template>
@@ -64,12 +64,15 @@
           </div>
         </div>
       </div>
+      <div class="commit-area">
+        <el-input v-model="desc" type="textarea"></el-input>
+      </div>
     </div>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="visible = false" size="mini">取消</el-button>
         <el-button @click="visible = false" size="mini">直接切换</el-button>
-        <el-button type="primary" size="mini">确认切换</el-button>
+        <el-button @click="$emit('commitSwitch', desc)" :disabled="!data?.stagedData?.length" type="primary" size="mini">提交并切换</el-button>
       </span>
     </template>
   </el-dialog>
@@ -77,7 +80,7 @@
 
 <script lang="ts">
 import { FileStatusObject } from '@/entity/Common'
-import { defineComponent, watch, PropType, ref } from 'vue'
+import { defineComponent, watch, PropType, ref, onMounted } from 'vue'
 export default defineComponent({
   props: {
     data: {
@@ -90,6 +93,7 @@ export default defineComponent({
     const stagedChecked = ref(true)
     const unstagedChecked = ref(false)
     const visible = ref(true)
+    const desc = ref('')
     // 选中/反选
     const change = (value: boolean, index: number, type: string) => {
       console.log(value, index, type)
@@ -103,6 +107,8 @@ export default defineComponent({
       close()
     }
     watch(props.data, (newValue) => {
+      console.log('data变化');
+
       stagedChecked.value = true
       unstagedChecked.value = false
     })
@@ -122,7 +128,6 @@ export default defineComponent({
     }
     // 图标筛选展示
     const filterIcon = (status: string | undefined) => {
-      console.log(status)
       if (status === 'added-staged') {
         return 'add-circle'
       } else if (status === 'modified-staged' || status === 'modified-unstaged') {
@@ -137,6 +142,9 @@ export default defineComponent({
         return 'smile'
       }
     }
+    onMounted(() => {
+
+    })
     return {
       visible,
       open,
@@ -146,7 +154,8 @@ export default defineComponent({
       unstagedChecked,
       filterColor,
       filterIcon,
-      change
+      change,
+      desc
     }
   }
 })
@@ -157,6 +166,7 @@ export default defineComponent({
 .git-commit {
   border-radius: 6px;
   overflow: hidden;
+  margin-top: 48px;
   .staged-area {
     height: 246px;
     border: 1px solid $primary;
@@ -201,10 +211,13 @@ export default defineComponent({
       @extend .staged-area__content;
     }
   }
+  .commit-area {
+    margin-top: 10px;
+  }
   &__content {
     font-size: 18px;
     overflow: auto;
-    padding: 0 10px 0 4px;
+    // padding: 0 10px 0 4px;
     .git {
       display: flex;
       justify-content: space-between;
@@ -216,6 +229,9 @@ export default defineComponent({
         background-color: #f6f6f6;
       }
     }
+  }
+  .el-textarea__inner {
+    border-color: $primary;
   }
   .el-dialog {
     &__header {

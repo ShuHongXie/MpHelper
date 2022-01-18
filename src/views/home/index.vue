@@ -165,7 +165,8 @@ export default defineComponent({
       currentSelectProject.value = list.value[index]
       currentSelectIndex.value = index
       switchGitDialog.value.open()
-      console.log(switchGitDialog.value)
+      console.log(switchGitDialog.value   )
+      const test =
     }
     // 切换git
     const confirmSwitchGit = (branch: string) => {

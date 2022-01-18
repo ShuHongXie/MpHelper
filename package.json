@@ -23,6 +23,7 @@
     "lowdb": "1.0.0",
     "miniprogram-ci": "^1.6.10",
     "path-browserify": "^1.0.1",
+    "shelljs": "^0.8.5",
     "uuid": "^8.3.2",
     "vue": "^3.2.25",
     "vue-router": "4"

@@ -170,10 +170,6 @@ export default defineComponent({
       currentSelectProject.value = list.value[index]
       currentSelectIndex.value = index
       switchGitDialog.value.open()
-      console.log(switchGitDialog.value)
-      const test = {
-        xx: 'sd'
-      }
     }
     // 切换git
     const confirmSwitchGit = (branch: string) => {
@@ -191,7 +187,6 @@ export default defineComponent({
           currentBranch: branch
         }
       })
-      // if(list.value)
     }
     const confirmInput = () => {}
     // 文件状态弹框状态修改
@@ -226,6 +221,13 @@ export default defineComponent({
     // 提交到版本库并且切换分支
     const commitSwitch = (desc: string) => {
       console.log(desc)
+      global.ipcRenderer.send('gitOperate', {
+        type: 'commit',
+        params: {
+          desc,
+          project: cloneDeep(currentSelectProject.value)
+        }
+      })
     }
     // 挂载
     onMounted(() => {
@@ -294,19 +296,12 @@ export default defineComponent({
       })
       // 切换回复
       global.ipcRenderer.on('gitCheckoutReply', async (event: IpcMainEvent, response: any) => {
-        if (response.status === SUCCESS) {
-          global.$message({
-            type: 'success',
-            message: response.data.message
-          })
-        } else {
-          global.$message({
-            showClose: true,
-            duration: 0,
-            type: 'error',
-            message: response.data.message
-          })
-        }
+        global.$message({
+          showClose: response.status !== SUCCESS,
+          duration: response.status === SUCCESS ? 3000 : 0,
+          type: response.status === SUCCESS ? 'success' : 'error',
+          message: response.data.message
+        })
       })
       // 获取当前git状态
       global.ipcRenderer.send('gitOperate', {
@@ -320,6 +315,15 @@ export default defineComponent({
           fileStatus
           console.log(fileStatus.value)
         }
+      })
+      // git加入版本库回复
+      global.ipcRenderer.on('gitCommitReply', async (event: IpcMainEvent, response: any) => {
+        global.$message({
+          showClose: response.status !== SUCCESS,
+          duration: response.status === SUCCESS ? 3000 : 0,
+          type: response.status === SUCCESS ? 'success' : 'error',
+          message: response.data.message
+        })
       })
     })
     return {

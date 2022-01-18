@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-17 09:16:57
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-18 15:36:08
+ * @LastEditTime: 2022-01-18 18:10:43
  * @FilePath: /electron-mp-ci/main/business/git.js
  */
 const git = require('isomorphic-git')
@@ -10,6 +10,7 @@ const db = require('../../db/db-cjs')
 const Response = require('../utils/response')
 const { SUCCESS, FAIL } = require('../constrant.js')
 const fs = require('fs')
+const { exec } = require('shelljs')
 
 // 执行Git相关操作
 async function executeGit(event, { type, params = {} }) {
@@ -17,11 +18,17 @@ async function executeGit(event, { type, params = {} }) {
     // 分支切换
     case 'checkout':
       try {
-        const data = await git.checkout({
+        await git.checkout({
           fs,
           dir: params.path,
           ref: params.currentBranch
         })
+        event.reply(
+          'gitCheckoutReply',
+          new Response(SUCCESS, {
+            message: '切换成功'
+          })
+        )
       } catch (e) {
         event.reply(
           'gitCheckoutReply',
@@ -192,21 +199,87 @@ async function executeGit(event, { type, params = {} }) {
       break
     // 从暂存区加入版本库
     case 'commit':
-      try {
-        for (const item of Array.isArray(params?.list) ? params?.list : [params?.list]) {
-          if (item.status.includes('delete')) {
-            await git.remove({ fs, dir: params.project.path, filepath: item.path })
-          } else {
-            await git.add({ fs, dir: params.project.path, filepath: item.path })
-          }
-        }
-        executeGit(event, {
-          type: 'status',
-          params: params.project
+      console.log('及惹怒')
+      let userName,
+        userEmail,
+        uerNameRequest,
+        uerEmailRequest,
+        promiseArray = []
+      const configName = await git.getConfigAll({
+        fs,
+        dir: params.project.path,
+        path: 'user.name'
+      })
+      userName = configName.length ? configName[0] : ''
+      const configEmail = await git.getConfigAll({
+        fs,
+        dir: params.project.path,
+        path: 'user.email'
+      })
+      userName = configEmail.length ? configName[0] : ''
+      // 由于isomorphic-git只能访问当前文件夹下的配置 没办法只能通过自己执行shell捕获
+      if (!userName) {
+        uerNameRequest = new Promise((resolve, reject) => {
+          var child = exec('git config user.name', { async: true })
+          child.stdout.on('data', function (data) {
+            data = data.replace(/\n/g, '')
+            resolve(data)
+          })
+          child.stderr.on('data', (data) => {
+            reject('error')
+          })
         })
-      } catch (e) {
-        console.log(e)
+        promiseArray.push(uerNameRequest)
+      } else {
+        promiseArray.push(undefined)
       }
+      if (!userEmail.length) {
+        uerEmailRequest = new Promise((resolve, reject) => {
+          var child = exec('git config user.email', { async: true })
+          child.stdout.on('data', function (data) {
+            data = data.replace(/\n/g, '')
+            resolve(data)
+          })
+          child.stderr.on('data', (data) => {
+            reject('error')
+          })
+        })
+        promiseArray.push(uerEmailRequest)
+      } else {
+        promiseArray.push(undefined)
+      }
+      if (promiseArray[0] || promiseArray[1]) {
+        try {
+          const data = await Promise.all(promiseArray)
+          userName = data[0]
+          userEmail = data[1]
+        } catch (e) {}
+      }
+
+      // try {
+      //   await git.commit({
+      //     fs,
+      //     dir: params.project.path,
+      //     message: params.desc,
+      //     author: {
+      //       name: '谢树宏'
+      //     }
+      //   })
+      //   event.reply(
+      //     'gitCommitReply',
+      //     new Response(SUCCESS, {
+      //       message: '提交成功'
+      //     })
+      //   )
+      // } catch (e) {
+      //   console.log(e)
+      //   event.reply(
+      //     'gitCommitReply',
+      //     new Response(FAIL, {
+      //       message: e
+      //     })
+      //   )
+      // }
       break
   }
 }

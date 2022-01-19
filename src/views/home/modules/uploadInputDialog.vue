@@ -18,8 +18,8 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visible = false" size="mini">取消</el-button>
-        <el-button type="primary" @click="save(formRef)" size="mini">确认</el-button>
+        <el-button @click="visible = false" size="small">取消</el-button>
+        <el-button type="primary" @click="save(formRef)" size="small">确认</el-button>
       </span>
     </template>
   </el-dialog>

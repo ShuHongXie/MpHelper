@@ -1476,9 +1476,9 @@
     fastq "^1.6.0"
 
 "@popperjs/core@^2.10.2":
-  version "2.11.0"
-  resolved "https://registry.npmmirror.com/@popperjs/core/download/@popperjs/core-2.11.0.tgz#6734f8ebc106a0860dff7f92bf90df193f0935d7"
-  integrity sha512-zrsUxjLOKAzdewIDRWy9nsV1GQsKBCWaGwsZQlCgr6/q+vjyZhFgqedLfFBuI9anTPEUT4APq9Mu0SZBTzIcGQ==
+  version "2.11.2"
+  resolved "https://registry.npmmirror.com/@popperjs/core/download/@popperjs/core-2.11.2.tgz#830beaec4b4091a9e9398ac50f865ddea52186b9"
+  integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
 
 "@rollup/pluginutils@^4.1.1", "@rollup/pluginutils@^4.1.2":
   version "4.1.2"
@@ -1871,17 +1871,17 @@
   integrity sha512-vPV6Cq+NIWbH5pZu+V+2QHE9y1qfuTq49uNWw4f7FDEeZaDU2H2cx5jcUZOAKW7qTrUS4k6qZPbMy1x4N96nbA==
 
 "@vueuse/core@^7.0.0":
-  version "7.4.1"
-  resolved "https://registry.npmmirror.com/@vueuse/core/download/@vueuse/core-7.4.1.tgz#81ede3f67dfd58af8284c910ac2fee25458892c6"
-  integrity sha512-8UeLPCAieeQLXFHF1/28SIEK6ILLPb/4hp03hR+xkXF00gB/YUp0CEVcRAL9uQ8HTZa3S2T/jTISMc1ZjilM0A==
+  version "7.5.3"
+  resolved "https://registry.npmmirror.com/@vueuse/core/download/@vueuse/core-7.5.3.tgz#7e8ea430a293670f12e5052a5285cb4ef8e9c758"
+  integrity sha512-D9j5ymHFMFRXQqCp0yZJkf/bvBGiz0MrKUa364p+L8dMyd5zyq2K1JmHyvoBd4xbTFRfmQ1h878u6YE5LCkDVQ==
   dependencies:
-    "@vueuse/shared" "7.4.1"
+    "@vueuse/shared" "7.5.3"
     vue-demi "*"
 
-"@vueuse/shared@7.4.1":
-  version "7.4.1"
-  resolved "https://registry.npmmirror.com/@vueuse/shared/download/@vueuse/shared-7.4.1.tgz#0aa090147fbd66ba56334ada1ffa2dafab815c1b"
-  integrity sha512-Pzb7XoHIcgPwwBJ5Ow9lZb0HTDyaLDV3pgxKauPGTMN9qvEylG06kUG+VTjJXkPsRtiGu46di8XyFeMw2dongA==
+"@vueuse/shared@7.5.3":
+  version "7.5.3"
+  resolved "https://registry.npmmirror.com/@vueuse/shared/download/@vueuse/shared-7.5.3.tgz#2a844f38e45b1002e14d8f0ab5b41221c4fb9b09"
+  integrity sha512-BJ71cxHN5VByW1S58Gl85NFJaQu93F7Vs7K/MuAKsIIuHm9PBbkR5Vxkg9ko9cBdiKVt+FNoo13BhdbA+Vwycg==
   dependencies:
     vue-demi "*"
 
@@ -2135,7 +2135,7 @@ async-lock@^1.1.0:
 
 async-validator@^4.0.7:
   version "4.0.7"
-  resolved "https://registry.npmmirror.com/async-validator/download/async-validator-4.0.7.tgz?cache=0&sync_timestamp=1634529574100&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fasync-validator%2Fdownload%2Fasync-validator-4.0.7.tgz#034a0fd2103a6b2ebf010da75183bec299247afe"
+  resolved "https://registry.npmmirror.com/async-validator/download/async-validator-4.0.7.tgz#034a0fd2103a6b2ebf010da75183bec299247afe"
   integrity sha1-A0oP0hA6ay6/AQ2nUYO+wpkkev4=
 
 async@0.9.x:
@@ -4092,7 +4092,7 @@ electron@16.0.5:
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-element-plus@^1.2.0-beta.6:
+element-plus@1.2.0-beta.6:
   version "1.2.0-beta.6"
   resolved "https://registry.npmmirror.com/element-plus/download/element-plus-1.2.0-beta.6.tgz#9fa01a06950eb0380f0454cb75aefaaf5b81b043"
   integrity sha512-8EdSIR/5/FHcSB8w1diAh+gJMHgxIvxuZoayY99k6taAR1QyEFHuPTgFccZLopJ1+iP4UEsZFz49l57qS08Utw==
@@ -6026,7 +6026,7 @@ mdn-data@2.0.14:
 
 memoize-one@^6.0.0:
   version "6.0.0"
-  resolved "https://registry.npmmirror.com/memoize-one/download/memoize-one-6.0.0.tgz?cache=0&sync_timestamp=1634697208428&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fmemoize-one%2Fdownload%2Fmemoize-one-6.0.0.tgz#b2591b871ed82948aee4727dc6abceeeac8c1045"
+  resolved "https://registry.npmmirror.com/memoize-one/download/memoize-one-6.0.0.tgz#b2591b871ed82948aee4727dc6abceeeac8c1045"
   integrity sha1-slkbhx7YKUiu5HJ9xqvO7qyMEEU=
 
 memory-fs@^0.5.0:

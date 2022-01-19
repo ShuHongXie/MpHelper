@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-11 09:13:42
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-19 11:29:57
+ * @LastEditTime: 2022-01-19 13:46:03
  * @FilePath: /electron-mp-ci/main/excute.js
  */
 const { ipcMain, dialog } = require('electron')
@@ -13,7 +13,7 @@ const excuteCommon = require('./business/common.js')
 // 逻辑处理层
 function excute() {
   // 打开文件/文件夹
-  ipcMain.handle('select', (event, arg) => {
+  ipcMain.on('select', (event, arg) => {
     console.log(event, arg)
     dialog
       .showOpenDialog({

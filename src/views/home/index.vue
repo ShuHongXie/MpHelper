@@ -18,7 +18,7 @@
     </div>
     <switch-git-dialog
       ref="switchGitDialog"
-      @confirm="confirmSwitchGit"
+      @confirm="confirmSwitchRequest"
       :data="currentSelectProject"
     />
     <upload-input-dialog ref="uploadInputDialog" @confirm="confirmUploadMp" />
@@ -28,6 +28,7 @@
       :data="fileStatus"
       @change="changeGitFile"
       @commit-switch="commitSwitch"
+      @switch="confirmSwitch(currentBranch)"
     />
   </div>
 </template>
@@ -59,11 +60,13 @@ export default defineComponent({
     const { global, router } = useGlobalProperties()
     const list = ref<List[]>([])
     const currentSelectProject = ref<List>({})
+    const currentBranch = ref('')
     const fileStatus = ref<FileStatusObject>({})
     const currentSelectIndex = ref(0)
     const switchGitDialog = ref()
     const uploadInputDialog = ref()
     const previewDescDialog = ref()
+    const gitOperateDialog = ref()
     // 配置完成校验
     const filterDone = (index: number, excuteFunc: any) => {
       if (!list.value[index].done) {
@@ -164,7 +167,6 @@ export default defineComponent({
         type: 'refresh',
         params: cloneDeep(list.value[index])
       })
-      console.log(data)
       if (data.status === SUCCESS) {
         global.$message({
           type: 'success',
@@ -185,16 +187,9 @@ export default defineComponent({
       currentSelectIndex.value = index
       switchGitDialog.value.open()
     }
-    // 切换git
-    const confirmSwitchGit = async (branch: string) => {
-      if (branch === currentSelectProject.value.currentBranch) {
-        global.$message({
-          type: 'warning',
-          message: '所选分支已经是当前分支'
-        })
-        return
-      }
-      const response = await global.ipcRenderer.invoke('gitOperate', {
+    // 确认切换git
+    const confirmSwitch = async (branch: string) => {
+      const { status, data } = await global.ipcRenderer.invoke('gitOperate', {
         type: 'checkout',
         params: {
           ...cloneDeep(currentSelectProject.value),
@@ -202,11 +197,55 @@ export default defineComponent({
         }
       })
       global.$message({
-        showClose: response.status !== SUCCESS,
-        duration: response.status === SUCCESS ? 3000 : 0,
-        type: response.status === SUCCESS ? 'success' : 'error',
-        message: response.data.message
+        showClose: status !== SUCCESS,
+        duration: status === SUCCESS ? 3000 : 0,
+        type: status === SUCCESS ? 'success' : 'error',
+        message: data.message
       })
+      // 成功时就关闭弹窗, 更新数据库数据
+      if (status === SUCCESS) {
+        gitOperateDialog.value.close()
+        global.db
+          .read()
+          .get('list')
+          .find({ id: currentSelectProject.value.id })
+          .assign({
+            currentBranch: branch
+          })
+          .write()
+      }
+    }
+    // 切换git弹框选择
+    // 切换之前要看看工作区是否存在未暂存的东西 存在未暂存的东西就提示
+    const confirmSwitchRequest = async (branch: string) => {
+      const branchStatus = await global.ipcRenderer.invoke('gitOperate', {
+        type: 'status',
+        params: {
+          ...cloneDeep(currentSelectProject.value)
+        }
+      })
+      // 有未暂存的要让用户选择
+      if (branchStatus.data.unstagedData.length) {
+        let isSuccess = false
+        global.$messageBox
+          .confirm(`当前分支下存在未提交的内容，进行提交操作?`, 'Warning', {
+            confirmButtonText: '去提交',
+            cancelButtonText: '直接切换',
+            type: 'warning'
+          })
+          .then((bool: any) => {
+            fileStatus.value = branchStatus.data
+            currentBranch.value = branch
+            gitOperateDialog.value.open()
+            isSuccess = true
+          })
+          .catch(async (bool: any) => {
+            console.log('取消', bool)
+            confirmSwitch(branch)
+          })
+        return
+      }
+      confirmSwitch(branch)
     }
     const confirmInput = () => {}
     // 文件状态弹框状态修改
@@ -257,6 +296,7 @@ export default defineComponent({
         message: data.message
       })
       if (status === SUCCESS) {
+        confirmSwitch(currentBranch.value)
       }
     }
     // 挂载
@@ -315,14 +355,6 @@ export default defineComponent({
           currentPreview.loading = false
         }
       })
-      // 获取当前git状态
-      const response = await global.ipcRenderer.invoke('gitOperate', {
-        type: 'status',
-        params: cloneDeep(list.value[1])
-      })
-      if (response.status === SUCCESS) {
-        fileStatus.value = response.data
-      }
     })
     return {
       upload,
@@ -336,7 +368,8 @@ export default defineComponent({
       switchGitDialog,
       uploadInputDialog,
       previewDescDialog,
-      confirmSwitchGit,
+      confirmSwitch,
+      confirmSwitchRequest,
       uploadMp,
       confirmUploadMp,
       confirmInput,
@@ -344,7 +377,9 @@ export default defineComponent({
       confirmPreview,
       fileStatus,
       changeGitFile,
-      commitSwitch
+      commitSwitch,
+      gitOperateDialog,
+      currentBranch
     }
   }
 })

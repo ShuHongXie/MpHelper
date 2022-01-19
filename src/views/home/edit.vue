@@ -206,7 +206,7 @@ export default defineComponent({
     const back = () => router.back()
     // 路径选择
     const selectPath = async (key: string) => {
-      const response = await global.ipcRenderer.invoke('select', {
+      global.ipcRenderer.send('select', {
         id: formData.value.id,
         params:
           key === 'privatePath'
@@ -225,26 +225,6 @@ export default defineComponent({
               },
         type: key
       })
-      const { status, data } = response
-      if (key === 'privatePath') {
-        if (status === 'success') {
-          formData.value[data.type as keyof List] = data.path
-          global.$message({
-            showClose: true,
-            message: '添加成功',
-            type: 'success',
-            duration: 1000
-          })
-        }
-      } else {
-        if (status === 'success') {
-          formData.value[data.type as keyof List] = data.path
-          global.$message({
-            message: '添加成功',
-            type: 'success'
-          })
-        }
-      }
     }
     onMounted(() => {
       index.value = parseInt(route.query.index as string)
@@ -254,29 +234,29 @@ export default defineComponent({
         currentCompileSettings.value.push(key)
       }
       // 文件选择回复
-      // global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, response: any) => {
-      //   const { status, data } = response
-      //   if (status === 'success') {
-      //     formData.value[data.type as keyof List] = data.path
-      //     global.$message({
-      //       showClose: true,
-      //       message: '添加成功',
-      //       type: 'success',
-      //       duration: 1000
-      //     })
-      //   }
-      // })
-      // 文件夹选择回复
-      // global.ipcRenderer.on('selectFileReply', async (event: IpcMainEvent, response: any) => {
-      //   const { status, data } = response
-      //   if (status === 'success') {
-      //     formData.value[data.type as keyof List] = data.path
-      //     global.$message({
-      //       message: '添加成功',
-      //       type: 'success'
-      //     })
-      //   }
-      // })
+      global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, response: any) => {
+        const { status, data } = response
+        if (status === 'success') {
+          formData.value[data.type as keyof List] = data.path
+          global.$message({
+            showClose: true,
+            message: '添加成功',
+            type: 'success',
+            duration: 1000
+          })
+        }
+      })
+      //  文件夹选择回复
+      global.ipcRenderer.on('selectFileReply', async (event: IpcMainEvent, response: any) => {
+        const { status, data } = response
+        if (status === 'success') {
+          formData.value[data.type as keyof List] = data.path
+          global.$message({
+            message: '添加成功',
+            type: 'success'
+          })
+        }
+      })
     })
     return {
       formData,

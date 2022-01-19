@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-17 09:16:57
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-19 11:50:46
+ * @LastEditTime: 2022-01-19 17:54:13
  * @FilePath: /electron-mp-ci/main/business/git.js
  */
 const git = require('isomorphic-git')

@@ -352,6 +352,11 @@ export default defineComponent({
 })
 </script>
 
+<style>
+.el-message__content {
+  word-break: break-all;
+}
+</style>
 <style lang="scss" scoped>
 .home {
   &-list {

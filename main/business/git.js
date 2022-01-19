@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-17 09:16:57
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-18 18:10:43
+ * @LastEditTime: 2022-01-19 09:51:28
  * @FilePath: /electron-mp-ci/main/business/git.js
  */
 const git = require('isomorphic-git')
@@ -210,6 +210,7 @@ async function executeGit(event, { type, params = {} }) {
         dir: params.project.path,
         path: 'user.name'
       })
+      console.log(configName)
       userName = configName.length ? configName[0] : ''
       const configEmail = await git.getConfigAll({
         fs,
@@ -217,15 +218,16 @@ async function executeGit(event, { type, params = {} }) {
         path: 'user.email'
       })
       userName = configEmail.length ? configName[0] : ''
-      // 由于isomorphic-git只能访问当前文件夹下的配置 没办法只能通过自己执行shell捕获
+      // 由于isomorphic-git只能访问当前.git文件夹下的配置
+      // 没办法只能通过自己执行shell捕获
       if (!userName) {
         uerNameRequest = new Promise((resolve, reject) => {
-          var child = exec('git config user.name', { async: true })
-          child.stdout.on('data', function (data) {
+          const process = exec('git config user.name', { async: true })
+          process.stdout.on('data', function (data) {
             data = data.replace(/\n/g, '')
             resolve(data)
           })
-          child.stderr.on('data', (data) => {
+          process.stderr.on('data', (data) => {
             reject('error')
           })
         })
@@ -233,14 +235,14 @@ async function executeGit(event, { type, params = {} }) {
       } else {
         promiseArray.push(undefined)
       }
-      if (!userEmail.length) {
+      if (!userEmail) {
         uerEmailRequest = new Promise((resolve, reject) => {
-          var child = exec('git config user.email', { async: true })
-          child.stdout.on('data', function (data) {
+          const process = exec('git config user.email', { async: true })
+          process.stdout.on('data', function (data) {
             data = data.replace(/\n/g, '')
             resolve(data)
           })
-          child.stderr.on('data', (data) => {
+          process.stderr.on('data', (data) => {
             reject('error')
           })
         })
@@ -248,38 +250,43 @@ async function executeGit(event, { type, params = {} }) {
       } else {
         promiseArray.push(undefined)
       }
-      if (promiseArray[0] || promiseArray[1]) {
+      // 如果有用户名 就可以直接提交
+      if (promiseArray[0]) {
         try {
           const data = await Promise.all(promiseArray)
           userName = data[0]
-          userEmail = data[1]
-        } catch (e) {}
+          userEmail = data[1] || ''
+          await git.commit({
+            fs,
+            dir: params.project.path,
+            message: params.desc,
+            author: {
+              name: userName,
+              email: userEmail
+            }
+          })
+          event.reply(
+            'gitCommitReply',
+            new Response(SUCCESS, {
+              message: '提交成功'
+            })
+          )
+        } catch (e) {
+          event.reply(
+            'gitCommitReply',
+            new Response(FAIL, {
+              message: e
+            })
+          )
+        }
+      } else {
+        event.reply(
+          'gitCommitReply',
+          new Response(FAIL, {
+            message: '请配置您的git用户名和邮箱地址，可以通过全局配置或项目配置'
+          })
+        )
       }
-
-      // try {
-      //   await git.commit({
-      //     fs,
-      //     dir: params.project.path,
-      //     message: params.desc,
-      //     author: {
-      //       name: '谢树宏'
-      //     }
-      //   })
-      //   event.reply(
-      //     'gitCommitReply',
-      //     new Response(SUCCESS, {
-      //       message: '提交成功'
-      //     })
-      //   )
-      // } catch (e) {
-      //   console.log(e)
-      //   event.reply(
-      //     'gitCommitReply',
-      //     new Response(FAIL, {
-      //       message: e
-      //     })
-      //   )
-      // }
       break
   }
 }

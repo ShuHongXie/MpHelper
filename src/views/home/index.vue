@@ -73,14 +73,21 @@ export default defineComponent({
       excuteFunc()
     }
     // ipc通信打开文件夹
-    const upload = () =>
-      global.ipcRenderer.send('select', {
+    const upload = async () => {
+      const { status, data } = await global.ipcRenderer.invoke('select', {
         type: 'export',
         params: {
           title: '选择文件夹',
           properties: ['openDirectory']
         }
       })
+      if (status === SUCCESS) {
+        global.$message({
+          type: 'success',
+          message: data.message
+        })
+      }
+    }
     // 编辑
     const edit = (index: number) => {
       router.push({
@@ -101,15 +108,13 @@ export default defineComponent({
     }, 300)
     // 打开预览备注弹框
     const previewDesc = (index: number) => {
-      console.log('--', previewDescDialog.value)
-
       currentSelectProject.value = list.value[index]
       currentSelectIndex.value = index
       previewDescDialog.value.open()
     }
     // 备注后预览
     const confirmPreview = debounce((desc: string) => {
-      filterDone(currentSelectIndex.value, () =>
+      filterDone(currentSelectIndex.value, async () =>
         global.ipcRenderer.send('miniProgram', {
           type: 'preview',
           params: cloneDeep({
@@ -120,11 +125,13 @@ export default defineComponent({
         })
       )
     })
+    // 打开上传选项弹框
     const uploadMp = debounce((index: number) => {
       currentSelectProject.value = list.value[index]
       currentSelectIndex.value = index
       uploadInputDialog.value.open()
     }, 300)
+    // 上传小程序
     const confirmUploadMp = debounce((data: Form) => {
       console.log(currentSelectIndex.value, { ...list.value[currentSelectIndex.value], ...data })
       filterDone(currentSelectIndex.value, () =>
@@ -152,11 +159,18 @@ export default defineComponent({
         })
     }
     // 更新项目
-    const refresh = (index: number) => {
-      global.ipcRenderer.send('commonOperate', {
+    const refresh = async (index: number) => {
+      const data = await global.ipcRenderer.invoke('commonOperate', {
         type: 'refresh',
         params: cloneDeep(list.value[index])
       })
+      console.log(data)
+      if (data.status === SUCCESS) {
+        global.$message({
+          type: 'success',
+          message: data.data.message
+        })
+      }
     }
     // 分支切换
     const switchBranch = (index: number) => {
@@ -172,7 +186,7 @@ export default defineComponent({
       switchGitDialog.value.open()
     }
     // 切换git
-    const confirmSwitchGit = (branch: string) => {
+    const confirmSwitchGit = async (branch: string) => {
       if (branch === currentSelectProject.value.currentBranch) {
         global.$message({
           type: 'warning',
@@ -180,17 +194,23 @@ export default defineComponent({
         })
         return
       }
-      global.ipcRenderer.send('gitOperate', {
+      const response = await global.ipcRenderer.invoke('gitOperate', {
         type: 'checkout',
         params: {
           ...cloneDeep(currentSelectProject.value),
           currentBranch: branch
         }
       })
+      global.$message({
+        showClose: response.status !== SUCCESS,
+        duration: response.status === SUCCESS ? 3000 : 0,
+        type: response.status === SUCCESS ? 'success' : 'error',
+        message: response.data.message
+      })
     }
     const confirmInput = () => {}
     // 文件状态弹框状态修改
-    const changeGitFile = ({ value, index, type }: GitFileChangeObject) => {
+    const changeGitFile = async ({ value, index, type }: GitFileChangeObject) => {
       console.log(fileStatus.value.stagedData)
       let list
       if (index === -1) {
@@ -210,27 +230,37 @@ export default defineComponent({
           fileStatus.value.stagedData?.splice(index, 1)
         }
       }
-      global.ipcRenderer.send('gitOperate', {
+      const response = await global.ipcRenderer.invoke('gitOperate', {
         type: type === 'staged' ? 'reset' : 'add',
         params: {
           list,
           project: cloneDeep(currentSelectProject.value)
         }
       })
+      if (response.status === SUCCESS) {
+        fileStatus.value = response.data
+      }
     }
     // 提交到版本库并且切换分支
-    const commitSwitch = (desc: string) => {
-      console.log(desc)
-      global.ipcRenderer.send('gitOperate', {
+    const commitSwitch = async (desc: string) => {
+      const { status, data } = await global.ipcRenderer.invoke('gitOperate', {
         type: 'commit',
         params: {
           desc,
           project: cloneDeep(currentSelectProject.value)
         }
       })
+      global.$message({
+        showClose: status !== SUCCESS,
+        duration: status === SUCCESS ? 3000 : 0,
+        type: status === SUCCESS ? 'success' : 'error',
+        message: data.message
+      })
+      if (status === SUCCESS) {
+      }
     }
     // 挂载
-    onMounted(() => {
+    onMounted(async () => {
       let loadingInstance: { close: () => void } | null = null
       // 从数据库中拿取状态
       list.value = global.db.read().get('list').value()
@@ -285,46 +315,14 @@ export default defineComponent({
           currentPreview.loading = false
         }
       })
-      // 刷新回复
-      global.ipcRenderer.on('refreshReply', async (event: IpcMainEvent, response: any) => {
-        if (response.status === SUCCESS) {
-          global.$message({
-            type: 'success',
-            message: response.data.message
-          })
-        }
-      })
-      // 切换回复
-      global.ipcRenderer.on('gitCheckoutReply', async (event: IpcMainEvent, response: any) => {
-        global.$message({
-          showClose: response.status !== SUCCESS,
-          duration: response.status === SUCCESS ? 3000 : 0,
-          type: response.status === SUCCESS ? 'success' : 'error',
-          message: response.data.message
-        })
-      })
       // 获取当前git状态
-      global.ipcRenderer.send('gitOperate', {
+      const response = await global.ipcRenderer.invoke('gitOperate', {
         type: 'status',
         params: cloneDeep(list.value[1])
       })
-      // git状态回复
-      global.ipcRenderer.on('gitStatusReply', async (event: IpcMainEvent, response: any) => {
-        if (response.status === SUCCESS) {
-          fileStatus.value = response.data
-          fileStatus
-          console.log(fileStatus.value)
-        }
-      })
-      // git加入版本库回复
-      global.ipcRenderer.on('gitCommitReply', async (event: IpcMainEvent, response: any) => {
-        global.$message({
-          showClose: response.status !== SUCCESS,
-          duration: response.status === SUCCESS ? 3000 : 0,
-          type: response.status === SUCCESS ? 'success' : 'error',
-          message: response.data.message
-        })
-      })
+      if (response.status === SUCCESS) {
+        fileStatus.value = response.data
+      }
     })
     return {
       upload,

@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-17 09:16:57
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-19 09:51:28
+ * @LastEditTime: 2022-01-19 11:50:46
  * @FilePath: /electron-mp-ci/main/business/git.js
  */
 const git = require('isomorphic-git')
@@ -23,20 +23,13 @@ async function executeGit(event, { type, params = {} }) {
           dir: params.path,
           ref: params.currentBranch
         })
-        event.reply(
-          'gitCheckoutReply',
-          new Response(SUCCESS, {
-            message: '切换成功'
-          })
-        )
+        return new Response(SUCCESS, {
+          message: '切换成功'
+        })
       } catch (e) {
-        event.reply(
-          'gitCheckoutReply',
-          new Response(FAIL, {
-            message: e
-          })
-        )
-        console.log(e)
+        return new Response(FAIL, {
+          message: e
+        })
       }
       break
     // Git状态
@@ -155,13 +148,10 @@ async function executeGit(event, { type, params = {} }) {
         }
       })
       console.log(stagedData, unstagedData)
-      event.reply(
-        'gitStatusReply',
-        new Response(SUCCESS, {
-          stagedData,
-          unstagedData
-        })
-      )
+      return new Response(SUCCESS, {
+        stagedData,
+        unstagedData
+      })
       break
     // 从暂存区撤销回工作区
     case 'reset':
@@ -170,7 +160,7 @@ async function executeGit(event, { type, params = {} }) {
         for (const item of Array.isArray(params?.list) ? params?.list : [params?.list]) {
           await git.resetIndex({ fs, dir: params.project.path, filepath: item.path })
         }
-        executeGit(event, {
+        return executeGit(event, {
           type: 'status',
           params: params.project
         })
@@ -189,7 +179,7 @@ async function executeGit(event, { type, params = {} }) {
             await git.add({ fs, dir: params.project.path, filepath: item.path })
           }
         }
-        executeGit(event, {
+        return executeGit(event, {
           type: 'status',
           params: params.project
         })
@@ -265,27 +255,22 @@ async function executeGit(event, { type, params = {} }) {
               email: userEmail
             }
           })
-          event.reply(
-            'gitCommitReply',
-            new Response(SUCCESS, {
-              message: '提交成功'
-            })
-          )
+          executeGit(event, {
+            type: 'status',
+            params: params.project
+          })
+          return new Response(SUCCESS, {
+            message: '提交成功'
+          })
         } catch (e) {
-          event.reply(
-            'gitCommitReply',
-            new Response(FAIL, {
-              message: e
-            })
-          )
+          return new Response(FAIL, {
+            message: e
+          })
         }
       } else {
-        event.reply(
-          'gitCommitReply',
-          new Response(FAIL, {
-            message: '请配置您的git用户名和邮箱地址，可以通过全局配置或项目配置'
-          })
-        )
+        return new Response(FAIL, {
+          message: '请配置您的git用户名和邮箱地址，可以通过全局配置或项目配置'
+        })
       }
       break
   }

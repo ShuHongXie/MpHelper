@@ -39,11 +39,11 @@
       "outputPath": "/Users/xiexiaoxie/wanbiao/uni-ugc/dist/dev/mp-weixin",
       "privatePath": "/Users/xiexiaoxie/Downloads/private.wx971ea39ef2a2c9a4.key",
       "robot": 2,
-      "qrcodePath": "/image/6298fc40-9740-4d81-9308-89ebc1525d1a.png",
+      "qrcodePath": "/image/7b0660cc-ec27-4f47-83f7-f58dd0717861.png",
       "done": true,
-      "expireTime": "2022-1-18 16:25",
+      "expireTime": "2022-1-20 17:57",
       "id": "01d4a0f0-d2c3-4c60-8380-ab1adac2e9c0",
-      "fullQrcodePath": "/Users/xiexiaoxie/test/electron-mp-ci/image/6298fc40-9740-4d81-9308-89ebc1525d1a.png",
+      "fullQrcodePath": "/Users/xiexiaoxie/test/electron-mp-ci/image/7b0660cc-ec27-4f47-83f7-f58dd0717861.png",
       "pagePath": "",
       "searchQuery": "",
       "setting": {
@@ -58,20 +58,28 @@
       }
     },
     {
-      "projectName": "electron-mp-ci",
-      "name": "electron-mp-ci",
-      "path": "/Users/xiexiaoxie/test/electron-mp-ci",
+      "projectName": "uni_share_mall",
+      "name": "uni_share_mall",
+      "path": "/Users/xiexiaoxie/wanbiao/uni_share_mall",
       "branches": [
-        "main",
+        "develop",
+        "feature/ajax",
+        "feature/ajaxConfigure",
+        "feature/appraisal",
+        "feature/newAppraisal",
+        "feature/popup",
+        "feature/recycle",
+        "feature/userNotice",
+        "master",
         "test"
       ],
-      "currentBranch": "main",
-      "appid": "",
-      "outputPath": "",
-      "privatePath": "",
+      "currentBranch": "develop",
+      "appid": "wx85c31869e28d6e54",
+      "outputPath": "/Users/xiexiaoxie/wanbiao/uni_share_mall/unpackage/dist/build/mp-weixin",
+      "privatePath": "/Users/xiexiaoxie/Downloads/ci-private.share.key",
       "robot": 1,
       "qrcodePath": "",
-      "done": false,
+      "done": true,
       "expireTime": "",
       "pagePath": "",
       "searchQuery": "",
@@ -80,7 +88,7 @@
       "setting": {},
       "desc": "",
       "version": "",
-      "id": "8e67ef8e-fe61-4555-9b10-062e8bcf3479"
+      "id": "48f58798-c3c2-4ff3-831f-34f0bb5665fd"
     }
   ]
 }

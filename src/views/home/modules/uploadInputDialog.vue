@@ -3,7 +3,7 @@
     <template #title>
       <p class="upload-mp__title">
         <span>请填写上传的必要信息</span>&nbsp;
-        <span class="upload-mp__title--notice">注: 本次上传将会覆盖体验版</span>
+        <!-- <span class="upload-mp__title--notice">注: 本次上传将会覆盖体验版</span> -->
       </p>
     </template>
     <div class="upload-mp__content">
@@ -18,8 +18,8 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visible = false" size="mini">取消</el-button>
-        <el-button type="primary" @click="save(formRef)" size="mini">确认</el-button>
+        <el-button @click="visible = false" size="small">取消</el-button>
+        <el-button type="primary" @click="save(formRef)" size="small">确认</el-button>
       </span>
     </template>
   </el-dialog>

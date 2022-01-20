@@ -1,3 +1,10 @@
+/*
+ * @Author: 谢树宏
+ * @Date: 2022-01-14 09:56:10
+ * @LastEditors: 谢树宏
+ * @LastEditTime: 2022-01-19 10:59:15
+ * @FilePath: /electron-mp-ci/main/business/common.js
+ */
 const path = require('path')
 const fs = require('fs')
 const db = require('../../db/db-cjs')
@@ -42,13 +49,10 @@ async function excuteCommon(event, arg) {
           })
           .write()
       }
-      event.reply(
-        'refreshReply',
-        new Response(SUCCESS, {
-          // 返回值往往带有其他信息 这里用正则去掉
-          message: '刷新成功'
-        })
-      )
+      return new Response(SUCCESS, {
+        // 返回值往往带有其他信息 这里用正则去掉
+        message: '刷新成功'
+      })
       break
   }
 }

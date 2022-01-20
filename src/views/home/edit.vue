@@ -205,7 +205,7 @@ export default defineComponent({
     // 返回
     const back = () => router.back()
     // 路径选择
-    const selectPath = (key: string) => {
+    const selectPath = async (key: string) => {
       global.ipcRenderer.send('select', {
         id: formData.value.id,
         params:
@@ -246,7 +246,7 @@ export default defineComponent({
           })
         }
       })
-      // 文件夹选择回复
+      //  文件夹选择回复
       global.ipcRenderer.on('selectFileReply', async (event: IpcMainEvent, response: any) => {
         const { status, data } = response
         if (status === 'success') {

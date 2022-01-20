@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-14 16:59:09
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-18 14:59:47
+ * @LastEditTime: 2022-01-19 17:13:46
  * @FilePath: /electron-mp-ci/src/views/home/modules/gitCommitDialog.vue
 -->
 <template>
@@ -65,14 +65,20 @@
         </div>
       </div>
       <div class="commit-area">
-        <el-input v-model="desc" type="textarea"></el-input>
+        <el-input v-model="desc" type="textarea" placeholder="请输入您的提交信息"></el-input>
       </div>
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visible = false" size="mini">取消</el-button>
-        <el-button @click="visible = false" size="mini">直接切换</el-button>
-        <el-button @click="$emit('commitSwitch', desc)" :disabled="!data?.stagedData?.length" type="primary" size="mini">提交并切换</el-button>
+        <el-button @click="visible = false" size="small">取消</el-button>
+        <el-button @click="$emit('switch')" size="small">直接切换</el-button>
+        <el-button
+          @click="$emit('commitSwitch', desc)"
+          :disabled="!data?.stagedData?.length"
+          type="primary"
+          size="small"
+          >提交并切换</el-button
+        >
       </span>
     </template>
   </el-dialog>
@@ -92,7 +98,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const stagedChecked = ref(true)
     const unstagedChecked = ref(false)
-    const visible = ref(true)
+    const visible = ref(false)
     const desc = ref('')
     // 选中/反选
     const change = (value: boolean, index: number, type: string) => {
@@ -107,7 +113,7 @@ export default defineComponent({
       close()
     }
     watch(props.data, (newValue) => {
-      console.log('data变化');
+      console.log('data变化')
 
       stagedChecked.value = true
       unstagedChecked.value = false
@@ -142,9 +148,7 @@ export default defineComponent({
         return 'smile'
       }
     }
-    onMounted(() => {
-
-    })
+    onMounted(() => {})
     return {
       visible,
       open,
@@ -242,7 +246,7 @@ export default defineComponent({
       color: $primary;
     }
     &__footer {
-      padding: 10px;
+      padding: 10px 20px;
     }
     &__body {
       padding: 20px 20px 12px;

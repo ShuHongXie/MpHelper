@@ -23,8 +23,8 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visible = false" size="mini">取消</el-button>
-        <el-button type="primary" @click="confirm" size="mini">确认切换</el-button>
+        <el-button @click="visible = false" size="small">取消</el-button>
+        <el-button type="primary" @click="confirm" size="small">确认切换</el-button>
       </span>
     </template>
   </el-dialog>

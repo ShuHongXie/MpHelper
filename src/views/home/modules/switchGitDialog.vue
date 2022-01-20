@@ -1,7 +1,10 @@
 <template>
   <el-dialog v-model="visible" width="50%" custom-class="switch-git">
     <template #title>
-      <span class="switch-git__title">请选择要切换的分支</span>
+      <div class="switch-git__title">
+        <span class="switch-git__tip">请选择要切换的分支</span
+        ><span class="switch-git__current">当前分支：{{ data.currentBranch }}</span>
+      </div>
     </template>
     <div class="switch-git__content">
       <div
@@ -79,6 +82,10 @@ export default defineComponent({
   &__title {
     margin-top: 8px;
   }
+  &__current {
+    padding-left: 10px;
+    color: #ff0000;
+  }
   &__content {
     font-size: 18px;
     max-height: 200px;
@@ -90,7 +97,6 @@ export default defineComponent({
       align-items: center;
       height: 30px;
       cursor: pointer;
-
       color: #333;
       &:hover {
         background-color: #f6f6f6;

@@ -1,3 +1,5 @@
+@import './constarnt.scss';
+
 html,
 body,
 div,
@@ -127,4 +129,21 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+div {
+  &::-webkit-scrollbar {
+    width: 4px;
+    /*height: 4px;*/
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px $primary;
+    background: rgba(0, 0, 0, 0.2);
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px $primary;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
+  }
 }

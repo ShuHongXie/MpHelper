@@ -18,6 +18,7 @@ async function excuteCommon(event, arg) {
   switch (type) {
     // 项目信息刷新 更新当前git的HEAD分支和分支列表
     case 'refresh':
+      console.log('进行刷洗操作')
       const gitDirPath = path.join(params.path, '/.git/HEAD')
       const existGitDir = fs.existsSync(gitDirPath)
       if (existGitDir) {

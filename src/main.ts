@@ -1,33 +1,14 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import {
-  ElButton,
-  ElImage,
-  ElIcon,
-  ElForm,
-  ElRow,
-  ElCol,
-  ElInput,
-  ElMessage,
-  ElMessageBox,
-  ElLoading,
-  ElPopconfirm
-} from 'element-plus'
+import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 import * as Components from './components'
 import './assets/scss/index.scss'
 const electron = require('electron')
 import db from '../db/db.js'
+console.log(db)
 
 const app = createApp(App).use(router)
-// .use(ElButton)
-// .use(ElImage)
-// .use(ElIcon)
-// .use(ElForm)
-// .use(ElRow)
-// .use(ElCol)
-// .use(ElInput)
-// .use(ElPopconfirm)
 // element方法挂载
 app.config.globalProperties.$message = ElMessage
 app.config.globalProperties.$messageBox = ElMessageBox

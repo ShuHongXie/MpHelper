@@ -76,20 +76,20 @@ export default defineComponent({
       excuteFunc()
     }
     // ipc通信打开文件夹
-    const upload = async () => {
-      const { status, data } = await global.ipcRenderer.send('select', {
+    const upload = () => {
+      global.ipcRenderer.send('select', {
         type: 'export',
         params: {
           title: '选择文件夹',
           properties: ['openDirectory']
         }
       })
-      if (status === SUCCESS) {
-        global.$message({
-          type: 'success',
-          message: data.message
-        })
-      }
+      // if (status === SUCCESS) {
+      //   global.$message({
+      //     type: 'success',
+      //     message: data.message
+      //   })
+      // }
     }
     // 编辑
     const edit = (index: number) => {
@@ -175,7 +175,12 @@ export default defineComponent({
       }
     }
     // 分支切换
-    const switchBranch = (index: number) => {
+    const switchBranch = async (index: number) => {
+      // 分支切换前要查询一次 确保用户在离开窗口期间对git做了什么
+      await global.ipcRenderer.invoke('commonOperate', {
+        type: 'refresh',
+        params: cloneDeep(list.value[index])
+      })
       if (!list.value[index].branches?.length) {
         global.$message({
           type: 'success',
@@ -303,7 +308,9 @@ export default defineComponent({
     onMounted(async () => {
       let loadingInstance: { close: () => void } | null = null
       // 从数据库中拿取状态
-      list.value = global.db.read().get('list').value()
+      const listArray = cloneDeep(global.db.read().get('list').value())
+      console.log('---')
+      list.value = listArray
       currentSelectProject.value = list.value[1]
       // 增加loading状态的可以key
       for (const item of list.value) {

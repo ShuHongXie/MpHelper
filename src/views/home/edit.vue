@@ -114,7 +114,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, reactive, compile } from 'vue'
+import { defineComponent, onMounted, ref, reactive } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { List, complieSetting } from '@/entity/Db'
 import type { ElForm } from 'element-plus'

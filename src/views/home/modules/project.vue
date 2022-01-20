@@ -28,9 +28,9 @@
       <div v-else class="project-qrcode__add" @click.stop="$emit('add')">
         <mp-icon icon="add" color="#6489ff" :size="40" />
       </div>
-      <div v-if="data?.expireTime" class="project-qrcode__tip" @click="copyImage">
-        {{ `将于${data.expireTime}后失效` }}
-      </div>
+    </div>
+    <div v-if="data?.expireTime" class="project-qrcode__tip" @click="copyImage">
+      {{ `将于${data.expireTime}后失效` }}
     </div>
     <div class="project-operation" v-if="data">
       <el-row class="project-operation__wrapper">
@@ -124,13 +124,9 @@ export default defineComponent({
     }
     // 图片复制
     const copyImage = () => {
-      console.log(props?.data?.fullQrcodePath)
-
       let qrcode = global.nativeImage.createFromPath(props?.data?.fullQrcodePath)
       console.log(qrcode, global.clipboard.writeImage)
-
       global.clipboard.writeImage(qrcode)
-      // qrcode = null
       global.$message({
         message: '已复制到剪贴板.',
         type: 'success'

@@ -37,10 +37,13 @@ async function upload(event, params) {
       version: params.version,
       desc: params.desc,
       setting: {
-        minify: true,
         es6: true,
         es7: true,
-        autoPrefixWXSS: true
+        autoPrefixWXSS: true,
+        minifyWXML: true,
+        minifyWXSS: true,
+        minifyJS: true,
+        minify: true
       },
       onProgressUpdate: (res) => {
         if (res._msg !== 'upload') {
@@ -92,10 +95,13 @@ async function preview(event, params) {
       project: ciInstance,
       desc: params.desc, // 此备注将显示在“小程序助手”开发版列表中
       setting: {
-        minify: true,
         es6: true,
         es7: true,
-        autoPrefixWXSS: true
+        autoPrefixWXSS: true,
+        minifyWXML: true,
+        minifyWXSS: true,
+        minifyJS: true,
+        minify: true
       },
       robot: params.robot,
       qrcodeFormat: 'image',

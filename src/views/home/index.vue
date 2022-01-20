@@ -77,7 +77,7 @@ export default defineComponent({
     }
     // ipc通信打开文件夹
     const upload = async () => {
-      const { status, data } = await global.ipcRenderer.invoke('select', {
+      const { status, data } = await global.ipcRenderer.send('select', {
         type: 'export',
         params: {
           title: '选择文件夹',
@@ -322,7 +322,9 @@ export default defineComponent({
         } else {
           global.$message({
             type: 'error',
-            message: response.data.message
+            message: response.data.message,
+            duration: 0,
+            showClose: true
           })
           currentPreview.loading = false
         }
@@ -350,7 +352,9 @@ export default defineComponent({
           loadingInstance = null
           global.$message({
             type: 'error',
-            message: response.data.message
+            message: response.data.message,
+            duration: 0,
+            showClose: true
           })
           currentPreview.loading = false
         }

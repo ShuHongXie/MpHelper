@@ -3,7 +3,7 @@
     <template #title>
       <p class="upload-mp__title">
         <span>请填写上传的必要信息</span>&nbsp;
-        <span class="upload-mp__title--notice">注: 本次上传将会覆盖体验版</span>
+        <!-- <span class="upload-mp__title--notice">注: 本次上传将会覆盖体验版</span> -->
       </p>
     </template>
     <div class="upload-mp__content">

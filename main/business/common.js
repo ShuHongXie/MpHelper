@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-14 09:56:10
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-19 10:59:15
+ * @LastEditTime: 2022-01-21 10:51:35
  * @FilePath: /electron-mp-ci/main/business/common.js
  */
 const path = require('path')
@@ -14,7 +14,6 @@ const { SUCCESS, FAIL } = require('../constrant.js')
 
 async function excuteCommon(event, arg) {
   const { type, params = {} } = arg
-  console.log('-----')
   switch (type) {
     // 项目信息刷新 更新当前git的HEAD分支和分支列表
     case 'refresh':

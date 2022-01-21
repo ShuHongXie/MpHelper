@@ -114,7 +114,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, reactive } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref, reactive } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { List, complieSetting } from '@/entity/Db'
 import type { ElForm } from 'element-plus'
@@ -226,6 +226,7 @@ export default defineComponent({
         type: key
       })
     }
+    // 挂载
     onMounted(() => {
       index.value = parseInt(route.query.index as string)
       formData.value = global.db.read().get('list').value()[index.value]
@@ -257,6 +258,10 @@ export default defineComponent({
           })
         }
       })
+    })
+    // 卸载
+    onUnmounted(() => {
+      global.ipcRenderer.ipcRenderer.removeAllListeners()
     })
     return {
       formData,

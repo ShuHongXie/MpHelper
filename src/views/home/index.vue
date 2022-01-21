@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 import { IpcMainEvent } from 'electron'
 import { cloneDeep, debounce } from 'lodash'
@@ -86,7 +86,7 @@ export default defineComponent({
       })
       // if (status === SUCCESS) {
       //   global.$message({
-      //     type: 'success',
+      //     type: SUCCESS,
       //     message: data.message
       //   })
       // }
@@ -156,7 +156,7 @@ export default defineComponent({
           global.db.read().get('list').remove({ id: list.value[index].id }).write()
           list.value.splice(index, 1)
           global.$message({
-            type: 'success',
+            type: SUCCESS,
             message: '删除成功'
           })
         })
@@ -169,7 +169,7 @@ export default defineComponent({
       })
       if (data.status === SUCCESS) {
         global.$message({
-          type: 'success',
+          type: SUCCESS,
           message: data.data.message
         })
       }
@@ -181,9 +181,10 @@ export default defineComponent({
         type: 'refresh',
         params: cloneDeep(list.value[index])
       })
+      list.value[index] = global.db.read().get('list').value()[index]
       if (!list.value[index].branches?.length) {
         global.$message({
-          type: 'success',
+          type: SUCCESS,
           message: '当前项目下没有分支'
         })
         return
@@ -204,7 +205,7 @@ export default defineComponent({
       global.$message({
         showClose: status !== SUCCESS,
         duration: status === SUCCESS ? 3000 : 0,
-        type: status === SUCCESS ? 'success' : 'error',
+        type: status === SUCCESS ? SUCCESS : 'error',
         message: data.message
       })
       // 成功时就关闭弹窗, 更新数据库数据
@@ -297,7 +298,7 @@ export default defineComponent({
       global.$message({
         showClose: status !== SUCCESS,
         duration: status === SUCCESS ? 3000 : 0,
-        type: status === SUCCESS ? 'success' : 'error',
+        type: status === SUCCESS ? SUCCESS : 'error',
         message: data.message
       })
       if (status === SUCCESS) {
@@ -308,14 +309,27 @@ export default defineComponent({
     onMounted(async () => {
       let loadingInstance: { close: () => void } | null = null
       // 从数据库中拿取状态
-      const listArray = cloneDeep(global.db.read().get('list').value())
-      console.log('---')
-      list.value = listArray
-      currentSelectProject.value = list.value[1]
-      // 增加loading状态的可以key
+      list.value = global.db.read().get('list').value()
+      // 增加loading状态的key
       for (const item of list.value) {
         Object.assign(item, {}, { loadingText: '', loading: false })
       }
+      // 上传回复
+      // 文件选择回复
+      global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, response: any) => {
+        console.log('xxxxx', response)
+        const { status, data } = response
+        if (status === SUCCESS) {
+          data && list.value.push({ ...data.data, loadingText: '', loading: false })
+          console.log(list.value)
+          global.$message({
+            showClose: true,
+            message: '添加成功',
+            type: SUCCESS,
+            duration: 1000
+          })
+        }
+      })
       // 预览回复
       global.ipcRenderer.on('previewReply', async (event: IpcMainEvent, response: any) => {
         const currentPreview = list.value[response.data.index]
@@ -350,7 +364,7 @@ export default defineComponent({
             loadingInstance?.close()
             loadingInstance = null
             global.$message({
-              type: 'success',
+              type: SUCCESS,
               message: '上传成功'
             })
           }
@@ -366,6 +380,10 @@ export default defineComponent({
           currentPreview.loading = false
         }
       })
+    })
+    // 卸载
+    onUnmounted(() => {
+      global.ipcRenderer.ipcRenderer.removeAllListeners()
     })
     return {
       upload,

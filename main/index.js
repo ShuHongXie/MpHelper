@@ -1,8 +1,17 @@
+/*
+ * @Author: 谢树宏
+ * @Date: 2022-01-10 09:32:59
+ * @LastEditors: 谢树宏
+ * @LastEditTime: 2022-01-21 10:18:09
+ * @FilePath: /electron-mp-ci/main/index.js
+ */
 // 控制应用生命周期和创建原生浏览器窗口的模组
 const { app, BrowserWindow } = require('electron')
 require('./excute.js')
 try {
-  require('electron-reloader')(module)
+  require('electron-reloader')(module, {
+    ignore: require('path').resolve(__dirname, '../db/db.json')
+  })
 } catch (_) {
   console.log(_)
 }

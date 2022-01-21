@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-17 09:16:57
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-19 17:54:13
+ * @LastEditTime: 2022-01-21 10:56:56
  * @FilePath: /electron-mp-ci/main/business/git.js
  */
 const git = require('isomorphic-git')
@@ -189,7 +189,6 @@ async function executeGit(event, { type, params = {} }) {
       break
     // 从暂存区加入版本库
     case 'commit':
-      console.log('及惹怒')
       let userName,
         userEmail,
         uerNameRequest,

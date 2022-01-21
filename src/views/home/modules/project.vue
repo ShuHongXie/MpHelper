@@ -1,7 +1,7 @@
 <template>
   <div class="project">
     <div class="project-name" v-if="data">
-      {{ data.projectName }}
+      <span>{{ data.projectName }}</span>
       <mp-icon
         :size="14"
         custom-class="delete"
@@ -21,7 +21,6 @@
     <div class="project-qrcode" v-loading="data?.loading" :element-loading-text="data?.loadingText">
       <mp-image
         v-if="data?.qrcodePath"
-        style="height: 200px"
         :src="data.qrcodePath"
         :preview-src-list="[data.qrcodePath]"
       ></mp-image>
@@ -145,10 +144,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/constarnt.scss';
 .project {
-  width: 200px;
-  height: 350px;
+  width: 220px;
+  height: 370px;
   background: #ffffff;
   box-shadow: 2px 0px 10px 0px rgba(96, 125, 238, 0.35);
   border-radius: 6px;
@@ -168,6 +166,7 @@ export default defineComponent({
     box-sizing: border-box;
     padding: 0 30px;
     position: relative;
+    @include line-single;
     .delete {
       position: absolute;
       right: 10px;
@@ -197,7 +196,6 @@ export default defineComponent({
     // border-bottom: 1px solid $primary;
   }
   &-qrcode {
-    width: 200px;
     border-radius: 8px;
     flex: 1;
     &__add {

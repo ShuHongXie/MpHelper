@@ -1,39 +1,75 @@
 /*
  * @Author: 谢树宏
- * @Date: 2022-01-18 17:06:15
+ * @Date: 2022-01-05 14:44:21
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-18 17:54:45
+ * @LastEditTime: 2022-01-21 17:53:37
  * @FilePath: /electron-mp-ci/test.js
  */
-const { exec } = require('shelljs')
+const fs = require('fs')
+const path = require('path')
+/**
+ * 过期时间计算
+ * @param {*} intervalTime 间隔时间
+ * @return {*}
+ */
+function getExpireTime(intervalTime) {
+  // 间隔时间设置为
+  intervalTime = intervalTime * 60 * 1000
+  const timestamp = new Date().getTime() + intervalTime
+  const expireTime = new Date(timestamp)
+  return `${expireTime.getFullYear()}-${
+    expireTime.getMonth() + 1
+  }-${expireTime.getDate()} ${expireTime.getHours()}:${expireTime.getMinutes()}`
+}
 
-const namePromise = new Promise((resolve, reject) => {
-  var child = exec('git config user.name', { async: true })
-  child.stdout.on('data', function (data) {
-    /* ... do something with data ... */
-    resolve(data.toString())
+/**
+ * 获取所有文件
+ * @param {*} dirPath 文件简介路径
+ * @param {string} [ignoreDir=['node_modules', '.git']] 忽略的文件夹
+ * @return {*}
+ */
+function findAllFile(dirPath, ignoreDir = ['node_modules', '.git']) {
+  const files = fs.readdirSync(dirPath)
+  const filtedFiles = []
+  files.forEach((file) => {
+    if (!ignoreDir.includes(file)) {
+      const stat = fs.statSync(path.join(dirPath, file))
+      if (stat.isDirectory()) {
+        filtedFiles.push(...findAllFile(path.join(dirPath, file), ignoreDir))
+      } else {
+        filtedFiles.push(path.join(dirPath, file))
+      }
+    }
   })
-  child.stderr.on('data', (data) => {
-    reject('error')
-  })
-})
+  return filtedFiles
+}
 
-const emailPromise = new Promise((resolve, reject) => {
-  var child = exec('git config user.email', { async: true })
-  child.stdout.on('data', function (data) {
-    /* ... do something with data ... */
-    resolve(data.toString())
-  })
-  child.stderr.on('data', (data) => {
-    reject('error')
-  })
-})
-
-Promise.all([undefined, emailPromise]).then(
-  (res) => {
-    console.log(res)
-  },
-  (rej) => {
-    console.log(rej)
+/**
+ *
+ * 判断当前文件夹下是否存在某个文件
+ * @param {*} dirPath 文件路径
+ * @param {*} file 文件名称/文件正则表达式
+ * @return {*}
+ */
+function existFile(dirPath, file) {
+  const files = findAllFile(dirPath)
+  let i = 0
+  while (i <= files.length) {
+    // 正则模式处理
+    if (file instanceof RegExp && file.test(files[i])) {
+      return files[i]
+    }
+    // 字符串模式处理
+    if (
+      typeof file === 'string' &&
+      files[i] &&
+      files[i].slice(files[i].lastIndexOf('/') + 1) === file
+    ) {
+      return files[i]
+    }
+    i++
   }
-)
+  return false
+}
+
+console.log(existFile(__dirname, /(\.key)$/))

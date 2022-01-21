@@ -320,8 +320,13 @@ export default defineComponent({
         console.log('xxxxx', response)
         const { status, data } = response
         if (status === SUCCESS) {
-          data && list.value.push({ ...data.data, loadingText: '', loading: false })
-          console.log(list.value)
+          if (Array.isArray(data.data)) {
+            for (const project of data.data) {
+              list.value.push({ ...project, loadingText: '', loading: false })
+            }
+          } else {
+            list.value.push({ ...data.data, loadingText: '', loading: false })
+          }
           global.$message({
             showClose: true,
             message: '添加成功',
@@ -383,7 +388,7 @@ export default defineComponent({
     })
     // 卸载
     onUnmounted(() => {
-      global.ipcRenderer.ipcRenderer.removeAllListeners()
+      global.ipcRenderer.removeAllListeners()
     })
     return {
       upload,

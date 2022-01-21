@@ -261,7 +261,7 @@ export default defineComponent({
     })
     // 卸载
     onUnmounted(() => {
-      global.ipcRenderer.ipcRenderer.removeAllListeners()
+      global.ipcRenderer.removeAllListeners()
     })
     return {
       formData,
@@ -279,7 +279,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/constarnt.scss';
 .edit {
   padding: 10px;
   :deep(.el-form-item__label) {

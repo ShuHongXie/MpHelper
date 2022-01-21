@@ -1,3 +1,10 @@
+/*
+ * @Author: 谢树宏
+ * @Date: 2022-01-10 09:32:59
+ * @LastEditors: 谢树宏
+ * @LastEditTime: 2022-01-21 15:36:07
+ * @FilePath: /electron-mp-ci/vite.config.ts
+ */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
@@ -21,7 +28,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/assets/scss/element.scss" as *;`
+        additionalData: `@use "@/assets/scss/element.scss" as *; @use "@/assets/scss/mixin.scss" as *; @use "@/assets/scss/constarnt.scss" as *;`
       }
     }
   },

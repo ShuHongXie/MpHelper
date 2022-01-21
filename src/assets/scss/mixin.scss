@@ -1,0 +1,16 @@
+@mixin line($line) {
+  /* 超过了就隐藏 */
+  overflow: hidden;
+  /* 超过了就显示省略号 */
+  text-overflow: ellipsis;
+  /* webkit内核的浏览器 */
+  display: -webkit-box;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}
+
+@mixin line-single {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

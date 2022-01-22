@@ -11,6 +11,8 @@ const Response = require('../utils/response')
 const { SUCCESS, FAIL } = require('../constrant.js')
 const fs = require('fs')
 const { exec } = require('shelljs')
+const isWindowPlatform = process.platform === 'win32'
+const isMacOsPlatform = process.platform === 'darwin'
 
 // 执行Git相关操作
 async function executeGit(event, { type, params = {} }) {

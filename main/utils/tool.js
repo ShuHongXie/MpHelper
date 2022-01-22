@@ -7,6 +7,8 @@
  */
 const fs = require('fs')
 const path = require('path')
+const isWindowPlatform = process.platform === 'win32'
+const isMacOsPlatform = process.platform === 'darwin'
 /**
  * 过期时间计算
  * @param {*} intervalTime 间隔时间
@@ -63,7 +65,9 @@ function existFile(dirPath, file) {
     if (
       typeof file === 'string' &&
       files[i] &&
-      files[i].slice(files[i].lastIndexOf('/') + 1) === file
+      files[i].slice(
+        files[i].lastIndexOf(isWindowPlatform ? '\\' : isMacOsPlatform ? '/' : '') + 1
+      ) === file
     ) {
       return files[i]
     }

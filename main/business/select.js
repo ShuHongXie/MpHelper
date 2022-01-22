@@ -70,7 +70,7 @@ async function executeSelectFile(event, arg, fileObject) {
 
         // 判断当前的项目是什么类型的项目 uni-app/原生/taro
         // 有pages.json 就说明是uni-app项目
-        console.log(path.resolve('../../'), existFile(path.resolve('../../'), 'pages.json'))
+        console.log(path.resolve('../'), existFile(path.resolve('../../'), 'pages.json'))
         if (existFile(__dirname, 'pages.json')) {
           console.log('----进入')
           const includesArray = [undefined, undefined]

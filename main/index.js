@@ -2,11 +2,13 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-21 10:18:09
+ * @LastEditTime: 2022-01-24 14:10:31
  * @FilePath: /electron-mp-ci/main/index.js
  */
 // 控制应用生命周期和创建原生浏览器窗口的模组
 const { app, BrowserWindow } = require('electron')
+const electronRemote = require('@electron/remote/main')
+electronRemote.initialize()
 require('./excute.js')
 try {
   require('electron-reloader')(module, {
@@ -17,15 +19,20 @@ try {
 }
 
 function createWindow() {
-  const remote = require('@electron/remote/main')
   // 创建浏览器窗口
   const mainWindow = new BrowserWindow({
     width: 1400,
     height: 800,
-    // frame: process.env.NODE_ENV == 'development',
+    resizable: false,
+    skipTaskbar: true,
+    frame: false,
+    thickFrame: false,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: true,
+    maximizable: false,
+    fullscreenable: false,
+    skipTaskbar: true,
     webPreferences: {
-      // preload: path.join(__dirname, 'preload.ts'),
-      // /nodeIntegration: true,
       nodeIntegration: true,
       contextIsolation: false //  把这一项加上错误就会消失
     }
@@ -43,13 +50,14 @@ function createWindow() {
   // 打开开发工具
   mainWindow.webContents.openDevTools()
   // remote组件初始化
-  remote.initialize()
-  remote.enable(mainWindow.webContents)
+  electronRemote.enable(mainWindow.webContents)
   // 聚焦
   mainWindow.on('focus', () => {
     console.log('聚焦')
   })
+  // 窗口关闭
   console.log('窗口开启')
+  return mainWindow
 }
 
 // 这段程序将会在 Electron 结束初始化

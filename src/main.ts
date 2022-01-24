@@ -1,3 +1,10 @@
+/*
+ * @Author: 谢树宏
+ * @Date: 2022-01-21 09:07:44
+ * @LastEditors: 谢树宏
+ * @LastEditTime: 2022-01-24 10:17:56
+ * @FilePath: /electron-mp-ci/src/main.ts
+ */
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -5,6 +12,7 @@ import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 import * as Components from './components'
 import './assets/scss/index.scss'
 const electron = require('electron')
+const electronRemote = require('@electron/remote')
 import db from '../db/db.js'
 console.log(db)
 
@@ -17,6 +25,11 @@ app.config.globalProperties.$loading = ElLoading
 for (const key in electron) {
   console.log(key)
   app.config.globalProperties[key] = electron[key]
+}
+// electron远程
+for (const key in electronRemote) {
+  console.log(key)
+  app.config.globalProperties[key] = electronRemote[key]
 }
 // lowdb全局方法挂载
 app.config.globalProperties.db = db

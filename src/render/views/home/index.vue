@@ -427,6 +427,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .home {
   background-color: #f1f1f1;
+  flex: 1;
   &-list {
     display: flex;
     flex-wrap: wrap;

@@ -281,6 +281,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .edit {
   padding: 10px;
+  flex: 1;
   :deep(.el-form-item__label) {
     font-weight: bold;
   }

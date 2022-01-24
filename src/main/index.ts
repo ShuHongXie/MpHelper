@@ -2,12 +2,13 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-24 14:10:31
- * @FilePath: /electron-mp-ci/main/index.js
+ * @LastEditTime: 2022-01-24 17:07:22
+ * @FilePath: /electron-mp-ci/src/main/index.ts
  */
 // 控制应用生命周期和创建原生浏览器窗口的模组
-const { app, BrowserWindow } = require('electron')
-const electronRemote = require('@electron/remote/main')
+// const { app, BrowserWindow } = require('electron')
+import { app, BrowserWindow } from 'electron'
+import electronRemote from '@electron/remote/main'
 electronRemote.initialize()
 require('./excute.js')
 try {
@@ -17,6 +18,8 @@ try {
 } catch (_) {
   console.log(_)
 }
+
+console.log(app.getPath('userData'))
 
 function createWindow() {
   // 创建浏览器窗口
@@ -31,7 +34,6 @@ function createWindow() {
     titleBarOverlay: true,
     maximizable: false,
     fullscreenable: false,
-    skipTaskbar: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false //  把这一项加上错误就会消失
@@ -57,7 +59,6 @@ function createWindow() {
   })
   // 窗口关闭
   console.log('窗口开启')
-  return mainWindow
 }
 
 // 这段程序将会在 Electron 结束初始化
@@ -81,6 +82,3 @@ app.on('window-all-closed', function () {
     app.quit()
   }
 })
-
-// 在这个文件中，你可以包含应用程序剩余的所有部分的代码，
-// 也可以拆分成几个文件，然后用 require 导入。

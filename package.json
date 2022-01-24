@@ -8,7 +8,7 @@
     "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "electron": "cross-env NODE_ENV=development electron --inspect ./main",
+    "electron": "cross-env NODE_ENV=development electron --inspect ./src/main/index.ts",
     "start": "electron-dev-runner -o dist main/index.js --vite",
     "rollup": "node db/rollup.excute.js"
   },

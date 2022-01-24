@@ -89,39 +89,6 @@
       "desc": "",
       "version": "",
       "id": "db3de9f7-f95e-40f6-b49a-0dc8176811d1"
-    },
-    {
-      "projectName": "prod: uni_share_mall",
-      "name": "uni_share_mall",
-      "path": "/Users/xiexiaoxie/wanbiao/uni_share_mall",
-      "branches": [
-        "develop",
-        "feature/ajax",
-        "feature/ajaxConfigure",
-        "feature/appraisal",
-        "feature/newAppraisal",
-        "feature/popup",
-        "feature/recycle",
-        "feature/userNotice",
-        "master",
-        "test"
-      ],
-      "currentBranch": "master",
-      "appid": "",
-      "outputPath": "/Users/xiexiaoxie/wanbiao/uni_share_mall/unpackage/dist/build/mp-weixin",
-      "privatePath": "",
-      "robot": 1,
-      "qrcodePath": "",
-      "done": false,
-      "expireTime": "",
-      "pagePath": "",
-      "searchQuery": "",
-      "scene": "",
-      "threads": 4,
-      "setting": {},
-      "desc": "",
-      "version": "",
-      "id": "2cb23d3d-9e5f-4f47-8115-0fd17417cd65"
     }
   ]
 }

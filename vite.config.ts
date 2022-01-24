@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-21 15:36:07
+ * @LastEditTime: 2022-01-24 15:18:22
  * @FilePath: /electron-mp-ci/vite.config.ts
  */
 import { defineConfig } from 'vite'
@@ -35,7 +35,7 @@ export default defineConfig({
   // base: path.resolve(__dirname, './dist/'),
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, 'src/render'),
       '~': __dirname
     }
   }

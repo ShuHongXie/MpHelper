@@ -2,15 +2,15 @@
  * @Author: 谢树宏
  * @Date: 2022-01-21 09:07:44
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-24 10:17:56
+ * @LastEditTime: 2022-01-24 17:41:26
  * @FilePath: /electron-mp-ci/src/main.ts
  */
 import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import App from './render/App.vue'
+import router from './render/router'
 import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 import * as Components from './components'
-import './assets/scss/index.scss'
+import '@/assets/scss/index.scss'
 const electron = require('electron')
 const electronRemote = require('@electron/remote')
 import db from '../db/db.js'

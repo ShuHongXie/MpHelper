@@ -109,7 +109,6 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { global } = useGlobalProperties()
-    const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
     let timer = ref<any>(null)
     let clickRefresh = ref(false)
     // 刷新
@@ -133,7 +132,6 @@ export default defineComponent({
     }
     onMounted(() => {})
     return {
-      url,
       clickRefresh,
       refresh,
       copy,

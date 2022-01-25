@@ -2,15 +2,17 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-24 17:07:22
+ * @LastEditTime: 2022-01-25 11:43:41
  * @FilePath: /electron-mp-ci/src/main/index.ts
  */
 // 控制应用生命周期和创建原生浏览器窗口的模组
-// const { app, BrowserWindow } = require('electron')
 import { app, BrowserWindow } from 'electron'
 import electronRemote from '@electron/remote/main'
 electronRemote.initialize()
-require('./excute.js')
+import excute from './excute'
+excute()
+console.log('1')
+
 try {
   require('electron-reloader')(module, {
     ignore: require('path').resolve(__dirname, '../db/db.json')
@@ -18,8 +20,6 @@ try {
 } catch (_) {
   console.log(_)
 }
-
-console.log(app.getPath('userData'))
 
 function createWindow() {
   // 创建浏览器窗口

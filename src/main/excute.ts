@@ -2,14 +2,15 @@
  * @Author: 谢树宏
  * @Date: 2022-01-11 09:13:42
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-19 13:46:03
- * @FilePath: /electron-mp-ci/main/excute.js
+ * @LastEditTime: 2022-01-25 17:38:53
+ * @FilePath: /electron-mp-ci/src/main/excute.ts
  */
-const { ipcMain, dialog } = require('electron')
-const excuteSelect = require('./business/select.js')
-const excuteMiniProgram = require('./business/miniProgram.js')
-const excuteGit = require('./business/git.js')
-const excuteCommon = require('./business/common.js')
+import { ipcMain, dialog } from 'electron'
+
+import excuteMiniProgram from './business/miniProgram.js'
+import excuteGit from './business/git.js'
+import excuteSelect from './business/select.js'
+import excuteCommon from './business/common.js'
 // 逻辑处理层
 function excute() {
   // 打开文件/文件夹
@@ -32,4 +33,4 @@ function excute() {
   ipcMain.handle('commonOperate', (event, arg) => excuteCommon(event, arg))
 }
 
-module.exports = excute()
+export default excute

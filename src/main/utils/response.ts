@@ -1,5 +1,20 @@
-class Response {
-  constructor(status, data = null) {
+/*
+ * @Author: 谢树宏
+ * @Date: 2022-01-24 15:18:45
+ * @LastEditors: 谢树宏
+ * @LastEditTime: 2022-01-25 16:03:24
+ * @FilePath: /electron-mp-ci/src/main/utils/response.ts
+ */
+/**
+ *
+ * 统一返回结果集
+ * @export
+ * @class Reply
+ */
+export default class Reply {
+  status: string
+  data: any
+  constructor(status: string, data = {}) {
     this.status = status
     this.data = data
   }
@@ -8,7 +23,7 @@ class Response {
     return this.data
   }
 
-  set getData(value) {
+  set getData(value: any) {
     this.data = value
   }
 
@@ -16,9 +31,7 @@ class Response {
     return this.status
   }
 
-  set setStatus(value) {
+  set setStatus(value: string) {
     this.status = value
   }
 }
-
-module.exports = Response

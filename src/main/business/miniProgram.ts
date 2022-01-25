@@ -1,16 +1,17 @@
-const ci = require('miniprogram-ci')
-const path = require('path')
-const { v4: uuidv4 } = require('uuid')
-const db = require('../../db/db-cjs')
-const Response = require('../utils/response')
-const { SUCCESS, FAIL } = require('../constrant.js')
-const { getExpireTime } = require('../utils/tool')
-let showIndex
+import { IpcMainEvent } from 'electron'
+import ci from 'miniprogram-ci'
+import path from 'path'
+import { v4 as uuidv4 } from 'uuid'
+import db from '../db'
+import Response from '../utils/response'
+import { SUCCESS, FAIL } from '../constrant'
+import { getExpireTime } from '../utils/tool'
+
+let showIndex: number, ciInstance: IProject
 
 // CI实例创建
-function createMiniProgramCI(event, arg) {
+export default function createMiniProgramCI(event: IpcMainEvent, arg: any) {
   showIndex = 0
-  console.log(arg)
   const { type, params = {} } = arg
   ciInstance = new ci.Project({
     appid: params.appid,
@@ -29,7 +30,7 @@ function createMiniProgramCI(event, arg) {
   }
 }
 // 上传
-async function upload(event, params) {
+async function upload(event: IpcMainEvent, params: any) {
   console.log('开始上传')
   try {
     const uploadResult = await ci.upload({
@@ -67,7 +68,7 @@ async function upload(event, params) {
       }
     })
     console.log(uploadResult)
-  } catch (e) {
+  } catch (e: Exception) {
     showIndex = 0
     // 格式化错误捕获信息
     if (e.message.includes('Error')) {
@@ -86,7 +87,7 @@ async function upload(event, params) {
   }
 }
 // 预览
-async function preview(event, params) {
+async function preview(event: IpcMainEvent, params: any) {
   const uuid = uuidv4()
   const qrcodeOutputDest = path.resolve(__dirname, `../../image/${uuid}.png`)
   console.log('触发预览')
@@ -161,5 +162,3 @@ async function preview(event, params) {
     }
   }
 }
-
-module.exports = createMiniProgramCI

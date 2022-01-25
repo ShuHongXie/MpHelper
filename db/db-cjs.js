@@ -8,10 +8,18 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var Low__default = /*#__PURE__*/_interopDefaultLegacy(Low);
 var LodashId__default = /*#__PURE__*/_interopDefaultLegacy(LodashId);
 
+/*
+ * @Author: 谢树宏
+ * @Date: 2022-01-05 14:49:05
+ * @LastEditors: 谢树宏
+ * @LastEditTime: 2022-01-25 11:57:37
+ * @FilePath: /electron-mp-ci/db/db.js
+ */
 // 兼容lowdb在不同环境下的用法  @electron/remote必须在主进程先初始化
 const electron = require('electron');
 const FileSync = require('lowdb/adapters/FileSync');
 const path = require('path');
+console.log(123);
 // 获取db.json兼容
 const adapter = new FileSync(
   path.resolve(
@@ -23,6 +31,7 @@ const adapter = new FileSync(
 );
 const db = Low__default["default"](adapter);
 db._.mixin(LodashId__default["default"]);
+console.log(db);
 
 if (!db.has('list').value()) {
   db.set('list', []).write();

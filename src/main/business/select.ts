@@ -2,20 +2,21 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-21 18:13:47
- * @FilePath: /electron-mp-ci/main/business/select.js
+ * @LastEditTime: 2022-01-25 17:32:13
+ * @FilePath: /electron-mp-ci/src/main/business/select.ts
  */
-const path = require('path')
-const electron = require('electron')
-const fs = require('fs')
-const git = require('isomorphic-git')
-const db = require('../../db/db-cjs.js')
-const Response = require('../utils/response')
-const { SUCCESS } = require('../constrant.js')
-const { existFile } = require('../utils/tool')
+import electron, { IpcMainEvent } from 'electron'
+import path from 'path'
+import fs from 'fs'
+import git from 'isomorphic-git'
+import db from '../db'
+import Response from '../utils/response'
+import { SUCCESS, FAIL } from '../constrant'
+import { existFile } from '../utils/tool'
+import { Project } from '../entity/project'
 
 // 执行选择文件逻辑
-async function executeSelectFile(event, arg, fileObject) {
+export default async function executeSelectFile(event: IpcMainEvent, arg: any, fileObject: any) {
   const { canceled, filePaths } = fileObject
   switch (arg.type) {
     // 选择key文件 插入数据
@@ -29,8 +30,8 @@ async function executeSelectFile(event, arg, fileObject) {
         const gitDirPath = path.join(selectPath, '/.git/HEAD')
         const existGitDir = fs.existsSync(gitDirPath)
         const projectName = path.basename(selectPath)
-        let data,
-          filterObject,
+        let data: Project,
+          filterObject: Project[] | Project = [],
           branches = [],
           keyPath = '',
           currentBranch = ''
@@ -46,7 +47,6 @@ async function executeSelectFile(event, arg, fileObject) {
         }
         // 判断当前是否存在.key文件
         const file = existFile(__dirname, /(\.key)$/)
-        console.log('---------')
         data = {
           projectName,
           name: projectName,
@@ -71,16 +71,14 @@ async function executeSelectFile(event, arg, fileObject) {
 
         // 判断当前的项目是什么类型的项目 uni-app/原生/taro
         // 有pages.json 就说明是uni-app项目
-        console.log(selectPath)
         if (existFile(selectPath, 'pages.json')) {
-          console.log('----进入')
           const includesArray = [undefined, undefined]
           filterObject = []
           const existManifest = fs.existsSync(path.join(selectPath, 'manifest.json'))
           // 有manifest.json说明是hbuilder生成的 没有则说明是uni-cli生成的
           // 这两种情况下打包出来的文件夹略有不同
           includesArray.forEach((item, index) => {
-            filterObject.push({
+            ;(filterObject as Project[]).push({
               ...data,
               outputPath: path.join(
                 selectPath,
@@ -96,14 +94,14 @@ async function executeSelectFile(event, arg, fileObject) {
           data.outputPath = filePaths[0]
           filterObject = data
         }
-
-        console.log(filterObject)
         // 插入数据
         if (Array.isArray(filterObject)) {
           for (const project of filterObject) {
+            // @ts-ignore
             db.read().get('list').insert(project).write()
           }
         } else {
+          // @ts-ignore
           db.read().get('list').insert(filterObject).write()
         }
         event.reply(
@@ -120,5 +118,3 @@ async function executeSelectFile(event, arg, fileObject) {
       )
   }
 }
-
-module.exports = executeSelectFile

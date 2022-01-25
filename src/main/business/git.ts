@@ -2,20 +2,23 @@
  * @Author: 谢树宏
  * @Date: 2022-01-17 09:16:57
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-21 10:56:56
- * @FilePath: /electron-mp-ci/main/business/git.js
+ * @LastEditTime: 2022-01-25 17:18:35
+ * @FilePath: /electron-mp-ci/src/main/business/git.ts
  */
-const git = require('isomorphic-git')
-const db = require('../../db/db-cjs')
-const Response = require('../utils/response')
-const { SUCCESS, FAIL } = require('../constrant.js')
-const fs = require('fs')
-const { exec } = require('shelljs')
-const isWindowPlatform = process.platform === 'win32'
-const isMacOsPlatform = process.platform === 'darwin'
+import { IpcMainInvokeEvent } from 'electron'
+import { ChildProcess } from 'child_process'
+import fs from 'fs'
+import git from 'isomorphic-git'
+import Response from '../utils/response'
+import { SUCCESS, FAIL } from '../constrant'
+import { exec } from 'shelljs'
+import { StroageData, StatusRow, StatusMatrix } from '../entity/git'
 
 // 执行Git相关操作
-async function executeGit(event, { type, params = {} }) {
+export default async function executeGit(
+  event: IpcMainInvokeEvent,
+  { type = '', params = {} }: { type: string; params: any }
+): Promise<Response | undefined> {
   switch (type) {
     // 分支切换
     case 'checkout':
@@ -37,7 +40,7 @@ async function executeGit(event, { type, params = {} }) {
     // Git状态
     case 'status':
       console.log(params)
-      let matrixData = await git.statusMatrix({
+      let matrixData: StatusMatrix = await git.statusMatrix({
         fs,
         dir: params.path
       })
@@ -63,12 +66,12 @@ async function executeGit(event, { type, params = {} }) {
          */
       // 筛选在暂存区的 和没有在暂存区的数据
       // 数据格式 { path: 文件路径, status: example StatusMatrix中的状态用横杠连接 }
-      const unstagedData = []
-      const stagedData = []
-      normalData.forEach((item) => {
+      const unstagedData: StroageData[] = []
+      const stagedData: StroageData[] = []
+      normalData.forEach((item: StatusRow) => {
         const path = item[0]
-        item = item.slice(1, 4).join('')
-        switch (item) {
+        const statusStr = item.slice(1, 4).join('')
+        switch (statusStr) {
           case '020':
             unstagedData.push({
               path,
@@ -213,14 +216,18 @@ async function executeGit(event, { type, params = {} }) {
       // 没办法只能通过自己执行shell捕获
       if (!userName) {
         uerNameRequest = new Promise((resolve, reject) => {
-          const process = exec('git config user.name', { async: true })
-          process.stdout.on('data', function (data) {
-            data = data.replace(/\n/g, '')
-            resolve(data)
-          })
-          process.stderr.on('data', (data) => {
-            reject('error')
-          })
+          const process = exec('git config user.name', { async: true }) as ChildProcess
+          if (process) {
+            // @ts-ignore
+            process.stdout.on('data', function (data) {
+              data = data.replace(/\n/g, '')
+              resolve(data)
+            })
+            // @ts-ignore
+            process.stderr.on('data', (data) => {
+              reject(data)
+            })
+          }
         })
         promiseArray.push(uerNameRequest)
       } else {
@@ -229,10 +236,12 @@ async function executeGit(event, { type, params = {} }) {
       if (!userEmail) {
         uerEmailRequest = new Promise((resolve, reject) => {
           const process = exec('git config user.email', { async: true })
+          // @ts-ignore
           process.stdout.on('data', function (data) {
             data = data.replace(/\n/g, '')
             resolve(data)
           })
+          // @ts-ignore
           process.stderr.on('data', (data) => {
             reject('error')
           })
@@ -276,5 +285,3 @@ async function executeGit(event, { type, params = {} }) {
       break
   }
 }
-
-module.exports = executeGit

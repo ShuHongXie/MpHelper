@@ -2,11 +2,11 @@
  * @Author: 谢树宏
  * @Date: 2022-01-05 14:44:21
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-21 17:54:27
- * @FilePath: /electron-mp-ci/main/utils/tool.js
+ * @LastEditTime: 2022-01-25 17:03:56
+ * @FilePath: /electron-mp-ci/src/main/utils/tool.ts
  */
-const fs = require('fs')
-const path = require('path')
+import path from 'path'
+import fs from 'fs'
 const isWindowPlatform = process.platform === 'win32'
 const isMacOsPlatform = process.platform === 'darwin'
 /**
@@ -14,7 +14,7 @@ const isMacOsPlatform = process.platform === 'darwin'
  * @param {*} intervalTime 间隔时间
  * @return {*}
  */
-function getExpireTime(intervalTime) {
+function getExpireTime(intervalTime: number) {
   // 间隔时间设置为
   intervalTime = intervalTime * 60 * 1000
   const timestamp = new Date().getTime() + intervalTime
@@ -30,9 +30,9 @@ function getExpireTime(intervalTime) {
  * @param {string} [ignoreDir=['node_modules', '.git']] 忽略的文件夹
  * @return {*}
  */
-function findAllFile(dirPath, ignoreDir = ['node_modules', '.git']) {
+function findAllFile(dirPath: string, ignoreDir: string[] = ['node_modules', '.git']) {
   const files = fs.readdirSync(dirPath)
-  const filtedFiles = []
+  const filtedFiles: string[] = []
   files.forEach((file) => {
     if (!ignoreDir.includes(file)) {
       const stat = fs.statSync(path.join(dirPath, file))
@@ -53,7 +53,7 @@ function findAllFile(dirPath, ignoreDir = ['node_modules', '.git']) {
  * @param {*} file 文件名称/文件正则表达式
  * @return {*}
  */
-function existFile(dirPath, file) {
+function existFile(dirPath: string, file: string | RegExp) {
   const files = findAllFile(dirPath)
   let i = 0
   while (i <= files.length) {
@@ -76,8 +76,4 @@ function existFile(dirPath, file) {
   return false
 }
 
-module.exports = {
-  getExpireTime,
-  findAllFile,
-  existFile
-}
+export { getExpireTime, findAllFile, existFile }

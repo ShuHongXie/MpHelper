@@ -2,22 +2,23 @@
  * @Author: 谢树宏
  * @Date: 2022-01-14 09:56:10
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-21 10:51:35
- * @FilePath: /electron-mp-ci/main/business/common.js
+ * @LastEditTime: 2022-01-25 16:52:46
+ * @FilePath: /electron-mp-ci/src/main/business/common.ts
  */
-const path = require('path')
-const fs = require('fs')
-const db = require('../../db/db-cjs')
-const git = require('isomorphic-git')
-const Response = require('../utils/response')
-const { SUCCESS, FAIL } = require('../constrant.js')
+import { IpcMainInvokeEvent } from 'electron'
+import path from 'path'
+import fs from 'fs'
+import git from 'isomorphic-git'
+import db from '../db'
+import Response from '../utils/response'
+import { SUCCESS, FAIL } from '../constrant'
 
-async function excuteCommon(event, arg) {
+async function excuteCommon(event: IpcMainInvokeEvent, arg: any) {
   const { type, params = {} } = arg
   switch (type) {
     // 项目信息刷新 更新当前git的HEAD分支和分支列表
     case 'refresh':
-      console.log('进行刷洗操作')
+      console.log('进行刷新操作')
       const gitDirPath = path.join(params.path, '/.git/HEAD')
       const existGitDir = fs.existsSync(gitDirPath)
       if (existGitDir) {
@@ -32,6 +33,7 @@ async function excuteCommon(event, arg) {
         // 插入数据
         db.read()
           .get('list')
+          // @ts-ignore
           .find({ id: params.id })
           .assign({
             branches,
@@ -42,6 +44,7 @@ async function excuteCommon(event, arg) {
         // 插入数据
         db.read()
           .get('list')
+          // @ts-ignore
           .find({ id: params.id })
           .assign({
             branches: '',
@@ -57,4 +60,4 @@ async function excuteCommon(event, arg) {
   }
 }
 
-module.exports = excuteCommon
+export default excuteCommon

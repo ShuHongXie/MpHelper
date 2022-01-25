@@ -1480,6 +1480,23 @@
   resolved "https://registry.npmmirror.com/@popperjs/core/download/@popperjs/core-2.11.2.tgz#830beaec4b4091a9e9398ac50f865ddea52186b9"
   integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
 
+"@rollup/plugin-typescript@^8.3.0":
+  version "8.3.0"
+  resolved "https://registry.npmmirror.com/@rollup/plugin-typescript/download/@rollup/plugin-typescript-8.3.0.tgz#bc1077fa5897b980fc27e376c4e377882c63e68b"
+  integrity sha1-vBB3+liXuYD8J+N2xON3iCxj5os=
+  dependencies:
+    "@rollup/pluginutils" "^3.1.0"
+    resolve "^1.17.0"
+
+"@rollup/pluginutils@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.npmmirror.com/@rollup/pluginutils/download/@rollup/pluginutils-3.1.0.tgz#706b4524ee6dc8b103b3c995533e5ad680c02b9b"
+  integrity sha1-cGtFJO5tyLEDs8mVUz5a1oDAK5s=
+  dependencies:
+    "@types/estree" "0.0.39"
+    estree-walker "^1.0.1"
+    picomatch "^2.2.2"
+
 "@rollup/pluginutils@^4.1.1", "@rollup/pluginutils@^4.1.2":
   version "4.1.2"
   resolved "https://registry.npmmirror.com/@rollup/pluginutils/download/@rollup/pluginutils-4.1.2.tgz#ed5821c15e5e05e32816f5fb9ec607cdf5a75751"
@@ -1529,6 +1546,11 @@
   dependencies:
     "@types/ms" "*"
 
+"@types/estree@0.0.39":
+  version "0.0.39"
+  resolved "https://registry.npmmirror.com/@types/estree/download/@types/estree-0.0.39.tgz?cache=0&sync_timestamp=1637266061438&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Festree%2Fdownload%2F%40types%2Festree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
+  integrity sha1-4Xfmme4bjCLSMXTKqnQiZEOJUJ8=
+
 "@types/fs-extra@^9.0.11":
   version "9.0.13"
   resolved "https://registry.npmmirror.com/@types/fs-extra/download/@types/fs-extra-9.0.13.tgz#7594fbae04fe7f1918ce8b3d213f74ff44ac1f45"
@@ -1536,7 +1558,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/glob@^7.1.1":
+"@types/glob@*", "@types/glob@^7.1.1":
   version "7.2.0"
   resolved "https://registry.npmmirror.com/@types/glob/download/@types/glob-7.2.0.tgz#bc1b5bf3aa92f25bd5dd39f35c57361bdce5b2eb"
   integrity sha1-vBtb86qS8lvV3TnzXFc2G9zlsus=
@@ -1599,10 +1621,23 @@
     "@types/node" "*"
     xmlbuilder ">=11.0.1"
 
+"@types/shelljs@^0.8.11":
+  version "0.8.11"
+  resolved "https://registry.npmmirror.com/@types/shelljs/download/@types/shelljs-0.8.11.tgz#17a5696c825974e96828e96e89585d685646fcb8"
+  integrity sha512-x9yaMvEh5BEaZKeVQC4vp3l+QoFj3BXcd4aYfuKSzIIyihjdVARAadYy3SMNIz0WCCdS2vB9JL/U6GQk5PaxQw==
+  dependencies:
+    "@types/glob" "*"
+    "@types/node" "*"
+
 "@types/throttle-debounce@^2.1.0":
   version "2.1.0"
   resolved "https://registry.npmmirror.com/@types/throttle-debounce/download/@types/throttle-debounce-2.1.0.tgz#1c3df624bfc4b62f992d3012b84c56d41eab3776"
   integrity sha1-HD32JL/Eti+ZLTASuExW1B6rN3Y=
+
+"@types/uuid@^8.3.4":
+  version "8.3.4"
+  resolved "https://registry.npmmirror.com/@types/uuid/download/@types/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
+  integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
 
 "@types/verror@^1.10.3":
   version "1.10.5"
@@ -3182,6 +3217,15 @@ caseless@~0.12.0:
   resolved "https://registry.npm.taobao.org/caseless/download/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
+chalk@2.4.1:
+  version "2.4.1"
+  resolved "https://registry.npmmirror.com/chalk/download/chalk-2.4.1.tgz#18c49ab16a037b6eb0152cc83e3471338215b66e"
+  integrity sha512-ObN6h1v2fTJSmUXoS3nMQ92LbDK9be4TV+6G+omQlGJFdcUX5heKi1LZ1YnRMIgwTLEj3E24bT6tYni50rlCfQ==
+  dependencies:
+    ansi-styles "^3.2.1"
+    escape-string-regexp "^1.0.5"
+    supports-color "^5.3.0"
+
 chalk@^1.1.3:
   version "1.1.3"
   resolved "https://registry.npmmirror.com/chalk/download/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
@@ -3462,6 +3506,20 @@ concat-stream@^1.6.2:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
+concurrently@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.npmmirror.com/concurrently/download/concurrently-7.0.0.tgz#78d31b441cec338dab03316c221a2f9a67c529b0"
+  integrity sha512-WKM7PUsI8wyXpF80H+zjHP32fsgsHNQfPLw/e70Z5dYkV7hF+rf8q3D+ScWJIEr57CpkO3OWBko6hwhQLPR8Pw==
+  dependencies:
+    chalk "^4.1.0"
+    date-fns "^2.16.1"
+    lodash "^4.17.21"
+    rxjs "^6.6.3"
+    spawn-command "^0.0.2-1"
+    supports-color "^8.1.0"
+    tree-kill "^1.2.2"
+    yargs "^16.2.0"
+
 conf@^9.0.0:
   version "9.0.2"
   resolved "https://registry.npmmirror.com/conf/download/conf-9.0.2.tgz#943589602b1ce274d9234265314336a698972bc5"
@@ -3739,6 +3797,11 @@ dashdash@^1.12.0:
   integrity sha1-hTz6D3y+L+1d4gMmuN1YEDX24vA=
   dependencies:
     assert-plus "^1.0.0"
+
+date-fns@^2.16.1:
+  version "2.28.0"
+  resolved "https://registry.npmmirror.com/date-fns/download/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
+  integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
 
 date-time@^3.1.0:
   version "3.1.0"
@@ -4447,6 +4510,11 @@ estraverse@^5.1.0, estraverse@^5.2.0:
   version "5.3.0"
   resolved "https://registry.npmmirror.com/estraverse/download/estraverse-5.3.0.tgz?cache=0&sync_timestamp=1635237706876&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Festraverse%2Fdownload%2Festraverse-5.3.0.tgz#2eea5290702f26ab8fe5370370ff86c965d21123"
   integrity sha1-LupSkHAvJquP5TcDcP+GyWXSESM=
+
+estree-walker@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmmirror.com/estree-walker/download/estree-walker-1.0.1.tgz#31bc5d612c96b704106b477e6dd5d8aa138cb700"
+  integrity sha1-MbxdYSyWtwQQa0d+bdXYqhOMtwA=
 
 estree-walker@^2.0.1, estree-walker@^2.0.2:
   version "2.0.2"
@@ -5304,7 +5372,7 @@ is-core-module@^2.2.0:
   dependencies:
     has "^1.0.3"
 
-is-core-module@^2.8.0:
+is-core-module@^2.8.0, is-core-module@^2.8.1:
   version "2.8.1"
   resolved "https://registry.npmmirror.com/is-core-module/download/is-core-module-2.8.1.tgz#f59fdfca701d5879d0a6b100a40aa1560ce27211"
   integrity sha512-SdNCUs284hr40hFTFP6l0IfZ/RSrMXF3qgoRHd3/79unUTvrFO/JoXwkGm+5J/Oe3E/b5GsnG330uUNgRpu1PA==
@@ -7486,6 +7554,15 @@ resolve@^1.10.0, resolve@^1.15.1, resolve@^1.20.0, resolve@^1.3.2, resolve@^1.8.
     is-core-module "^2.2.0"
     path-parse "^1.0.6"
 
+resolve@^1.17.0:
+  version "1.22.0"
+  resolved "https://registry.npmmirror.com/resolve/download/resolve-1.22.0.tgz#5e0b8c67c15df57a89bdbabe603a002f21731198"
+  integrity sha512-Hhtrw0nLeSrFQ7phPp4OOcVjLPIeMnRlr5mcnVuMe7M/7eBn98A3hmFRLoFo3DLZkivSYwhRUJTyPyWAk56WLw==
+  dependencies:
+    is-core-module "^2.8.1"
+    path-parse "^1.0.7"
+    supports-preserve-symlinks-flag "^1.0.0"
+
 responselike@^1.0.2:
   version "1.0.2"
   resolved "https://registry.nlark.com/responselike/download/responselike-1.0.2.tgz#918720ef3b631c5642be068f15ade5a46f4ba1e7"
@@ -7556,7 +7633,7 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-rxjs@^6.6.0:
+rxjs@^6.6.0, rxjs@^6.6.3:
   version "6.6.7"
   resolved "https://registry.npmmirror.com/rxjs/download/rxjs-6.6.7.tgz#90ac018acabf491bf65044235d5863c4dab804c9"
   integrity sha1-kKwBisq/SRv2UEQjXVhjxNq4BMk=
@@ -7817,6 +7894,11 @@ sourcemap-codec@^1.4.4:
   resolved "https://registry.npmmirror.com/sourcemap-codec/download/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
   integrity sha1-6oBL2UhXQC5pktBaOO8a41qatMQ=
 
+spawn-command@^0.0.2-1:
+  version "0.0.2-1"
+  resolved "https://registry.nlark.com/spawn-command/download/spawn-command-0.0.2-1.tgz#62f5e9466981c1b796dc5929937e11c9c6921bd0"
+  integrity sha1-YvXpRmmBwbeW3Fkpk34RycaSG9A=
+
 spdx-correct@^3.0.0:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/spdx-correct/download/spdx-correct-3.1.1.tgz#dece81ac9c1e6713e5f7d1b6f17d468fa53d89a9"
@@ -8033,6 +8115,13 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
+supports-color@^8.1.0:
+  version "8.1.1"
+  resolved "https://registry.npmmirror.com/supports-color/download/supports-color-8.1.1.tgz#cd6fc17e28500cff56c1b86c0a7fd4a54a73005c"
+  integrity sha1-zW/BfihQDP9WwbhsCn/UpUpzAFw=
+  dependencies:
+    has-flag "^4.0.0"
+
 supports-color@^9.2.1:
   version "9.2.1"
   resolved "https://registry.npmmirror.com/supports-color/download/supports-color-9.2.1.tgz#599dc9d45acf74c6176e0d880bab1d7d718fe891"
@@ -8175,6 +8264,11 @@ tough-cookie@~2.5.0:
   dependencies:
     psl "^1.1.28"
     punycode "^2.1.1"
+
+tree-kill@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.npmmirror.com/tree-kill/download/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
+  integrity sha1-TKCakJLIi3OnzcXooBtQeweQoMw=
 
 trim-right@^1.0.1:
   version "1.0.1"
@@ -8971,6 +9065,11 @@ yargs-parser@^18.1.2:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
+yargs-parser@^20.2.2:
+  version "20.2.9"
+  resolved "https://registry.npmmirror.com/yargs-parser/download/yargs-parser-20.2.9.tgz?cache=0&sync_timestamp=1637031023704&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fyargs-parser%2Fdownload%2Fyargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
+  integrity sha1-LrfcOwKJcY/ClfNidThFxBoMlO4=
+
 yargs-parser@^21.0.0:
   version "21.0.0"
   resolved "https://registry.npmmirror.com/yargs-parser/download/yargs-parser-21.0.0.tgz?cache=0&sync_timestamp=1637030983058&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fyargs-parser%2Fdownload%2Fyargs-parser-21.0.0.tgz#a485d3966be4317426dd56bdb6a30131b281dc55"
@@ -9009,6 +9108,19 @@ yargs@^15.0.2:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
+
+yargs@^16.2.0:
+  version "16.2.0"
+  resolved "https://registry.npmmirror.com/yargs/download/yargs-16.2.0.tgz#1c82bf0f6b6a66eafce7ef30e376f49a12477f66"
+  integrity sha1-HIK/D2tqZur85+8w43b0mhJHf2Y=
+  dependencies:
+    cliui "^7.0.2"
+    escalade "^3.1.1"
+    get-caller-file "^2.0.5"
+    require-directory "^2.1.1"
+    string-width "^4.2.0"
+    y18n "^5.0.5"
+    yargs-parser "^20.2.2"
 
 yargs@^17.0.1:
   version "17.3.1"

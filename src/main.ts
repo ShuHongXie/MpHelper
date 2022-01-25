@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-21 09:07:44
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-24 17:41:26
+ * @LastEditTime: 2022-01-25 11:37:52
  * @FilePath: /electron-mp-ci/src/main.ts
  */
 import { createApp } from 'vue'

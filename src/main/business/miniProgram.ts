@@ -6,6 +6,7 @@ import db from '../db'
 import Response from '../utils/response'
 import { SUCCESS, FAIL } from '../constrant'
 import { getExpireTime } from '../utils/tool'
+import { IProject, ProgressUpadateEntity } from '../entity/ci'
 
 let showIndex: number, ciInstance: IProject
 
@@ -46,7 +47,7 @@ async function upload(event: IpcMainEvent, params: any) {
         minifyJS: true,
         minify: true
       },
-      onProgressUpdate: (res) => {
+      onProgressUpdate: (res: ProgressUpadateEntity) => {
         if (res._msg !== 'upload') {
           // 使用showIndex值来防止主进程和渲染进程频繁进行无意义的通信
           !showIndex &&
@@ -133,6 +134,7 @@ async function preview(event: IpcMainEvent, params: any) {
 
           db.read()
             .get('list')
+            // @ts-ignore
             .find({ id: params.id })
             .assign({
               qrcodePath: `/image/${uuid}.png`,

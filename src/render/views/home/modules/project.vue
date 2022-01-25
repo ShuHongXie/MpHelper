@@ -99,7 +99,6 @@
 import { List } from '@/entity/Db'
 import { defineComponent, onMounted, ref, PropType, reactive } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
-import { copy } from '@/utils/tool'
 export default defineComponent({
   props: {
     data: {
@@ -134,7 +133,6 @@ export default defineComponent({
     return {
       clickRefresh,
       refresh,
-      copy,
       copyImage
     }
   }

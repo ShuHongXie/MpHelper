@@ -6,10 +6,12 @@
  * @FilePath: /electron-mp-ci/src/main/db.ts
  */
 // 兼容lowdb在不同环境下的用法  @electron/remote必须在主进程先初始化
-import { app } from 'electron'
+const { app } = require('electron')
 import Low from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
-import path from 'path'
+const FileSync = require('lowdb/adapters/FileSync')
+const path = require('path')
+console.log(process.type)
+
 // @ts-ignore
 const LodashId = require('lodash-id')
 // 获取db.json兼容

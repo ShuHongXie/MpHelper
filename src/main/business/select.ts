@@ -5,7 +5,7 @@
  * @LastEditTime: 2022-01-25 17:32:13
  * @FilePath: /electron-mp-ci/src/main/business/select.ts
  */
-import electron, { IpcMainEvent } from 'electron'
+import { IpcMainEvent } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import git from 'isomorphic-git'

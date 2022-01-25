@@ -9,6 +9,7 @@ const { exec } = require('shelljs')
 
 const dev = {
   startDev() {
+    // const devProcess = exec('concurrently -k "node script/dev/rollup.js" ', {
     const devProcess = exec('concurrently -k "vite" "node script/dev/rollup.js" ', {
       async: true
     })

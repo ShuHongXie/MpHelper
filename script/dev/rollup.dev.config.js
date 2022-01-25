@@ -9,6 +9,15 @@ const path = require('path')
 const typescript = require('@rollup/plugin-typescript')
 
 module.exports = [
+  // {
+  //   input: path.join(process.cwd(), '/src/main/db.ts'),
+  //   output: {
+  //     file: path.join(process.cwd(), '/release/bundled/db.js'),
+  //     format: 'cjs'
+  //   },
+  //   plugins: [typescript()],
+  //   external: ['electron', 'lowdb']
+  // },
   {
     input: path.join(process.cwd(), 'src/main/index.ts'),
     output: {

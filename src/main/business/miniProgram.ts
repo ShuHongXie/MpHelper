@@ -1,14 +1,14 @@
 import { IpcMainEvent } from 'electron'
-import ci from 'miniprogram-ci'
+// @ts-ignore
+import ci, { MiniProgramCI } from 'miniprogram-ci'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 import db from '../db'
 import Response from '../utils/response'
 import { SUCCESS, FAIL } from '../constrant'
 import { getExpireTime } from '../utils/tool'
-import { IProject, ProgressUpadateEntity } from '../entity/ci'
 
-let showIndex: number, ciInstance: IProject
+let showIndex: number, ciInstance: any
 
 // CI实例创建
 export default function createMiniProgramCI(event: IpcMainEvent, arg: any) {
@@ -32,7 +32,7 @@ export default function createMiniProgramCI(event: IpcMainEvent, arg: any) {
 }
 // 上传
 async function upload(event: IpcMainEvent, params: any) {
-  console.log('开始上传')
+  console.log('start upload...')
   try {
     const uploadResult = await ci.upload({
       project: ciInstance,
@@ -47,7 +47,7 @@ async function upload(event: IpcMainEvent, params: any) {
         minifyJS: true,
         minify: true
       },
-      onProgressUpdate: (res: ProgressUpadateEntity) => {
+      onProgressUpdate: (res: MiniProgramCI.ITaskStatus) => {
         if (res._msg !== 'upload') {
           // 使用showIndex值来防止主进程和渲染进程频繁进行无意义的通信
           !showIndex &&
@@ -69,7 +69,7 @@ async function upload(event: IpcMainEvent, params: any) {
       }
     })
     console.log(uploadResult)
-  } catch (e: Exception) {
+  } catch (e: any) {
     showIndex = 0
     // 格式化错误捕获信息
     if (e.message.includes('Error')) {
@@ -111,7 +111,8 @@ async function preview(event: IpcMainEvent, params: any) {
       pagePath: params.pagePath,
       searchQuery: params.searchQuery,
       scene: params.scene,
-      onProgressUpdate: (res) => {
+      version: '',
+      onProgressUpdate: (res: MiniProgramCI.ITaskStatus) => {
         console.log(res)
         if (res._msg !== 'upload') {
           event.reply(
@@ -147,7 +148,7 @@ async function preview(event: IpcMainEvent, params: any) {
     })
 
     console.log(previewResult)
-  } catch (e) {
+  } catch (e: any) {
     // 格式化错误捕获信息
     if (e.message.includes('Error')) {
       const error = JSON.parse(

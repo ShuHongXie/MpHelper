@@ -11,7 +11,6 @@ import electronRemote from '@electron/remote/main'
 electronRemote.initialize()
 import excute from './excute'
 excute()
-console.log('1')
 
 try {
   require('electron-reloader')(module, {
@@ -27,13 +26,12 @@ function createWindow() {
     width: 1400,
     height: 800,
     resizable: false,
-    skipTaskbar: true,
+    skipTaskbar: false,
     frame: false,
     thickFrame: false,
     titleBarStyle: 'hidden',
     titleBarOverlay: true,
     maximizable: false,
-    fullscreenable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false //  把这一项加上错误就会消失

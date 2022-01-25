@@ -13,7 +13,7 @@ import * as Components from './components'
 import '@/assets/scss/index.scss'
 const electron = require('electron')
 const electronRemote = require('@electron/remote')
-import db from '../db/db.js'
+import db from './main/db'
 console.log(db)
 
 const app = createApp(App).use(router)

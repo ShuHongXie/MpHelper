@@ -24,9 +24,10 @@
         :src="qrCode"
         :preview-src-list="[data.qrcodePath]"
       ></mp-image>
-      <div v-else class="project-qrcode__add" @click.stop="$emit('add')">
+      <div v-if="!data" class="project-qrcode__add" @click.stop="$emit('add')">
         <mp-icon icon="add" color="#6489ff" :size="40" />
       </div>
+      <div v-if="!data?.qrcodePath" class="project-tip">点击下方按钮进行预览</div>
     </div>
     <div v-if="data?.expireTime" class="project-qrcode__tip" @click="copyImage">
       {{ `将于${data.expireTime}后失效` }}
@@ -159,6 +160,12 @@ export default defineComponent({
   // &:hover {
   //   transform: translate3d(2px, 2px, 2px);
   // }
+  &-tip {
+    height: 100%;
+    line-height: 246px;
+    text-align: center;
+    color: rgb(172, 172, 172, 0.6);
+  }
   &-name {
     height: 36px;
     line-height: 36px;

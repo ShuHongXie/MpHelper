@@ -21,7 +21,7 @@
     <div class="project-qrcode" v-loading="data?.loading" :element-loading-text="data?.loadingText">
       <mp-image
         v-if="data?.qrcodePath"
-        :src="data.qrcodePath"
+        :src="qrCode"
         :preview-src-list="[data.qrcodePath]"
       ></mp-image>
       <div v-else class="project-qrcode__add" @click.stop="$emit('add')">
@@ -97,7 +97,7 @@
 
 <script lang="ts">
 import { List } from '@/entity/Db'
-import { defineComponent, onMounted, ref, PropType, reactive } from 'vue'
+import { defineComponent, onMounted, ref, PropType, reactive, computed } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
 export default defineComponent({
   props: {
@@ -110,6 +110,10 @@ export default defineComponent({
     const { global } = useGlobalProperties()
     let timer = ref<any>(null)
     let clickRefresh = ref(false)
+    const qrCode = computed(() => {
+      console.log(global.nativeImage.createFromPath(props?.data?.fullQrcodePath).toDataURL())
+      return global.nativeImage.createFromPath(props?.data?.fullQrcodePath).toDataURL()
+    })
     // 刷新
     const refresh = () => {
       clickRefresh.value = true
@@ -133,7 +137,8 @@ export default defineComponent({
     return {
       clickRefresh,
       refresh,
-      copyImage
+      copyImage,
+      qrCode
     }
   }
 })

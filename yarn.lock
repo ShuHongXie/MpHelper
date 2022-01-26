@@ -1747,10 +1747,10 @@
   resolved "https://registry.npmmirror.com/@types/lodash/download/@types/lodash-4.14.178.tgz#341f6d2247db528d4a13ddbb374bcdc80406f4f8"
   integrity sha512-0d5Wd09ItQWH1qFbEyQ7oTQ3GZrMfth5JkbN3EvTKLXcHLRDSXeLnlvlOn0wvxVIwK5o2M8JzP/OWz7T3NRsbw==
 
-"@types/lowdb@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.npmmirror.com/@types/lowdb/download/@types/lowdb-1.0.11.tgz#d8336a635ea0dbd48a7f6f62fb9fccc5ec358ae3"
-  integrity sha1-2DNqY16g29SKf29i+5/Mxew1iuM=
+"@types/lowdb@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.npmmirror.com/@types/lowdb/download/@types/lowdb-1.0.9.tgz#1f6c27df72dd1c64522cc9a4566796d2dd058d38"
+  integrity sha1-H2wn33LdHGRSLMmkVmeW0t0FjTg=
   dependencies:
     "@types/lodash" "*"
 

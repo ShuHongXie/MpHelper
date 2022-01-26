@@ -77,6 +77,9 @@ export default defineComponent({
     }
     // ipc通信打开文件夹
     const upload = () => {
+      console.log('打开文件夹')
+      console.log(global)
+
       global.ipcRenderer.send('select', {
         type: 'export',
         params: {
@@ -344,6 +347,7 @@ export default defineComponent({
           if (response.data.done) {
             currentPreview.qrcodePath = response.data.path
             currentPreview.fullQrcodePath = response.data.fullPath
+            currentPreview.expireTime = response.data.expireTime
           }
         } else {
           global.$message({

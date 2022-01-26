@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-25 10:06:18
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-26 10:42:09
+ * @LastEditTime: 2022-01-26 14:10:11
  * @FilePath: /electron-mp-ci/script/dev/rollup.js
  */
 
@@ -12,27 +12,28 @@ const rollup = require('rollup')
 const chalk = require('chalk')
 loadConfigFile(path.resolve(__dirname, 'rollup.dev.config.js'), { format: 'cjs' }).then(
   async ({ options, warnings }) => {
-    console.log(`start watch`, warnings)
+    console.log(`start watch`)
 
     // This prints all deferred warnings
     warnings.flush()
 
     for (const optionsObj of options) {
-      console.log(optionsObj)
       const bundle = await rollup.rollup(optionsObj)
       await Promise.all(optionsObj.output.map(bundle.write))
     }
 
     const watcher = rollup.watch(options)
     watcher.on('event', ({ result, code, input = '', output = '' }) => {
-      if (code === 'BUNDLE_START') {
-        console.log(chalk.cyan(`开始编译文件：${input}`))
-      }
-      if (code === 'BUNDLE_END') {
-        console.log(chalk.green(`编译文件完成, 输出到：${output}`))
-      }
-      if (result) {
-        result.close()
+      switch (code) {
+        case 'BUNDLE_START':
+          console.log(chalk.cyan(`开始编译文件：${input}`))
+          break
+        case 'BUNDLE_END':
+          console.log(chalk.green(`编译文件完成, 输出到：${output}`))
+          break
+        case 'ERROR':
+          console.log(chalk.red(`编译失败`))
+          break
       }
     })
   }

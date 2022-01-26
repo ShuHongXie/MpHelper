@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-25 17:32:13
+ * @LastEditTime: 2022-01-26 14:07:22
  * @FilePath: /electron-mp-ci/src/main/business/select.ts
  */
 import { IpcMainEvent } from 'electron'
@@ -46,7 +46,7 @@ export default async function executeSelectFile(event: IpcMainEvent, arg: any, f
           })
         }
         // 判断当前是否存在.key文件
-        const file = existFile(__dirname, /(\.key)$/)
+        const file = existFile(filePaths[0], /(\.key)$/)
         data = {
           projectName,
           name: projectName,

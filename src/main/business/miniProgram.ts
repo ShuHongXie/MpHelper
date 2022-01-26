@@ -1,3 +1,4 @@
+import fs from 'fs'
 import { IpcMainEvent } from 'electron'
 // @ts-ignore
 import ci, { MiniProgramCI } from 'miniprogram-ci'
@@ -5,8 +6,9 @@ import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 import db from '../db'
 import Response from '../utils/response'
+import { app } from 'electron'
 import { SUCCESS, FAIL } from '../constrant'
-import { getExpireTime } from '../utils/tool'
+import { getExpireTime, findAllFile, existFile } from '../utils/tool'
 
 let showIndex: number, ciInstance: any
 
@@ -90,8 +92,11 @@ async function upload(event: IpcMainEvent, params: any) {
 // 预览
 async function preview(event: IpcMainEvent, params: any) {
   const uuid = uuidv4()
-  const qrcodeOutputDest = path.resolve(__dirname, `../../image/${uuid}.png`)
-  console.log('触发预览')
+  // 没有文件夹时就新增文件夹
+  if (!existFile(app.getPath('documents'), 'mp-image', false)) {
+    fs.mkdirSync(path.join(app.getPath('documents'), 'mp-image'))
+  }
+  const qrcodeOutputDest = path.join(app.getPath('documents'), `/mp-image/${uuid}.png`)
   try {
     const previewResult = await ci.preview({
       project: ciInstance,
@@ -113,7 +118,7 @@ async function preview(event: IpcMainEvent, params: any) {
       scene: params.scene,
       version: '',
       onProgressUpdate: (res: MiniProgramCI.ITaskStatus) => {
-        console.log(res)
+        // console.log(res)
         if (res._msg !== 'upload') {
           event.reply(
             'previewReply',

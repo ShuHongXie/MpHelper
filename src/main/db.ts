@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-25 10:35:28
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-25 11:46:11
+ * @LastEditTime: 2022-01-26 09:32:35
  * @FilePath: /electron-mp-ci/src/main/db.ts
  */
 // 兼容lowdb在不同环境下的用法  @electron/remote必须在主进程先初始化
@@ -24,9 +24,11 @@ const adapter = new FileSync(
   )
 )
 const db = Low(adapter)
+// @ts-ignore
 db._.mixin(LodashId)
-
+// @ts-ignore
 if (!db.has('list').value()) {
+  // @ts-ignore
   db.set('list', []).write()
 }
 // 设置默认值

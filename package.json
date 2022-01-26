@@ -8,7 +8,8 @@
     "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "electron": "cross-env NODE_ENV=development electron release/bundled/entry.js --inspect"
+    "electron": "cross-env NODE_ENV=development electron release/bundled/entry.js --inspect",
+    "db": "node ./db/rollup.excute.js"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
@@ -54,7 +55,9 @@
     "lint-staged": "^12.1.4",
     "mrm": "^3.0.10",
     "prettier": "^2.5.1",
+    "rollup-plugin-typescript2": "^0.31.1",
     "sass": "^1.45.1",
+    "tslib": "^2.3.1",
     "typescript": "4.4.3",
     "unplugin-auto-import": "^0.5.4",
     "unplugin-vue-components": "^0.17.11",

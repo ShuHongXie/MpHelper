@@ -2,15 +2,15 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-25 11:43:41
+ * @LastEditTime: 2022-01-26 10:39:00
  * @FilePath: /electron-mp-ci/src/main/index.ts
  */
 // 控制应用生命周期和创建原生浏览器窗口的模组
 import { app, BrowserWindow } from 'electron'
 import electronRemote from '@electron/remote/main'
 electronRemote.initialize()
-import excute from './excute'
-excute()
+// import excute from './excute'
+// excute()
 
 try {
   require('electron-reloader')(module, {

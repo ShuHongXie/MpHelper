@@ -132,7 +132,7 @@ async function preview(event: IpcMainEvent, params: any) {
               expireTime
             })
           )
-
+          // @ts-ignore
           db.read()
             .get('list')
             // @ts-ignore

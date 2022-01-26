@@ -27,12 +27,12 @@ function createWindow() {
     width: 1400,
     height: 800,
     resizable: false,
-    skipTaskbar: false,
+    // skipTaskbar: false,
     frame: false,
-    thickFrame: false,
-    titleBarStyle: 'hidden',
-    titleBarOverlay: true,
-    maximizable: false,
+    // thickFrame: false,
+    // titleBarStyle: 'hidden',
+    // titleBarOverlay: true,
+    // maximizable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false //  把这一项加上错误就会消失
@@ -69,13 +69,24 @@ app.whenReady().then(() => {
   const icon = nativeImage.createFromPath(
     path.join(
       process.cwd(),
-      process.platform === 'win32' ? '/resource/tray_win.png' : '/resource/tray_mac@3x.png'
+      process.platform === 'win32' ? '/resource/tray_win@3x.png' : '/resource/tray_mac@3x.png'
     )
   )
   tray = new Tray(icon)
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: '退出',
+      click: (menuItem, browserWindow, event) => {
+        app.quit()
+      }
+    }
+  ])
+
+  tray.setContextMenu(contextMenu)
   tray.on('click', () => {
     window.show()
   })
+
   app.on('activate', function () {
     // 通常在 macOS 上，当点击 dock 中的应用程序图标时，如果没有其他
     // 打开的窗口，那么程序会重新创建一个窗口。
@@ -87,8 +98,8 @@ app.whenReady().then(() => {
 
 // 除了 macOS 外，当所有窗口都被关闭的时候退出程序。 因此，通常对程序和它们在
 // 任务栏上的图标来说，应当保持活跃状态，直到用户使用 Cmd + Q 退出。
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+// app.on('window-all-closed', function () {
+//   if (process.platform !== 'darwin') {
+//     app.quit()
+//   }
+// })

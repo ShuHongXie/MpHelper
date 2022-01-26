@@ -2,13 +2,15 @@
   "name": "electron-mp-ci",
   "version": "1.0.0",
   "scripts": {
-    "dev": "FORCE_COLOR=true node ./script/dev",
+    "dev": "node ./script/dev",
+    "dev1": "FORCE_COLOR=true node ./script/dev",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "electron": "cross-env NODE_ENV=development electron release/bundled/entry.js --inspect"
+    "electron": "cross-env NODE_ENV=development electron release/bundled/entry.js --inspect",
+    "test": "node ./script/test"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",

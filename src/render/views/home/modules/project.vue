@@ -157,6 +157,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   transition: all 0.3s;
+  cursor: pointer;
   // &:hover {
   //   transform: translate3d(2px, 2px, 2px);
   // }

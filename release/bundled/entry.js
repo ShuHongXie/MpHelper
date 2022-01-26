@@ -154,14 +154,16 @@ function findAllFile(dirPath, deep = true, ignoreDir = ['node_modules', '.git', 
  * @param {*} file 文件名称/文件正则表达式
  * @return {*}
  */
-function existFile(dirPath, file, deep = false) {
+function existFile(dirPath, file, deep = true) {
     const files = findAllFile(dirPath, deep);
+    console.log(files);
     let i = 0;
     while (i <= files.length) {
         // 正则模式处理
         if (file instanceof RegExp && file.test(files[i])) {
             return files[i];
         }
+        console.log(files[i], files[i].slice(files[i].lastIndexOf(isWindowPlatform ? '\\' : isMacOsPlatform ? '/' : '') + 1));
         // 字符串模式处理
         if (typeof file === 'string' &&
             files[i] &&
@@ -633,6 +635,7 @@ async function executeSelectFile(event, arg, fileObject) {
                     desc: '',
                     version: ''
                 };
+                console.log('---', data, existFile(selectPath, 'pages.json'));
                 // 判断当前的项目是什么类型的项目 uni-app/原生/taro
                 // 有pages.json 就说明是uni-app项目
                 if (existFile(selectPath, 'pages.json')) {
@@ -654,6 +657,7 @@ async function executeSelectFile(event, arg, fileObject) {
                     data.outputPath = filePaths[0];
                     filterObject = data;
                 }
+                console.log(filterObject);
                 // 插入数据
                 if (Array.isArray(filterObject)) {
                     for (const project of filterObject) {
@@ -774,12 +778,12 @@ function createWindow() {
         width: 1400,
         height: 800,
         resizable: false,
-        skipTaskbar: false,
+        // skipTaskbar: false,
         frame: false,
-        thickFrame: false,
-        titleBarStyle: 'hidden',
-        titleBarOverlay: true,
-        maximizable: false,
+        // thickFrame: false,
+        // titleBarStyle: 'hidden',
+        // titleBarOverlay: true,
+        // maximizable: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false //  把这一项加上错误就会消失
@@ -807,8 +811,17 @@ function createWindow() {
 electron.app.whenReady().then(() => {
     const window = createWindow();
     // 增加顶部应用图标
-    const icon = electron.nativeImage.createFromPath(path__default["default"].join(process.cwd(), process.platform === 'win32' ? '/resource/tray_win.png' : '/resource/tray_mac@3x.png'));
+    const icon = electron.nativeImage.createFromPath(path__default["default"].join(process.cwd(), process.platform === 'win32' ? '/resource/tray_win@3x.png' : '/resource/tray_mac@3x.png'));
     tray = new electron.Tray(icon);
+    const contextMenu = electron.Menu.buildFromTemplate([
+        {
+            label: '退出',
+            click: (menuItem, browserWindow, event) => {
+                electron.app.quit();
+            }
+        }
+    ]);
+    tray.setContextMenu(contextMenu);
     tray.on('click', () => {
         window.show();
     });
@@ -822,9 +835,9 @@ electron.app.whenReady().then(() => {
 });
 // 除了 macOS 外，当所有窗口都被关闭的时候退出程序。 因此，通常对程序和它们在
 // 任务栏上的图标来说，应当保持活跃状态，直到用户使用 Cmd + Q 退出。
-electron.app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') {
-        electron.app.quit();
-    }
-});
+// app.on('window-all-closed', function () {
+//   if (process.platform !== 'darwin') {
+//     app.quit()
+//   }
+// })
 //# sourceMappingURL=entry.js.map

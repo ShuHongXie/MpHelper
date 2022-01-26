@@ -68,14 +68,20 @@ function findAllFile(
  * @param {*} file 文件名称/文件正则表达式
  * @return {*}
  */
-function existFile(dirPath: string, file: string | RegExp, deep: boolean = false) {
+function existFile(dirPath: string, file: string | RegExp, deep: boolean = true) {
   const files = findAllFile(dirPath, deep)
+  console.log(files)
   let i = 0
   while (i <= files.length) {
     // 正则模式处理
     if (file instanceof RegExp && file.test(files[i])) {
       return files[i]
     }
+    console.log(
+      files[i],
+      files[i].slice(files[i].lastIndexOf(isWindowPlatform ? '\\' : isMacOsPlatform ? '/' : '') + 1)
+    )
+
     // 字符串模式处理
     if (
       typeof file === 'string' &&

@@ -6,13 +6,20 @@
  * @FilePath: /electron-mp-ci/src/components/common/commonHeader.vue
 -->
 <template>
-  <div class="header" :style="{ height: process.platform === 'win32' ? '36px' : '28px' }">
+  <div class="header" :style="{ height: process.platform === 'win32' ? '30px' : '28px' }">
     <div class="header-operate" v-if="process.platform === 'win32'">
-      <mp-icon :size="24" icon="minus-circle" color="#888888" @click="minimizeWindow"></mp-icon>
       <mp-icon
-        :size="24"
+        custom-class="minimize"
+        :size="20"
+        icon="minus-circle"
+        color="#888888"
+        @click="minimizeWindow"
+      ></mp-icon>
+      <mp-icon
+        :size="20"
         icon="add-circle"
         color="#888888"
+        custom-class="close"
         :custom-style="{ transform: 'rotate(45deg)' }"
         @click="closeWindow"
       ></mp-icon>
@@ -30,12 +37,13 @@ export default defineComponent({
     console.log(process)
 
     const minimizeWindow = () => {
+      console.log('缩小')
       const window = global.BrowserWindow.getFocusedWindow()
       window.minimize()
     }
     const closeWindow = () => {
       const window = global.BrowserWindow.getFocusedWindow()
-      window.close()
+      window.hide()
     }
     onMounted(() => {})
     return {
@@ -49,22 +57,33 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header {
-  background: #ffffff;
-  border-radius: 12px 12px 0px 0px;
+  background-color: #fff;
+  border-radius: 10px 10px 0 0;
   padding-right: 14px;
   display: flex;
   justify-content: flex-end;
-  position: sticky;
-  left: 0;
-  top: 0;
+  // position: sticky;
+  // left: 0;
+  // top: 0;
   -webkit-app-region: drag;
   cursor: pointer;
   &-operate {
-    width: 60px;
+    -webkit-app-region: no-drag;
+    width: 50px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     height: 100%;
+    .minimize {
+      &:hover {
+        color: green !important;
+      }
+    }
+    .close {
+      &:hover {
+        color: red !important;
+      }
+    }
   }
 }
 </style>

@@ -68,7 +68,7 @@ export default async function executeSelectFile(event: IpcMainEvent, arg: any, f
           desc: '',
           version: ''
         }
-
+        console.log('---', data, existFile(selectPath, 'pages.json'))
         // 判断当前的项目是什么类型的项目 uni-app/原生/taro
         // 有pages.json 就说明是uni-app项目
         if (existFile(selectPath, 'pages.json')) {
@@ -94,6 +94,8 @@ export default async function executeSelectFile(event: IpcMainEvent, arg: any, f
           data.outputPath = filePaths[0]
           filterObject = data
         }
+        console.log(filterObject)
+
         // 插入数据
         if (Array.isArray(filterObject)) {
           for (const project of filterObject) {

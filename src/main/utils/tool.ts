@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-05 14:44:21
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-26 15:55:35
+ * @LastEditTime: 2022-01-27 11:32:03
  * @FilePath: /electron-mp-ci/src/main/utils/tool.ts
  */
 import path from 'path'
@@ -77,10 +77,6 @@ function existFile(dirPath: string, file: string | RegExp, deep: boolean = true)
     if (file instanceof RegExp && file.test(files[i])) {
       return files[i]
     }
-    console.log(
-      files[i],
-      files[i].slice(files[i].lastIndexOf(isWindowPlatform ? '\\' : isMacOsPlatform ? '/' : '') + 1)
-    )
 
     // 字符串模式处理
     if (

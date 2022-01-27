@@ -3,7 +3,7 @@
     <div class="project-name" v-if="data">
       <span>{{ data.projectName }}</span>
       <mp-icon
-        :size="14"
+        :size="16"
         custom-class="delete"
         icon="round_close_light"
         color="red"
@@ -153,7 +153,7 @@ export default defineComponent({
   box-shadow: 2px 0px 10px 0px rgba(96, 125, 238, 0.35);
   border-radius: 6px;
   overflow: hidden;
-  margin: 10px 0 10px 10px;
+  margin: 0 10px 10px 0;
   display: flex;
   flex-direction: column;
   transition: all 0.3s;

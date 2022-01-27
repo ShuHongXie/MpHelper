@@ -155,15 +155,24 @@ async function preview(event: IpcMainEvent, params: any) {
     console.log(previewResult)
   } catch (e: any) {
     // 格式化错误捕获信息
+    console.log(e.message) // "Hello"
+    console.log(e.name) // "EvalError"
+    console.log(e.stack) // "@Scratchpad/2:2:9\n"
+
     if (e.message.includes('Error')) {
-      const error = JSON.parse(
-        e.message.substring(e.message.indexOf('{'), e.message.lastIndexOf('}') + 1)
-      )
+      let errorMsg: string = ''
+      if (!e.message.includes('{')) {
+        errorMsg = e.message.slice(e.message.indexOf('Error: '))
+      } else {
+        errorMsg = JSON.parse(
+          e.message.substring(e.message.indexOf('{'), e.message.lastIndexOf('}') + 1)
+        ).errMsg.replace(/(\,\sreference).*/, '')
+      }
       event.reply(
         'previewReply',
         new Response(FAIL, {
           // 返回值往往带有其他信息 这里用正则去掉
-          message: error.errMsg.replace(/(\,\sreference).*/, ''),
+          message: errorMsg,
           index: params.index
         })
       )

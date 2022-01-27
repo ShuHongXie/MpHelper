@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-12 09:51:05
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-24 15:12:45
+ * @LastEditTime: 2022-01-27 11:35:41
  * @FilePath: /electron-mp-ci/index.html
 -->
 <!DOCTYPE html>
@@ -14,29 +14,23 @@
     <link rel="stylesheet" href="//at.alicdn.com/t/font_3084625_cjkumq1mnvr.css" />
     <title>Vite App</title>
     <style>
-      /* body {
-        border-radius: 10px;
-        overflow: hidden;
-      } */
+      html,
+      body {
+        background: rgba(0, 0, 0, 0);
+      }
       #app {
+        box-sizing: border-box;
         height: 100%;
         display: flex;
         flex-direction: column;
-        /* background-color: red; */
+        background: rgba(241, 241, 241, 0.95);
       }
     </style>
   </head>
   <body>
     <div id="app"></div>
-    <!-- <script src="https://unpkg.com/@isomorphic-git/lightning-fs"></script>
-    <script src="https://unpkg.com/isomorphic-git"></script>-->
-    <!-- <script type="module">
-      import http from 'https://unpkg.com/isomorphic-git@beta/http/web/index.js'
-      const fs = new LightningFS('fs')
-    </script> -->
     <script>
       this.globalThis || (this.globalThis = this)
-      // this.globalThis.fs = fs
     </script>
     <script type="module" src="/src/main.ts"></script>
   </body>

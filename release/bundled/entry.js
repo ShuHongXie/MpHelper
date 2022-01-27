@@ -21,6 +21,20 @@ var git__default = /*#__PURE__*/_interopDefaultLegacy(git);
 
 /*
  * @Author: 谢树宏
+ * @Date: 2022-01-24 15:18:44
+ * @LastEditors: 谢树宏
+ * @LastEditTime: 2022-01-27 10:36:52
+ * @FilePath: /electron-mp-ci/src/main/constrant.ts
+ */
+const pkg = require('../../package.json');
+// 成功标识
+const SUCCESS = 'success';
+// 失败标识
+const FAIL = 'fail';
+const PKG = pkg;
+
+/*
+ * @Author: 谢树宏
  * @Date: 2022-01-25 10:35:28
  * @LastEditors: 谢树宏
  * @LastEditTime: 2022-01-26 11:47:51
@@ -82,21 +96,9 @@ class Reply {
 
 /*
  * @Author: 谢树宏
- * @Date: 2022-01-24 15:18:44
- * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-25 11:53:07
- * @FilePath: /electron-mp-ci/src/main/constrant.ts
- */
-// 成功标识
-const SUCCESS = 'success';
-// 失败标识
-const FAIL = 'fail';
-
-/*
- * @Author: 谢树宏
  * @Date: 2022-01-05 14:44:21
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-26 15:55:35
+ * @LastEditTime: 2022-01-27 11:32:03
  * @FilePath: /electron-mp-ci/src/main/utils/tool.ts
  */
 const isWindowPlatform = process.platform === 'win32';
@@ -163,7 +165,6 @@ function existFile(dirPath, file, deep = true) {
         if (file instanceof RegExp && file.test(files[i])) {
             return files[i];
         }
-        console.log(files[i], files[i].slice(files[i].lastIndexOf(isWindowPlatform ? '\\' : isMacOsPlatform ? '/' : '') + 1));
         // 字符串模式处理
         if (typeof file === 'string' &&
             files[i] &&
@@ -305,11 +306,20 @@ async function preview(event, params) {
     }
     catch (e) {
         // 格式化错误捕获信息
+        console.log(e.message); // "Hello"
+        console.log(e.name); // "EvalError"
+        console.log(e.stack); // "@Scratchpad/2:2:9\n"
         if (e.message.includes('Error')) {
-            const error = JSON.parse(e.message.substring(e.message.indexOf('{'), e.message.lastIndexOf('}') + 1));
+            let errorMsg = '';
+            if (!e.message.includes('{')) {
+                errorMsg = e.message.slice(e.message.indexOf('Error: '));
+            }
+            else {
+                errorMsg = JSON.parse(e.message.substring(e.message.indexOf('{'), e.message.lastIndexOf('}') + 1)).errMsg.replace(/(\,\sreference).*/, '');
+            }
             event.reply('previewReply', new Reply(FAIL, {
                 // 返回值往往带有其他信息 这里用正则去掉
-                message: error.errMsg.replace(/(\,\sreference).*/, ''),
+                message: errorMsg,
                 index: params.index
             }));
         }
@@ -597,79 +607,89 @@ async function executeSelectFile(event, arg, fileObject) {
         // 主页导入项目 git分支查找
         case 'export':
             if (filePaths.length) {
-                const selectPath = filePaths[0];
-                const gitDirPath = path__default["default"].join(selectPath, '/.git/HEAD');
-                const existGitDir = fs__default["default"].existsSync(gitDirPath);
-                const projectName = path__default["default"].basename(selectPath);
-                let data, filterObject = [], branches = [], currentBranch = '';
-                if (existGitDir) {
-                    // 获取当前项目下的所有分支
-                    branches = await git__default["default"].listBranches({ fs: fs__default["default"], dir: selectPath });
-                    // 获取当前项目下的当前分支
-                    currentBranch = await git__default["default"].currentBranch({
-                        fs: fs__default["default"],
-                        dir: selectPath,
-                        fullname: false
-                    });
-                }
-                // 判断当前是否存在.key文件
-                const file = existFile(filePaths[0], /(\.key)$/);
-                data = {
-                    projectName,
-                    name: projectName,
-                    path: filePaths[0],
-                    branches,
-                    currentBranch,
-                    appid: '',
-                    outputPath: '',
-                    privatePath: file ? file : '',
-                    robot: 1,
-                    qrcodePath: '',
-                    done: false,
-                    expireTime: '',
-                    pagePath: '',
-                    searchQuery: '',
-                    scene: '',
-                    threads: 4,
-                    setting: {},
-                    desc: '',
-                    version: ''
-                };
-                console.log('---', data, existFile(selectPath, 'pages.json'));
-                // 判断当前的项目是什么类型的项目 uni-app/原生/taro
-                // 有pages.json 就说明是uni-app项目
-                if (existFile(selectPath, 'pages.json')) {
-                    const includesArray = [undefined, undefined];
-                    filterObject = [];
-                    const existManifest = fs__default["default"].existsSync(path__default["default"].join(selectPath, 'manifest.json'));
-                    // 有manifest.json说明是hbuilder生成的 没有则说明是uni-cli生成的
-                    // 这两种情况下打包出来的文件夹略有不同
-                    includesArray.forEach((item, index) => {
-                        filterObject.push({
-                            ...data,
-                            outputPath: path__default["default"].join(selectPath, `${existManifest ? '/unpackage' : ''}/dist/${index === 0 ? 'dev' : 'build'}/mp-weixin`),
-                            projectName: `${index === 0 ? 'dev' : 'prod'}: ${data.projectName}`
+                const projectList = db
+                    .read()
+                    .get('list')
+                    .value()
+                    .map((item) => item.path);
+                // 判断当前路径是否已接入
+                if (!projectList.includes(filePaths[0])) {
+                    const selectPath = filePaths[0];
+                    const gitDirPath = path__default["default"].join(selectPath, '/.git/HEAD');
+                    const existGitDir = fs__default["default"].existsSync(gitDirPath);
+                    const projectName = path__default["default"].basename(selectPath);
+                    let data, filterObject = [], branches = [], currentBranch = '';
+                    if (existGitDir) {
+                        // 获取当前项目下的所有分支
+                        branches = await git__default["default"].listBranches({ fs: fs__default["default"], dir: selectPath });
+                        // 获取当前项目下的当前分支
+                        currentBranch = await git__default["default"].currentBranch({
+                            fs: fs__default["default"],
+                            dir: selectPath,
+                            fullname: false
                         });
-                    });
-                    // 有app.json说明是小程序项目
-                }
-                else if (fs__default["default"].existsSync(path__default["default"].join(selectPath, 'app.json'))) {
-                    data.outputPath = filePaths[0];
-                    filterObject = data;
-                }
-                console.log(filterObject);
-                // 插入数据
-                if (Array.isArray(filterObject)) {
-                    for (const project of filterObject) {
-                        // @ts-ignore
-                        db.read().get('list').insert(project).write();
                     }
+                    // 判断当前是否存在.key文件
+                    const file = existFile(filePaths[0], /(\.key)$/);
+                    data = {
+                        projectName,
+                        name: projectName,
+                        path: filePaths[0],
+                        branches,
+                        currentBranch,
+                        appid: '',
+                        outputPath: '',
+                        privatePath: file ? file : '',
+                        robot: 1,
+                        qrcodePath: '',
+                        done: false,
+                        expireTime: '',
+                        pagePath: '',
+                        searchQuery: '',
+                        scene: '',
+                        threads: 4,
+                        setting: {},
+                        desc: '',
+                        version: ''
+                    };
+                    // 判断当前的项目是什么类型的项目 uni-app/原生/taro
+                    // 有pages.json 就说明是uni-app项目
+                    if (existFile(selectPath, 'pages.json')) {
+                        const includesArray = [undefined, undefined];
+                        filterObject = [];
+                        const existManifest = fs__default["default"].existsSync(path__default["default"].join(selectPath, 'manifest.json'));
+                        // 有manifest.json说明是hbuilder生成的 没有则说明是uni-cli生成的
+                        // 这两种情况下打包出来的文件夹略有不同
+                        includesArray.forEach((item, index) => {
+                            filterObject.push({
+                                ...data,
+                                outputPath: path__default["default"].join(selectPath, `${existManifest ? '/unpackage' : ''}/dist/${index === 0 ? 'dev' : 'build'}/mp-weixin`),
+                                projectName: `${index === 0 ? 'dev' : 'prod'}: ${data.projectName}`
+                            });
+                        });
+                        // 有app.json说明是原生小程序项目
+                    }
+                    else if (fs__default["default"].existsSync(path__default["default"].join(selectPath, 'app.json'))) {
+                        data.outputPath = filePaths[0];
+                        filterObject = data;
+                    }
+                    console.log(filterObject);
+                    // 插入数据
+                    if (Array.isArray(filterObject)) {
+                        for (const project of filterObject) {
+                            // @ts-ignore
+                            db.read().get('list').insert(project).write();
+                        }
+                    }
+                    else {
+                        // @ts-ignore
+                        db.read().get('list').insert(filterObject).write();
+                    }
+                    event.reply('selectFolderReply', new Reply(SUCCESS, { message: '添加成功', data: filterObject }));
                 }
                 else {
-                    // @ts-ignore
-                    db.read().get('list').insert(filterObject).write();
+                    event.reply('selectFolderReply', new Reply(FAIL, { message: '当前项目已存在' }));
                 }
-                event.reply('selectFolderReply', new Reply(SUCCESS, { message: '添加成功', data: filterObject }));
             }
             break;
         // 导入项目配置路径
@@ -758,7 +778,7 @@ function excute() {
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-26 17:39:14
+ * @LastEditTime: 2022-01-27 11:33:12
  * @FilePath: /electron-mp-ci/src/main/index.ts
  */
 electronRemote__default["default"].initialize();
@@ -775,15 +795,16 @@ let tray;
 function createWindow() {
     // 创建浏览器窗口
     const mainWindow = new electron.BrowserWindow({
-        width: 1400,
+        width: 1392,
         height: 800,
         resizable: false,
-        // skipTaskbar: false,
+        skipTaskbar: false,
         frame: false,
-        // thickFrame: false,
-        // titleBarStyle: 'hidden',
-        // titleBarOverlay: true,
-        // maximizable: false,
+        thickFrame: false,
+        titleBarStyle: 'hidden',
+        titleBarOverlay: true,
+        maximizable: false,
+        transparent: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false //  把这一项加上错误就会消失
@@ -813,18 +834,33 @@ electron.app.whenReady().then(() => {
     // 增加顶部应用图标
     const icon = electron.nativeImage.createFromPath(path__default["default"].join(process.cwd(), process.platform === 'win32' ? '/resource/tray_win@3x.png' : '/resource/tray_mac@3x.png'));
     tray = new electron.Tray(icon);
-    const contextMenu = electron.Menu.buildFromTemplate([
-        {
-            label: '退出',
-            click: (menuItem, browserWindow, event) => {
-                electron.app.quit();
-            }
-        }
-    ]);
-    tray.setContextMenu(contextMenu);
-    tray.on('click', () => {
-        window.show();
-    });
+    if (process.platform === 'darwin' || process.platform === 'win32') {
+        tray.on('right-click', () => {
+            const contextMenu = electron.Menu.buildFromTemplate([
+                {
+                    label: '关于',
+                    click() {
+                        electron.dialog.showMessageBox({
+                            title: 'MpHelper',
+                            message: '微信小程序辅助工具',
+                            detail: `Version: ${PKG.version}\nAuthor: ShuHongXie\nGithub: https://github.com/ShuHongXie`
+                        });
+                    }
+                },
+                {
+                    label: '退出',
+                    click: (menuItem, browserWindow, event) => {
+                        electron.app.quit();
+                    }
+                }
+            ]);
+            tray.popUpContextMenu(contextMenu);
+            tray.on('click', () => {
+                console.log('点击了');
+                window.show();
+            });
+        });
+    }
     electron.app.on('activate', function () {
         // 通常在 macOS 上，当点击 dock 中的应用程序图标时，如果没有其他
         // 打开的窗口，那么程序会重新创建一个窗口。

@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-21 09:07:44
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-25 11:37:52
+ * @LastEditTime: 2022-01-27 10:44:30
  * @FilePath: /electron-mp-ci/src/main.ts
  */
 import { createApp } from 'vue'
@@ -24,8 +24,9 @@ app.config.globalProperties.$loading = ElLoading
 // electron方法挂载
 for (const key in electron) {
   console.log(key)
-  app.config.globalProperties[key] = electron[key]
+  app.config.globalProperties[key] = electron[key as keyof typeof electron]
 }
+
 // electron远程
 for (const key in electronRemote) {
   console.log(key)

@@ -2,12 +2,13 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-26 17:39:14
+ * @LastEditTime: 2022-01-27 11:33:12
  * @FilePath: /electron-mp-ci/src/main/index.ts
  */
 // 控制应用生命周期和创建原生浏览器窗口的模组
-import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron'
+import { app, BrowserWindow, Tray, Menu, nativeImage, dialog } from 'electron'
 import electronRemote from '@electron/remote/main'
+import { PKG } from './constrant'
 electronRemote.initialize()
 import excute from './excute'
 import path from 'path'
@@ -20,19 +21,20 @@ try {
 } catch (_) {
   console.log(_)
 }
-let tray
+let tray: Tray
 function createWindow() {
   // 创建浏览器窗口
   const mainWindow = new BrowserWindow({
-    width: 1400,
+    width: 1392,
     height: 800,
     resizable: false,
-    // skipTaskbar: false,
+    skipTaskbar: false,
     frame: false,
-    // thickFrame: false,
-    // titleBarStyle: 'hidden',
-    // titleBarOverlay: true,
-    // maximizable: false,
+    thickFrame: false,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: true,
+    maximizable: false,
+    transparent: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false //  把这一项加上错误就会消失
@@ -73,19 +75,34 @@ app.whenReady().then(() => {
     )
   )
   tray = new Tray(icon)
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: '退出',
-      click: (menuItem, browserWindow, event) => {
-        app.quit()
-      }
-    }
-  ])
+  if (process.platform === 'darwin' || process.platform === 'win32') {
+    tray.on('right-click', () => {
+      const contextMenu = Menu.buildFromTemplate([
+        {
+          label: '关于',
+          click() {
+            dialog.showMessageBox({
+              title: 'MpHelper',
+              message: '微信小程序辅助工具',
+              detail: `Version: ${PKG.version}\nAuthor: ShuHongXie\nGithub: https://github.com/ShuHongXie`
+            })
+          }
+        },
+        {
+          label: '退出',
+          click: (menuItem, browserWindow, event) => {
+            app.quit()
+          }
+        }
+      ])
+      tray!.popUpContextMenu(contextMenu)
+      tray!.on('click', () => {
+        console.log('点击了')
 
-  tray.setContextMenu(contextMenu)
-  tray.on('click', () => {
-    window.show()
-  })
+        window.show()
+      })
+    })
+  }
 
   app.on('activate', function () {
     // 通常在 macOS 上，当点击 dock 中的应用程序图标时，如果没有其他

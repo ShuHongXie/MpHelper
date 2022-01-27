@@ -2,8 +2,8 @@
  * @Author: 谢树宏
  * @Date: 2022-01-05 14:44:21
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-24 15:12:12
- * @FilePath: /electron-mp-ci/src/App.vue
+ * @LastEditTime: 2022-01-27 11:00:45
+ * @FilePath: /electron-mp-ci/src/render/App.vue
 -->
 <template>
   <common-header></common-header>
@@ -23,9 +23,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-body {
-  background-color: none;
-}
-</style>

@@ -70,7 +70,7 @@ export default defineComponent({
     // 配置完成校验
     const filterDone = (index: number, excuteFunc: any) => {
       if (!list.value[index].done) {
-        global.$message.error('请先完成项目配置.')
+        global.$message.warning('请先完成项目配置.')
         return
       }
       excuteFunc()
@@ -330,13 +330,12 @@ export default defineComponent({
           } else {
             list.value.push({ ...data.data, loadingText: '', loading: false })
           }
-          global.$message({
-            showClose: true,
-            message: '添加成功',
-            type: SUCCESS,
-            duration: 1000
-          })
         }
+        global.$message({
+          message: data.message,
+          type: status === SUCCESS ? 'success' : 'error',
+          duration: 2000
+        })
       })
       // 预览回复
       global.ipcRenderer.on('previewReply', async (event: IpcMainEvent, response: any) => {
@@ -430,8 +429,8 @@ export default defineComponent({
 </style>
 <style lang="scss" scoped>
 .home {
-  background-color: #f1f1f1;
   flex: 1;
+  padding: 10px 0 0 10px;
   &-list {
     display: flex;
     flex-wrap: wrap;

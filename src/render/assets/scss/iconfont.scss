@@ -1,8 +1,8 @@
 @font-face {
   font-family: 'iconfont'; /* Project id 3084625 */
-  src: url('//at.alicdn.com/t/font_3084625_7hz7yi1bdz9.woff2?t=1641440857557') format('woff2'),
-    url('//at.alicdn.com/t/font_3084625_7hz7yi1bdz9.woff?t=1641440857557') format('woff'),
-    url('//at.alicdn.com/t/font_3084625_7hz7yi1bdz9.ttf?t=1641440857557') format('truetype');
+  src: url('//at.alicdn.com/t/font_3084625_cjkumq1mnvr.woff2?t=1642991209990') format('woff2'),
+    url('//at.alicdn.com/t/font_3084625_cjkumq1mnvr.woff?t=1642991209990') format('woff'),
+    url('//at.alicdn.com/t/font_3084625_cjkumq1mnvr.ttf?t=1642991209990') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,38 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.mp-error:before {
+  content: '\e66f';
+}
+
+.mp-smile:before {
+  content: '\e67e';
+}
+
+.mp-add-circle:before {
+  content: '\e665';
+}
+
+.mp-elipsis:before {
+  content: '\e66e';
+}
+
+.mp-minus-circle:before {
+  content: '\e677';
+}
+
+.mp-more:before {
+  content: '\e679';
+}
+
+.mp-select-bold:before {
+  content: '\e687';
+}
+
+.mp-refresh:before {
+  content: '\e67b';
 }
 
 .mp-round_close_light:before {

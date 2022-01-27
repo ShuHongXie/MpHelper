@@ -112,7 +112,6 @@ export default defineComponent({
     let timer = ref<any>(null)
     let clickRefresh = ref(false)
     const qrCode = computed(() => {
-      console.log(global.nativeImage.createFromPath(props?.data?.fullQrcodePath).toDataURL())
       return global.nativeImage.createFromPath(props?.data?.fullQrcodePath).toDataURL()
     })
     // 刷新
@@ -127,7 +126,6 @@ export default defineComponent({
     // 图片复制
     const copyImage = () => {
       let qrcode = global.nativeImage.createFromPath(props?.data?.fullQrcodePath)
-      console.log(qrcode, global.clipboard.writeImage)
       global.clipboard.writeImage(qrcode)
       global.$message({
         message: '已复制到剪贴板.',

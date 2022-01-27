@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "isolatedModules": true,
+    "skipLibCheck": true,
     "noImplicitAny": true,
     "lib": ["esnext", "dom"],
     "baseUrl": ".",
@@ -17,7 +18,7 @@
       "~/*": ["src/main/*"]
     },
     "types": ["element-plus/global", "node", "vite/client", "lowdb"],
-    "typeRoots": ["./db"]
+    "typeRoots": ["./db", "node_modules/@types"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

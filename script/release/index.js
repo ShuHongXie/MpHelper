@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-24 17:18:04
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-27 17:28:51
+ * @LastEditTime: 2022-01-28 15:06:50
  * @FilePath: /electron-mp-ci/script/release/index.js
  */
 const { exec } = require('shelljs')
@@ -45,7 +45,7 @@ const dev = {
         extends: null,
         productName: 'MpHelper',
         appId: 'com.ShuHongXie.MpHelper',
-        asar: true,
+        asar: false,
         extraResources: require('../common/extraResources.js'),
         win: require('../common/winConfig.js'),
         mac: require('../common/macConfig.js'),
@@ -58,10 +58,10 @@ const dev = {
     return builder.build(options)
   },
   async start() {
-    // await this.buildRender()
-    await this.buildMain()
-    await this.buildModule()
-    this.buildInstaller()
+    await this.buildRender()
+    // await this.buildMain()
+    // await this.buildModule()
+    // this.buildInstaller()
   }
 }
 

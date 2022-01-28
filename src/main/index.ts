@@ -2,13 +2,13 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-27 17:18:19
+ * @LastEditTime: 2022-01-28 15:16:43
  * @FilePath: /electron-mp-ci/src/main/index.ts
  */
 // 控制应用生命周期和创建原生浏览器窗口的模组
 import { app, BrowserWindow, Tray, Menu, nativeImage, dialog, protocol } from 'electron'
 import electronRemote from '@electron/remote/main'
-// import { PKG } from './constrant'
+import { PKG } from './constrant'
 electronRemote.initialize()
 import excute from './excute'
 import path from 'path'
@@ -112,13 +112,20 @@ function createWindow() {
 // 和创建浏览器窗口的时候调用
 // 部分 API 在 ready 事件触发后才能使用。
 app.whenReady().then(() => {
+  dialog.showMessageBox({
+    title: 'MpHelper',
+    message: '微信小程序辅助工具',
+    detail: `${process.cwd()}\n${__dirname}`
+  })
   const window = createWindow()
   // 增加顶部应用图标
+  const trayPath = app.isPackaged ? './' : '../../'
+  console.log(`${trayPath}resource/tray_win@3x.png`)
+
   const icon = nativeImage.createFromPath(
-    path.join(
-      process.cwd(),
-      process.platform === 'win32' ? '/resource/tray_win@3x.png' : '/resource/tray_mac@3x.png'
-    )
+    process.platform === 'win32'
+      ? `${trayPath}resource/tray_win@3x.png`
+      : `${trayPath}resource/tray_mac@3x.png`
   )
   tray = new Tray(icon)
   if (process.platform === 'darwin' || process.platform === 'win32') {
@@ -130,7 +137,7 @@ app.whenReady().then(() => {
             dialog.showMessageBox({
               title: 'MpHelper',
               message: '微信小程序辅助工具',
-              detail: `Version: 1.0.0\nAuthor: ShuHongXie\nGithub: https://github.com/ShuHongXie`
+              detail: `Version: ${PKG.version}\nAuthor: ShuHongXie\nGithub: https://github.com/ShuHongXie`
             })
           }
         },
@@ -143,8 +150,6 @@ app.whenReady().then(() => {
       ])
       tray!.popUpContextMenu(contextMenu)
       tray!.on('click', () => {
-        console.log('点击了')
-
         window.show()
       })
     })

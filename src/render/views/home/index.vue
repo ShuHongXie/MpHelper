@@ -430,6 +430,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .home {
   flex: 1;
+  overflow: auto;
   padding: 10px 0 0 10px;
   &-list {
     display: flex;

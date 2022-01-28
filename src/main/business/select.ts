@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-27 11:27:56
+ * @LastEditTime: 2022-01-28 16:25:48
  * @FilePath: /electron-mp-ci/src/main/business/select.ts
  */
 import { IpcMainEvent } from 'electron'
@@ -96,10 +96,14 @@ export default async function executeSelectFile(event: IpcMainEvent, arg: any, f
               })
             })
             // 有app.json说明是原生小程序项目
-          } else if (fs.existsSync(path.join(selectPath, 'app.json'))) {
+          } else {
             data.outputPath = filePaths[0]
             filterObject = data
           }
+          // else if (fs.existsSync(path.join(selectPath, 'app.json'))) {
+          //   data.outputPath = filePaths[0]
+          //   filterObject = data
+          // }
           console.log(filterObject)
 
           // 插入数据

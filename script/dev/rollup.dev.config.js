@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-25 10:06:18
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-26 10:52:02
+ * @LastEditTime: 2022-01-28 16:13:02
  * @FilePath: /electron-mp-ci/script/dev/rollup.dev.config.js
  */
 const path = require('path')
@@ -25,7 +25,6 @@ module.exports = [
       format: 'cjs',
       sourcemap: true
     },
-    plugins: [typescript({ sourceMap: true, inlineSources: true })],
-    external: ['electron', 'isomorphic-git', 'lowdb']
+    plugins: [typescript({ sourceMap: true, inlineSources: true })]
   }
 ]

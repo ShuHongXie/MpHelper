@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-28 15:33:56
+ * @LastEditTime: 2022-01-28 17:19:12
  * @FilePath: /electron-mp-ci/src/main/index.ts
  */
 // 控制应用生命周期和创建原生浏览器窗口的模组
@@ -65,7 +65,7 @@ function createWindow() {
   })
   // 创建浏览器窗口
   const mainWindow = new BrowserWindow({
-    width: 1392,
+    width: 1164,
     height: 800,
     resizable: false,
     skipTaskbar: false,
@@ -81,23 +81,14 @@ function createWindow() {
     }
   })
 
-  // const loadURL =
-  //   process.env.NODE_ENV === 'development'
-  //     ? `http://localhost:3000` // 开发模式的话走webpack-dev-server的url
-  //     : `file://${__dirname}/index.html`
-
   if (app.isPackaged) {
     mainWindow.loadURL(`app://./index.html`)
   } else {
     mainWindow.loadURL(`http://localhost:3000/`)
   }
 
-  // 加载 index.html
-  // mainWindow.loadFile('index.html') // 此处跟electron官网路径不同，需要注意
-  // mainWindow.loadURL(loadURL)
-
   // 打开开发工具
-  mainWindow.webContents.openDevTools()
+  !app.isPackaged && mainWindow.webContents.openDevTools()
   // remote组件初始化
   electronRemote.enable(mainWindow.webContents)
   // 聚焦
@@ -121,6 +112,10 @@ app.whenReady().then(() => {
   // build环境
   // process.cwd() = /
   // __dirname = 包app目录
+  const logoPath = app.isPackaged
+    ? path.join(__dirname, `/resource/icon.png`)
+    : path.join(process.cwd(), `/resource/icon.png`)
+  const logo = nativeImage.createFromPath(logoPath)
   const trayIcon = process.platform === 'win32' ? 'tray_win@3x.png' : 'tray_mac@3x.png'
   const trayPath = app.isPackaged
     ? path.join(__dirname, `/resource/${trayIcon}`)
@@ -134,7 +129,9 @@ app.whenReady().then(() => {
           label: '关于',
           click() {
             dialog.showMessageBox({
+              icon: logo,
               title: 'MpHelper',
+              buttons: ['知道了'],
               message: '微信小程序辅助工具',
               detail: `Version: ${PKG.version}\nAuthor: ShuHongXie\nGithub: https://github.com/ShuHongXie`
             })
@@ -142,13 +139,13 @@ app.whenReady().then(() => {
         },
         {
           label: '退出',
-          click: (menuItem, browserWindow, event) => {
+          click: () => {
             app.quit()
           }
         }
       ])
-      tray!.popUpContextMenu(contextMenu)
-      tray!.on('click', () => {
+      tray.popUpContextMenu(contextMenu)
+      tray.on('click', () => {
         window.show()
       })
     })

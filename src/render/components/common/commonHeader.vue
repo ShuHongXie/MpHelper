@@ -2,8 +2,8 @@
  * @Author: 谢树宏
  * @Date: 2022-01-24 10:00:54
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-24 14:57:26
- * @FilePath: /electron-mp-ci/src/components/common/commonHeader.vue
+ * @LastEditTime: 2022-01-28 16:20:11
+ * @FilePath: /electron-mp-ci/src/render/components/common/commonHeader.vue
 -->
 <template>
   <div class="header" :style="{ height: process.platform === 'win32' ? '30px' : '28px' }">
@@ -62,7 +62,7 @@ export default defineComponent({
   padding-right: 14px;
   display: flex;
   justify-content: flex-end;
-  // position: sticky;
+  position: sticky;
   // left: 0;
   // top: 0;
   -webkit-app-region: drag;

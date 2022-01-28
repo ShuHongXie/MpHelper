@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-24 17:18:04
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-28 15:54:08
+ * @LastEditTime: 2022-01-28 17:49:29
  * @FilePath: /electron-mp-ci/script/release/index.js
  */
 const { exec } = require('shelljs')
@@ -12,10 +12,8 @@ const fs = require('fs')
 
 const dev = {
   async buildRender() {
-    // const devProcess = exec('concurrently -k "node script/dev/rollup.js" ', {
-    await exec('vue-tsc --noEmit && vite build', {
-      async: true
-    })
+    await exec('rm -rf release/')
+    await exec('vue-tsc --noEmit && vite build')
   },
   async buildMain() {
     await execBuildMain()
@@ -59,9 +57,9 @@ const dev = {
   },
   async start() {
     await this.buildRender()
-    // await this.buildMain()
-    // await this.buildModule()
-    // this.buildInstaller()
+    await this.buildMain()
+    await this.buildModule()
+    this.buildInstaller()
   }
 }
 

@@ -23,7 +23,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="appid:" prop="appid">
-            <el-input v-model="formData.appid"></el-input>
+            <el-input type="password" v-model="formData.appid"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">

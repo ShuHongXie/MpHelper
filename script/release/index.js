@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-24 17:18:04
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-28 15:06:50
+ * @LastEditTime: 2022-01-28 15:54:08
  * @FilePath: /electron-mp-ci/script/release/index.js
  */
 const { exec } = require('shelljs')

@@ -43,18 +43,18 @@ import { List } from '@/entity/Db'
 import { Form, GitFileChangeObject } from '@/entity/Params'
 import { FileStatusObject, FileStatus } from '@/entity/Common'
 import project from './modules/project.vue'
-import switchGitDialog from './modules/switchGitDialog.vue'
-import uploadInputDialog from './modules/uploadInputDialog.vue'
-import previewDescDialog from './modules/previewDescDialog.vue'
-import gitOperateDialog from './modules/gitCommitDialog.vue'
+// import switchGitDialog from './modules/switchGitDialog.vue'
+// import uploadInputDialog from './modules/uploadInputDialog.vue'
+// import previewDescDialog from './modules/previewDescDialog.vue'
+// import gitOperateDialog from './modules/gitCommitDialog.vue'
 export default defineComponent({
   name: 'HomePage',
   components: {
     project,
-    switchGitDialog,
-    uploadInputDialog,
-    previewDescDialog,
-    gitOperateDialog
+    switchGitDialog: import('./modules/switchGitDialog.vue'),
+    uploadInputDialog: import('./modules/uploadInputDialog.vue'),
+    previewDescDialog: import('./modules/previewDescDialog.vue'),
+    gitOperateDialog: import('./modules/gitCommitDialog.vue')
   },
   setup(props, ctx) {
     const { global, router } = useGlobalProperties()

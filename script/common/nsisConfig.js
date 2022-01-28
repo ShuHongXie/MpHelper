@@ -9,15 +9,16 @@ let path = require('path')
 if (process.platform === 'darwin') module.exports = {}
 else
   module.exports = {
+    oneClick: false,
     perMachine: true,
     allowElevation: true,
-    allowToChangeInstallationDirectory: false,
+    allowToChangeInstallationDirectory: true,
     include: path.join(process.cwd(), 'script/common/installer.nsh'),
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
-    shortcutName: 'youAppName',
-    installerIcon: '../resource/unrelease/icon.ico',
-    uninstallerIcon: '../resource/unrelease/icon.ico',
-    installerHeader: '../resource/unrelease/icon.ico',
-    installerHeaderIcon: '../resource/unrelease/icon.ico'
+    shortcutName: 'MpHelper',
+    installerIcon: '../resource/icon.ico',
+    uninstallerIcon: '../resource/icon.ico',
+    installerHeader: '../resource/icon.ico',
+    installerHeaderIcon: '../resource/icon.ico'
   }

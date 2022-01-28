@@ -2,7 +2,7 @@
   "name": "electron-mp-ci",
   "version": "1.0.0",
   "scripts": {
-    "dev": "FORCE_COLOR=true node ./script/dev",
+    "dev": "node ./script/dev",
     "build": "node ./script/release",
     "preview": "vite preview",
     "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",

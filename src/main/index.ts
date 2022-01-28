@@ -72,7 +72,7 @@ function createWindow() {
     frame: false,
     thickFrame: false,
     titleBarStyle: 'hidden',
-    titleBarOverlay: true,
+    titleBarOverlay: process.platform === 'win32' ? false : true,
     maximizable: false,
     transparent: true,
     webPreferences: {
@@ -116,7 +116,7 @@ app.whenReady().then(() => {
     ? path.join(__dirname, `/resource/icon.png`)
     : path.join(process.cwd(), `/resource/icon.png`)
   const logo = nativeImage.createFromPath(logoPath)
-  const trayIcon = process.platform === 'win32' ? 'tray_win@3x.png' : 'tray_mac@3x.png'
+  const trayIcon = process.platform === 'win32' ? 'tray_win@2x.png' : 'tray_mac@3x.png'
   const trayPath = app.isPackaged
     ? path.join(__dirname, `/resource/${trayIcon}`)
     : path.join(process.cwd(), `/resource/${trayIcon}`)

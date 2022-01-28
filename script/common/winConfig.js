@@ -8,11 +8,10 @@
 if (process.platform === 'darwin') module.exports = {}
 else
   module.exports = {
-    icon: '../../resource/unrelease/icon.ico',
+    icon: './resource/icon_app.ico',
     target: [
       {
-        target: 'nsis',
-        arch: ['ia32']
+        target: 'nsis'
       }
     ],
     sign: async (config) => {

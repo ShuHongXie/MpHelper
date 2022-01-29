@@ -2,7 +2,7 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-29 10:14:29
+ * @LastEditTime: 2022-01-29 17:02:26
  * @FilePath: /electron-mp-ci/src/main/index.ts
  */
 // 控制应用生命周期和创建原生浏览器窗口的模组
@@ -114,6 +114,7 @@ function createWindow() {
 // 部分 API 在 ready 事件触发后才能使用。
 app.whenReady().then(() => {
   const window = createWindow()
+  app.dock.hide()
   // 增加顶部应用图标
   // dev环境
   // process.cwd() = /Users/xiexiaoxie/test/electron-mp-ci
@@ -159,9 +160,11 @@ app.whenReady().then(() => {
         }
       ])
       tray.popUpContextMenu(contextMenu)
-      tray.on('click', () => {
-        window.show()
-      })
+    })
+    tray.on('click', () => {
+      console.log('点击了')
+
+      window.show()
     })
   }
 

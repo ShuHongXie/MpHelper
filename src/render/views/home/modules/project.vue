@@ -19,18 +19,15 @@
       <!-- <el-checkbox class="delete" /> -->
     </div>
     <div class="project-qrcode" v-loading="data?.loading" :element-loading-text="data?.loadingText">
-      <mp-image
-        v-if="data?.qrcodePath"
-        :src="qrCode"
-        :preview-src-list="[data.qrcodePath]"
-      ></mp-image>
+      <mp-image v-if="data?.qrcodePath" :src="qrCode" :preview-src-list="[qrCode]"></mp-image>
       <div v-if="!data" class="project-qrcode__add" @click.stop="$emit('add')">
         <mp-icon icon="add" color="#6489ff" :size="40" />
       </div>
       <div v-if="!data?.qrcodePath" class="project-tip">点击下方按钮进行预览</div>
     </div>
     <div v-if="data?.expireTime" class="project-qrcode__tip" @click="copyImage">
-      {{ `将于${data.expireTime}后失效` }}
+      <span class="expire-tip">{{ `将于${data.expireTime}后失效` }}</span>
+      <span class="copy-tip">点击复制到剪贴板</span>
     </div>
     <div class="project-operation" v-if="data">
       <el-row class="project-operation__wrapper">
@@ -217,6 +214,18 @@ export default defineComponent({
       margin-bottom: 8px;
       color: $primary;
       font-size: 12px;
+      transition: all 0.3s;
+      .copy-tip {
+        display: none;
+      }
+      // &:hover {
+      //   .expire-tip {
+      //     display: none;
+      //   }
+      //   .copy-tip {
+      //     display: inline-block;
+      //   }
+      // }
     }
   }
   &-operation {

@@ -34,9 +34,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref, defineAsyncComponent } from 'vue'
 import useGlobalProperties from '@/hooks/useGlobalProperties'
-import { IpcMainEvent } from 'electron'
+import { IpcRendererEvent } from 'electron'
 import { cloneDeep, debounce } from 'lodash'
 import { SUCCESS, FAIL } from '@/const'
 import { List } from '@/entity/Db'
@@ -51,10 +51,10 @@ export default defineComponent({
   name: 'HomePage',
   components: {
     project,
-    switchGitDialog: import('./modules/switchGitDialog.vue'),
-    uploadInputDialog: import('./modules/uploadInputDialog.vue'),
-    previewDescDialog: import('./modules/previewDescDialog.vue'),
-    gitOperateDialog: import('./modules/gitCommitDialog.vue')
+    switchGitDialog: defineAsyncComponent(() => import('./modules/switchGitDialog.vue')),
+    uploadInputDialog: defineAsyncComponent(() => import('./modules/uploadInputDialog.vue')),
+    previewDescDialog: defineAsyncComponent(() => import('./modules/previewDescDialog.vue')),
+    gitOperateDialog: defineAsyncComponent(() => import('./modules/gitCommitDialog.vue'))
   },
   setup(props, ctx) {
     const { global, router } = useGlobalProperties()
@@ -194,6 +194,8 @@ export default defineComponent({
       }
       currentSelectProject.value = list.value[index]
       currentSelectIndex.value = index
+      console.log(switchGitDialog.value)
+
       switchGitDialog.value.open()
     }
     // 确认切换git
@@ -235,7 +237,6 @@ export default defineComponent({
       })
       // 有未暂存的要让用户选择
       if (branchStatus.data.unstagedData.length) {
-        let isSuccess = false
         global.$messageBox
           .confirm(`当前分支下存在未提交的内容，进行提交操作?`, 'Warning', {
             confirmButtonText: '去提交',
@@ -246,10 +247,8 @@ export default defineComponent({
             fileStatus.value = branchStatus.data
             currentBranch.value = branch
             gitOperateDialog.value.open()
-            isSuccess = true
           })
           .catch(async (bool: any) => {
-            console.log('取消', bool)
             confirmSwitch(branch)
           })
         return
@@ -317,9 +316,25 @@ export default defineComponent({
       for (const item of list.value) {
         Object.assign(item, {}, { loadingText: '', loading: false })
       }
-      // 上传回复
+      console.log(global.BrowserWindow, global.webContents.getAllWebContents())
+      // 窗口聚焦监听
+      global.ipcRenderer.on('focusReply', async (event: IpcRendererEvent) => {
+        // 如果git提交窗口是开的 那就要重新抓一遍数据 因为有可能用户在其他窗口提交了git操作
+        console.log('聚焦', gitOperateDialog.value)
+
+        if (gitOperateDialog.value.visible) {
+          const branchStatus = await global.ipcRenderer.invoke('gitOperate', {
+            type: 'status',
+            params: {
+              ...cloneDeep(currentSelectProject.value)
+            }
+          })
+          console.log(branchStatus)
+          fileStatus.value = branchStatus.data
+        }
+      })
       // 文件选择回复
-      global.ipcRenderer.on('selectFolderReply', async (event: IpcMainEvent, response: any) => {
+      global.ipcRenderer.on('selectFolderReply', async (event: IpcRendererEvent, response: any) => {
         console.log('xxxxx', response)
         const { status, data } = response
         if (status === SUCCESS) {
@@ -338,7 +353,7 @@ export default defineComponent({
         })
       })
       // 预览回复
-      global.ipcRenderer.on('previewReply', async (event: IpcMainEvent, response: any) => {
+      global.ipcRenderer.on('previewReply', async (event: IpcRendererEvent, response: any) => {
         const currentPreview = list.value[response.data.index]
         if (response.status === SUCCESS) {
           currentPreview.loading = !response.data.done
@@ -359,7 +374,7 @@ export default defineComponent({
         }
       })
       // 上传回复
-      global.ipcRenderer.on('uploadReply', async (event: IpcMainEvent, response: any) => {
+      global.ipcRenderer.on('uploadReply', async (event: IpcRendererEvent, response: any) => {
         const currentPreview = list.value[response.data.index]
         if (response.status === SUCCESS) {
           loadingInstance = global.$loading.service({

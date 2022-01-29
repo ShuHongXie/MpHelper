@@ -2,11 +2,20 @@
  * @Author: 谢树宏
  * @Date: 2022-01-10 09:32:59
  * @LastEditors: 谢树宏
- * @LastEditTime: 2022-01-28 17:19:12
+ * @LastEditTime: 2022-01-29 10:14:29
  * @FilePath: /electron-mp-ci/src/main/index.ts
  */
 // 控制应用生命周期和创建原生浏览器窗口的模组
-import { app, BrowserWindow, Tray, Menu, nativeImage, dialog, protocol } from 'electron'
+import {
+  app,
+  IpcMainEvent,
+  BrowserWindow,
+  Tray,
+  Menu,
+  nativeImage,
+  dialog,
+  protocol
+} from 'electron'
 import electronRemote from '@electron/remote/main'
 import { PKG } from './constrant'
 electronRemote.initialize()
@@ -92,8 +101,9 @@ function createWindow() {
   // remote组件初始化
   electronRemote.enable(mainWindow.webContents)
   // 聚焦
-  mainWindow.on('focus', () => {
-    console.log('聚焦')
+  mainWindow.on('focus', (event: IpcMainEvent) => {
+    mainWindow.webContents.send('focusReply')
+    console.log(event)
   })
 
   return mainWindow
@@ -110,12 +120,16 @@ app.whenReady().then(() => {
   // __dirname = /Users/xiexiaoxie/test/electron-mp-ci/release/bundled
 
   // build环境
+  // macos环境
   // process.cwd() = /
   // __dirname = 包app目录
+
+  // logo地址
   const logoPath = app.isPackaged
     ? path.join(__dirname, `/resource/icon.png`)
     : path.join(process.cwd(), `/resource/icon.png`)
   const logo = nativeImage.createFromPath(logoPath)
+  // 托盘图标地址
   const trayIcon = process.platform === 'win32' ? 'tray_win@2x.png' : 'tray_mac@3x.png'
   const trayPath = app.isPackaged
     ? path.join(__dirname, `/resource/${trayIcon}`)

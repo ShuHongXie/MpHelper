@@ -45,27 +45,29 @@ jobs:
         run: |
           npm i
 
-      # 打包构建
       - name: 打包构建
         run: |
           npm run build
         env:
           GH_TOKEN: ${{ secrets.shuhongxie }}
 
-      # step5: cleanup artifacts in dist_electron
-      - name: cleanup artifacts
+      - name: window-2019下去除exe外的所有东西，准备上传
+        if: matrix.os == 'windows-2019'
         run: |
-          npx rimraf "release/!(*.exe)" && npx rimraf "release/!(*.dmg)"
+          npx rimraf "release/!(*.exe)"
 
-      # step6: upload artifacts
-      - name: upload artifacts
+      - name: macos-11下去除dmg外的所有东西，准备上传
+        if: matrix.os == 'macos-11'
+        run: |
+          npx rimraf "release/!(*.dmg)"
+
+      - name: 安装包上传
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}
           path: release
 
-      # step7: create release
-      - name: release
+      - name: 发布
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:

@@ -1,8 +1,8 @@
 name: Build Electron App For Win/Mac
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*.*.*'
 
 # Workflow's jobs
 jobs:
@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-11]
+        os: [macos-11, windows-2019]
 
     # create steps
     steps:
@@ -55,7 +55,7 @@ jobs:
       # step5: cleanup artifacts in dist_electron
       - name: cleanup artifacts
         run: |
-          npx rimraf "release/!(*.exe|*.dmg)"
+          npx rimraf "release/!(*.exe)" && npx rimraf "release/!(*.dmg)"
 
       # step6: upload artifacts
       - name: upload artifacts

@@ -16,6 +16,7 @@ else
     include: path.join(process.cwd(), 'script/common/installer.nsh'),
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
+    differentialPackage: false,
     shortcutName: 'MpHelper',
     installerIcon: '../resource/icon.ico',
     uninstallerIcon: '../resource/icon.ico',

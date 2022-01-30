@@ -30,6 +30,11 @@ jobs:
         with:
           node-version: '14'
 
+      # 配置淘宝镜像
+        name: set config taobao
+        run: |
+          yarn config set registry 'https://registry.npm.taobao.org'
+
       # step3: npm install
       - name: yarn install
         run: |

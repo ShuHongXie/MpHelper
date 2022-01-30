@@ -2,7 +2,7 @@
   "name": "electron-mp-ci",
   "version": "1.0.0",
   "scripts": {
-    "dev": "FORCE_COLOR=true node ./script/dev",
+    "dev": "node ./script/dev",
     "build": "node ./script/release",
     "preview": "vite preview",
     "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
@@ -52,7 +52,6 @@
     "eslint-plugin-vue": "^8.2.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.4",
-    "mrm": "^3.0.10",
     "prettier": "^2.5.1",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.31.1",
@@ -62,8 +61,7 @@
     "unplugin-auto-import": "^0.5.4",
     "unplugin-vue-components": "^0.17.11",
     "vite": "^2.7.2",
-    "vue-tsc": "^0.29.8",
-    "wait-on": "^6.0.0"
+    "vue-tsc": "^0.29.8"
   },
   "husky": {
     "hooks": {

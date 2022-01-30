@@ -28,7 +28,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-        node-version: '14'
+          node-version: '14'
 
       # step3: npm install
       - name: yarn install

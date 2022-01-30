@@ -30,7 +30,8 @@ jobs:
 
       # step3: npm install
       - name: yarn install
-        run: yarn install
+        run: |
+          yarn install
 
       # step4: build app for mac/win
       - name: build app

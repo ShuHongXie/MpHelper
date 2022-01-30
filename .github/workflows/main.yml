@@ -9,15 +9,16 @@ jobs:
   # job's id
   release:
     # job's name
-    name: build and release electron app
+    name: app构建
 
     # the type of machine to run the job on
     runs-on: ${{ matrix.os }}
 
     # create a build matrix for jobs
     strategy:
+      fail-fast: false
       matrix:
-        os: [windows-2019, macos-10.15]
+        os: [macos-11]
 
     # create steps
     steps:

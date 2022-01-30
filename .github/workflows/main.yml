@@ -29,9 +29,8 @@ jobs:
         uses: actions/setup-node@v2-beta
 
       # step3: npm install
-      - name: npm install
-        run: |
-          npm install
+      - name: yarn install
+        run: yarn install
 
       # step4: build app for mac/win
       - name: build app

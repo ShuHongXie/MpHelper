@@ -37,9 +37,37 @@ jobs:
         run: |
           npm config set registry https://registry.npm.taobao.org/
           npm config set electron_mirror https://npm.taobao.org/mirrors/electron/
-          npm config list
+          npm config ls
 
       # 安装依赖
       - name: 依赖安装
         run: |
           npm i
+
+      # 打包构建
+      - name: 打包构建
+        run: |
+          npm run build
+        env:
+          GH_TOKEN: ${{ secrets.shuhongxie }}
+
+      # step5: cleanup artifacts in dist_electron
+      - name: cleanup artifacts
+        run: |
+          npx rimraf "release/!(*.exe|*.dmg)"
+
+      # step6: upload artifacts
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}
+          path: release
+
+      # step7: create release
+      - name: release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: 'release/**'
+        env:
+          GITHUB_TOKEN: ${{ secrets.shuhongxie }}

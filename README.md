@@ -23,9 +23,9 @@
   </a>
 </div>
 
-## 使用前端
+## 使用须知
 
-本地项目必须绑定 ip
+本地项目必须绑定 ip，详情请看[微信小程序 CI 指引](https://developers.weixin.qq.com/miniprogram/dev/devtools/ci.html)
 
 ## 为什么要写这个项目
 
@@ -37,5 +37,22 @@
 - 支持微信小程序的预览，上传，版本号/备注填写
 - 支持预览图片的粘贴复制，放大
 - 自动识别 uni-app 项目，动态适配，分割 dev 和 prod 环境的包，
-- 当私钥(\*\*\*\*.key)文件存在项目时，会自动查找，不需要手动引入
-- 支持 git-status，git-commit，git-checkout 功能，不需要输入命令行
+- 当私钥(\*\*.key)文件存在项目时，会自动查找，不需要手动引入
+- 支持简单的 git-status，git-commit，git-checkout 功能，不需要输入命令行
+
+## 软件操作截图
+
+![](https://raw.githubusercontent.com/wiki/ShuHongXie/MpHelper/preview.gif)
+
+![](https://raw.githubusercontent.com/wiki/ShuHongXie/MpHelper/commit.gif)
+
+## 开发模式
+
+使用 npm 或 yarn 都可以，需要开启两个窗口，主要是为了调试主进程，所以分开
+
+1. 输入 `npm run electron` 开启主进程
+2. 输入 `npm run dev` 开启渲染进程
+
+## 生产模式
+
+1. 输入 `npm run build` 开启主进程

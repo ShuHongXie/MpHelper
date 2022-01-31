@@ -58,7 +58,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .header {
   background-color: #fff;
-  border-radius: 10px 10px 0 0;
+  border-radius: 8px 8px 0 0;
   padding-right: 14px;
   display: flex;
   justify-content: flex-end;

@@ -23,6 +23,14 @@
   </a>
 </div>
 
+## 技术栈
+
+渲染进程: electron + vite + vue3.x + typescript + element-plus + sass
+
+主进程: shelljs + isomorphic-git + lowdb + miniprogram-ci
+
+构建工具: rollup + electron-builder
+
 ## 使用须知
 
 本地项目必须绑定 ip，详情请看[微信小程序 CI 指引](https://developers.weixin.qq.com/miniprogram/dev/devtools/ci.html)
@@ -55,4 +63,4 @@
 
 ## 生产模式
 
-1. 输入 `npm run build` 开启主进程
+1. 输入 `npm run build` 开启构建
